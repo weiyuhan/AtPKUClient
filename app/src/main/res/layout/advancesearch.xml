@@ -3,16 +3,6 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="返回"
-        android:id="@+id/button9"
-        android:textSize="20dp"
-        android:onClick="AboutmebackHandler"
-        android:textColor="#ffffff"
-        android:background="#2b5d7e"
-        android:layout_margin="5dp" />
 
     <EditText
         android:layout_width="match_parent"

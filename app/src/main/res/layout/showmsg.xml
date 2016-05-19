@@ -10,14 +10,6 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal">
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="返回"
-            android:id="@+id/button4"
-            android:textSize="20dp"
-            android:background="#2b5d7e"
-            android:textColor="#ffffff" />
 
         <TextView
             android:layout_width="wrap_content"

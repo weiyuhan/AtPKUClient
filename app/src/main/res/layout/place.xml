@@ -4,36 +4,7 @@
     android:layout_height="match_parent"
     android:weightSum="1">
 
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="50dp">
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="返回"
-            android:id="@+id/button2"
-            android:textSize="20dp"
-            android:background="#2b5d7e"
-            android:textColor="#ffffff" />
-
-        <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/searchContent"
-            android:layout_weight="1"
-            android:hint="搜索内容" />
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="搜索"
-            android:id="@+id/searchButton"
-            android:textSize="20dp"
-            android:background="#ff625c5a" />
-
-    </LinearLayout>
 
     <LinearLayout
         android:orientation="horizontal"

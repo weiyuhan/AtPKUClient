@@ -3,27 +3,6 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="返回"
-            android:id="@+id/button7"
-            android:textSize="20dp"
-            android:background="#2b5d7e"
-            android:textColor="#ffffff" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="搜索结果"
-            android:id="@+id/resultView"
-            android:textSize="30dp" />
-    </LinearLayout>
 
     <Button
         android:layout_width="match_parent"

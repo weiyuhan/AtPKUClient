@@ -78,9 +78,6 @@ public class MapWindow extends Activity implements ListView.OnItemClickListener
     {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_map, menu);
-
-
-
         return super.onCreateOptionsMenu(menu);
     }
 

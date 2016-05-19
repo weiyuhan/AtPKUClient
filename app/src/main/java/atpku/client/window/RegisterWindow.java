@@ -40,7 +40,6 @@ public class RegisterWindow extends Activity
         //actionBar.setDisplayShowHomeEnabled(true);
         actionBar.setHomeButtonEnabled(true);
         actionBar.setDisplayHomeAsUpEnabled(true);
-        actionBar.setTitle("注册");
 
         studentNum = (EditText)findViewById(R.id.regist_studentNum);
         username = (EditText)findViewById(R.id.register_username);

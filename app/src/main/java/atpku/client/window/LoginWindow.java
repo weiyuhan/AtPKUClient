@@ -33,7 +33,6 @@ public class LoginWindow extends Activity
         //actionBar.setDisplayShowHomeEnabled(true);
         actionBar.setHomeButtonEnabled(true);
         actionBar.setDisplayHomeAsUpEnabled(true);
-        actionBar.setTitle("登录");
 
         username = (EditText)findViewById(R.id.login_username);
         password = (EditText)findViewById(R.id.login_password);

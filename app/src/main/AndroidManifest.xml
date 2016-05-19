@@ -25,22 +25,30 @@
             android:name="com.amap.api.v2.apikey"
             android:value="8d554657ac3d9f7299623abb7fd468c3"/>
         <activity
-            android:name="atpku.client.window.LoginWindow" >
+            android:name="atpku.client.window.LoginWindow"
+            android:label="登录">
         </activity>
-        <activity android:name="atpku.client.window.RegisterWindow" >
+        <activity
+            android:name="atpku.client.window.RegisterWindow"
+            android:label="注册">
         </activity>
-        <activity android:name="atpku.client.window.MapWindow">
+        <activity
+            android:name="atpku.client.window.MapWindow">
         </activity>
-        <activity android:name="atpku.client.window.LoadingWindow" >
+        <activity
+            android:name="atpku.client.window.LoadingWindow" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="atpku.client.window.FeedbackWindow">
+        <activity
+            android:name="atpku.client.window.FeedbackWindow"
+            android:label="用户反馈">
         </activity>
-        <activity android:name="atpku.client.window.UserInfoWindow">
-
+        <activity
+            android:name="atpku.client.window.UserInfoWindow"
+            android:label="个人信息">
         </activity>
     </application>
 

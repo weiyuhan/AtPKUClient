@@ -25,7 +25,6 @@ public class FeedbackWindow extends Activity
         //actionBar.setDisplayShowHomeEnabled(true);
         actionBar.setHomeButtonEnabled(true);
         actionBar.setDisplayHomeAsUpEnabled(true);
-        actionBar.setTitle("用户反馈");
     }
     public void FeedbackSubmitHandler(View source)
     {
