@@ -1,5 +1,6 @@
 package atpku.client.window;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Intent;
@@ -22,10 +23,17 @@ public class LoginWindow extends Activity
     public EditText password;
     public Button loginButton;
     public Button registButton;
+    public ActionBar actionBar;
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login);
+
+        actionBar = getActionBar();
+        //actionBar.setDisplayShowHomeEnabled(true);
+        actionBar.setHomeButtonEnabled(true);
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setTitle("登录");
 
         username = (EditText)findViewById(R.id.login_username);
         password = (EditText)findViewById(R.id.login_password);
@@ -35,8 +43,9 @@ public class LoginWindow extends Activity
 
     public void loginHandler(View source)
     {
-        Intent intent = new Intent(LoginWindow.this, MapWindow.class);
-        startActivity(intent);
+        MapWindow.isLogin = true;
+        Toast.makeText(this, "登录成功", Toast.LENGTH_LONG).show();
+        finish();
     }
     public void regisHandler(View source)
     {
@@ -44,4 +53,22 @@ public class LoginWindow extends Activity
         startActivity(intent);
     }
 
+    public boolean onOptionsItemSelected(MenuItem mi)
+    {
+        if(mi.isCheckable())
+        {
+            mi.setChecked(true);
+        }
+
+        switch (mi.getItemId())
+        {
+            case android.R.id.home:
+                super.onBackPressed();
+                break;
+            default:
+                break;
+        }
+        return true;
+
+    }
 }
