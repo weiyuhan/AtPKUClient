@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:orientation="vertical" android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="22sp"
+                android:id="@+id/aboutme_layout">
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="返回"
+                        android:id="@+id/aboutme_back"
+                        android:layout_gravity="center_horizontal"
+                        android:textSize="20dp"
+                        android:onClick="userInfoBackHandler"
+                        android:textColor="#ffffff"
+                        android:background="#2b5d7e"
+                        android:layout_margin="5dp" />
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="个人信息"
+                    android:id="@+id/aboutme_tv0"
+                    android:textSize="40sp"
+                    android:textColor="#3498db" />
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="20sp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="学号："
+                        android:id="@+id/aboutme_tv1"
+                        android:textSize="20sp"
+                        android:textColor="#3498db"
+                        android:layout_margin="5sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="用户名："
+                        android:id="@+id/aboutme_tv2"
+                        android:textSize="20sp"
+                        android:textColor="#3498db"
+                        android:layout_margin="5sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="状态："
+                        android:id="@+id/aboutme_tv3"
+                        android:textSize="20dp"
+                        android:textColor="#3498db"
+                        android:layout_margin="5sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="发布过的信息："
+                        android:id="@+id/aboutme_tv4"
+                        android:textSize="20dp"
+                        android:textColor="#3498db"
+                        android:layout_margin="5sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="收到过的赞："
+                        android:id="@+id/aboutme_tv5"
+                        android:textSize="20dp"
+                        android:textColor="#3498db"
+                        android:layout_margin="5sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="收到过的踩："
+                        android:id="@+id/aboutme_tv6"
+                        android:textSize="20dp"
+                        android:textColor="#3498db"
+                        android:layout_margin="5sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="被举报次数："
+                        android:id="@+id/aboutme_tv7"
+                        android:textSize="20dp"
+                        android:textColor="#3498db"
+                        android:layout_margin="5sp" />
+
+                    <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="80sp">
+
+                        <Button
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="用户反馈"
+                            android:id="@+id/aboutme_bt_feedback"
+                            android:layout_gravity="center_horizontal"
+                            android:textSize="20sp"
+                            android:onClick="feedbackHandler"
+                            android:textColor="#ffffff"
+                            android:background="#7ed200"
+                            android:layout_margin="5dp" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>
