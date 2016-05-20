@@ -7,51 +7,56 @@
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/editText5"
+        android:id="@+id/advanceSearch_title"
         android:hint="标题" />
 
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/editText6"
+        android:id="@+id/advanceSearch_author"
         android:hint="作者" />
 
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/editText7"
+        android:id="@+id/advanceSearch_content"
         android:hint="内容" />
 
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/editText8"
-        android:hint="创建时间" />
+        android:id="@+id/advanceSearch_startTime"
+        android:hint="起始时间"
+        android:onClick="selectStartTimeHanlder" />
 
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/editText9"
-        android:hint="截止时间" />
+        android:id="@+id/advanceSearch_endTime"
+        android:hint="终止时间"
+        android:onClick="selectStartTimeHanlder" />
 
-    <EditText
+
+    <Spinner
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/editText10"
-        android:hint="地点" />
+        android:id="@+id/advanceSearch_place"
+        android:layout_gravity="center_horizontal"
+        android:spinnerMode="dropdown" />
 
     <Switch
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="只在热门信息中搜索"
-        android:id="@+id/switch1"
+        android:id="@+id/advanceSearch_global"
         android:checked="false" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="搜索"
-        android:id="@+id/button8"
-        android:layout_gravity="center_horizontal" />
+        android:id="@+id/advanceSearch_submitButton"
+        android:layout_gravity="center_horizontal"
+        android:onClick="searchMsgSubmitHandler" />
 
 </LinearLayout>

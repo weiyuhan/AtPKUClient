@@ -16,8 +16,10 @@ public class LoadingWindow extends Activity
 {
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
+        getActionBar().hide();
 
         setContentView(R.layout.loading);
+
 
         new Handler().postDelayed(new Runnable()
         {

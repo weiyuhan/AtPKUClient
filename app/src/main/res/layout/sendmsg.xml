@@ -8,13 +8,13 @@
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/editText"
+        android:id="@+id/sendMsg_title"
         android:hint="标题" />
 
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/editText2"
+        android:id="@+id/sendMsg_content"
         android:layout_gravity="center_horizontal"
         android:lines="7"
         android:hint="内容" />
@@ -22,20 +22,22 @@
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/editText3"
-        android:hint="有效期至" />
+        android:id="@+id/sendMsg_endTime"
+        android:hint="有效期至：2016-5-20"
+        android:onClick="selectEndTimeHanlder" />
 
-    <EditText
+    <Spinner
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/editText4"
-        android:hint="地点（换成选择框）" />
+        android:id="@+id/sendMsg_selectPlace"
+        android:layout_gravity="center_horizontal"
+        android:spinnerMode="dropdown" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="发送"
-        android:id="@+id/submitButton"
+        android:id="@+id/sendMsg_submitButton"
         android:layout_gravity="center_horizontal"
         android:textSize="30dp" />
 </LinearLayout>

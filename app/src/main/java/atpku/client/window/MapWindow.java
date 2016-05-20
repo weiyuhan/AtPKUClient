@@ -10,6 +10,7 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -22,14 +23,13 @@ import android.widget.ListView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
-import com.amap.api.maps.AMap;
-import com.amap.api.maps.CameraUpdate;
-import com.amap.api.maps.CameraUpdateFactory;
-import com.amap.api.maps.MapView;
-import com.amap.api.maps.model.LatLng;
-import com.amap.api.maps.model.Marker;
-import com.amap.api.maps.model.MarkerOptions;
 
+import com.amap.api.maps.*;
+import com.amap.api.maps.model.*;
+import com.amap.api.location.*;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -39,9 +39,8 @@ import atpku.client.R;
  * Created by JIANG YUMENG on 2016/5/14.
  * Main map class.
  */
-public class MapWindow extends Activity implements ListView.OnItemClickListener
+public class MapWindow extends Activity implements ListView.OnItemClickListener, AMapLocationListener, LocationSource
 {
-    private LocationManager lm;
     private MapView mapView;
     public static AMap aMap;
 
@@ -52,6 +51,14 @@ public class MapWindow extends Activity implements ListView.OnItemClickListener
     public DrawerLayout drawerLayout;
 
     public static boolean isLogin = false;
+
+    public static double pkuLng = 116.31059288978577;
+    public static double pkuLat = 39.99183503192985;
+    public static LatLng pkuPos = new LatLng(pkuLat,pkuLng);
+
+    private OnLocationChangedListener mListener;
+    private AMapLocationClient mlocationClient;
+    private AMapLocationClientOption mLocationOption;
 
     public void onCreate(Bundle savedInstanceState)
     {
@@ -67,12 +74,14 @@ public class MapWindow extends Activity implements ListView.OnItemClickListener
         actionBar = getActionBar();
         actionBar.setDisplayShowHomeEnabled(true);
 
-        lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         mapView = (MapView) findViewById(R.id.map);
         mapView.onCreate(savedInstanceState);
         init();
 
+        aMap.moveCamera(CameraUpdateFactory.newLatLngZoom(pkuPos, 16));
+
     }
+
 
     public boolean onCreateOptionsMenu(Menu menu)
     {
@@ -118,11 +127,25 @@ public class MapWindow extends Activity implements ListView.OnItemClickListener
                     startActivity(intent);
                 }
                 break;
-            case 1:
+            case 1: {
+                Intent intent = new Intent(this, HelpWindow.class);
+                startActivity(intent);
+            }
                 break;
-            case 2:
+            case 2: {
                 Intent intent = new Intent(this, UserInfoWindow.class);
                 startActivity(intent);
+            }
+                break;
+            case 3: {
+                Intent intent = new Intent(this, SearchMsgWindow.class);
+                startActivity(intent);
+            }
+                break;
+            case 4:{
+                Intent intent = new Intent(this, SendMsgWindow.class);
+                startActivity(intent);
+            }
                 break;
             default:
                 break;
@@ -147,6 +170,18 @@ public class MapWindow extends Activity implements ListView.OnItemClickListener
         if(aMap == null)
         {
             aMap = mapView.getMap();
+            ;
+            aMap.setMyLocationEnabled(true);
+            aMap.getUiSettings().setZoomControlsEnabled(false);
+            aMap.getUiSettings().setMyLocationButtonEnabled(true);
+            aMap.getUiSettings().setCompassEnabled(true);
+
+
+            aMap.setLocationSource(this);// 设置定位监听
+            aMap.getUiSettings().setMyLocationButtonEnabled(true);// 设置默认定位按钮是否显示
+            aMap.setMyLocationEnabled(true);// 设置为true表示显示定位层并可触发定位，false表示隐藏定位层并不可触发定位，默认是false
+            // 设置定位的类型为定位模式 ，可以由定位、跟随或地图根据面向方向旋转几种
+            aMap.setMyLocationType(AMap.LOCATION_TYPE_LOCATE);
         }
     }
     protected void onResume() {
@@ -159,6 +194,7 @@ public class MapWindow extends Activity implements ListView.OnItemClickListener
     protected void onPause() {
         super.onPause();
         mapView.onPause();
+        deactivate();
     }
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
@@ -167,6 +203,9 @@ public class MapWindow extends Activity implements ListView.OnItemClickListener
     protected void onDestroy() {
         super.onDestroy();
         mapView.onDestroy();
+        if(null != mlocationClient){
+            mlocationClient.onDestroy();
+        }
     }
 
     public boolean onOptionsItemSelected(MenuItem mi)
@@ -186,5 +225,65 @@ public class MapWindow extends Activity implements ListView.OnItemClickListener
         }
         return true;
 
+    }
+
+    public void onLocationChanged(AMapLocation amapLocation) {
+        if (mListener != null && amapLocation != null) {
+            if (amapLocation != null
+                    && amapLocation.getErrorCode() == 0) {
+                //System.out.println("!#%$################################################################################");
+                LatLng currPos = new LatLng(amapLocation.getLatitude(), amapLocation.getLongitude());
+                double distance = AMapUtils.calculateLineDistance(currPos, pkuPos);
+                if(distance < 1000)
+                    mListener.onLocationChanged(amapLocation);// 显示系统小蓝点
+                else
+                {
+                    aMap.moveCamera(CameraUpdateFactory.changeLatLng(pkuPos));
+                }
+            }
+        }
+    }
+
+    @Override
+    public void activate(OnLocationChangedListener listener) {
+        mListener = listener;
+        if (mlocationClient == null) {
+            mlocationClient = new AMapLocationClient(this);
+            mLocationOption = new AMapLocationClientOption();
+            //设置定位监听
+            mlocationClient.setLocationListener(this);
+            //设置为高精度定位模式
+            mLocationOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Hight_Accuracy);
+//设置是否返回地址信息（默认返回地址信息）
+            mLocationOption.setNeedAddress(true);
+//设置是否只定位一次,默认为false
+            mLocationOption.setOnceLocation(false);
+//设置是否强制刷新WIFI，默认为强制刷新
+            mLocationOption.setWifiActiveScan(true);
+//设置是否允许模拟位置,默认为false，不允许模拟位置
+            mLocationOption.setMockEnable(true);
+//设置定位间隔,单位毫秒,默认为2000ms
+            mLocationOption.setInterval(5000);
+            //设置定位参数
+            mlocationClient.setLocationOption(mLocationOption);
+            // 此方法为每隔固定时间会发起一次定位请求，为了减少电量消耗或网络流量消耗，
+            // 注意设置合适的定位时间的间隔（最小间隔支持为2000ms），并且在合适时间调用stopLocation()方法来取消定位请求
+            // 在定位结束后，在合适的生命周期调用onDestroy()方法
+            // 在单次定位情况下，定位无论成功与否，都无需调用stopLocation()方法移除请求，定位sdk内部会移除
+            mlocationClient.startLocation();
+        }
+    }
+
+    /**
+     * 停止定位
+     */
+    @Override
+    public void deactivate() {
+        mListener = null;
+        if (mlocationClient != null) {
+            mlocationClient.stopLocation();
+            mlocationClient.onDestroy();
+        }
+        mlocationClient = null;
     }
 }
