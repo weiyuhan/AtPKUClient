@@ -15,8 +15,15 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="信息标题"
-            android:id="@+id/titleView"
+            android:id="@+id/msg_title"
             android:textSize="35dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="作者"
+            android:id="@+id/msg_author" />
+
     </LinearLayout>
 
     <TextView
@@ -24,8 +31,9 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="信息内容"
-        android:id="@+id/contentView"
-        android:layout_weight="0.18" />
+        android:id="@+id/msg_content"
+        android:layout_weight="0.18"
+        android:lines="6" />
 
     <LinearLayout
         android:orientation="horizontal"
@@ -37,51 +45,27 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="16"
-            android:id="@+id/likeNum" />
+            android:id="@+id/msg_likeNum" />
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="赞"
-            android:id="@+id/button6" />
+            android:id="@+id/msg_likeButton" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="-1"
-            android:id="@+id/dislikeNum" />
+            android:id="@+id/msg_dislikeNum" />
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="踩"
-            android:id="@+id/dislikeButton" />
+            android:id="@+id/msg_dislikeButton" />
     </LinearLayout>
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="评论1"
-        android:id="@+id/commit1"
-        android:layout_gravity="center_horizontal"
-        android:textSize="20dp"
-        android:layout_weight="0.04" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="评论2"
-        android:id="@+id/c2"
-        android:textSize="20dp"
-        android:layout_weight="0.04" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="评论3"
-        android:id="@+id/c3"
-        android:textSize="20dp"
-        android:layout_weight="0.04" />
 
     <LinearLayout
         android:orientation="horizontal"
@@ -92,7 +76,7 @@
         <EditText
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/addComment"
+            android:id="@+id/msg_addComment"
             android:layout_weight="1"
             android:layout_marginBottom="0dp"
             android:hint="发表评论" />
@@ -102,7 +86,13 @@
             android:layout_height="wrap_content"
             android:text="评论"
             android:layout_marginBottom="0dp"
-            android:id="@+id/cButton" />
+            android:id="@+id/msg_commentButton" />
     </LinearLayout>
+
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/msg_commentList"
+        android:layout_gravity="center_horizontal" />
 
 </LinearLayout>

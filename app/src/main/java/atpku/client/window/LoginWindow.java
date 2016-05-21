@@ -30,7 +30,6 @@ public class LoginWindow extends Activity
         setContentView(R.layout.login);
 
         actionBar = getActionBar();
-        //actionBar.setDisplayShowHomeEnabled(true);
         actionBar.setHomeButtonEnabled(true);
         actionBar.setDisplayHomeAsUpEnabled(true);
 
@@ -40,13 +39,13 @@ public class LoginWindow extends Activity
         registButton = (Button)findViewById(R.id.registButton);
     }
 
-    public void loginHandler(View source)
+    public void loginHandler(View source) //登录请求
     {
         MapWindow.isLogin = true;
         Toast.makeText(this, "登录成功", Toast.LENGTH_LONG).show();
         finish();
     }
-    public void regisHandler(View source)
+    public void regisHandler(View source) //注册页面
     {
         Intent intent = new Intent(LoginWindow.this, RegisterWindow.class);
         startActivity(intent);

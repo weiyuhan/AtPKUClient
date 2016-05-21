@@ -3,6 +3,7 @@ package atpku.client.window;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -70,7 +71,7 @@ public class SearchMsgWindow extends Activity
 
     }
 
-    public void selectStartTimeHanlder(View source)
+    public void searchMsgSelectTimeHanlder(View source)
     {
         final EditText text = (EditText)source;
         Calendar calendar = Calendar.getInstance();
@@ -90,6 +91,7 @@ public class SearchMsgWindow extends Activity
 
     public void searchMsgSubmitHandler(View source)
     {
-
+        Intent intent = new Intent(this,SearchResultWindow.class);
+        startActivity(intent);
     }
 }

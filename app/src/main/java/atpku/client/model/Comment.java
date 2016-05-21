@@ -5,10 +5,19 @@ package atpku.client.model;
  */
 public class Comment
 {
+    public int commentID;
     public int atMsgID;
     public int ownerID;
     public String content;
     public String commentTime;
+
+    public int getCommentID() {
+        return commentID;
+    }
+
+    public void setCommentID(int commentID) {
+        this.commentID = commentID;
+    }
 
     public int getAtMsgID() {
         return atMsgID;
@@ -45,7 +54,8 @@ public class Comment
     @Override
     public String toString() {
         return "Comment{" +
-                "atMsgID=" + atMsgID +
+                "commentID=" + commentID +
+                ", atMsgID=" + atMsgID +
                 ", ownerID=" + ownerID +
                 ", content='" + content + '\'' +
                 ", commentTime='" + commentTime + '\'' +

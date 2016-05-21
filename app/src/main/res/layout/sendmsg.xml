@@ -22,9 +22,17 @@
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:id="@+id/sendMsg_startTime"
+        android:layout_gravity="center_horizontal"
+        android:hint="起始时间：2016-5-19"
+        android:onClick="sendMsgSelectTimeHanlder" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:id="@+id/sendMsg_endTime"
         android:hint="有效期至：2016-5-20"
-        android:onClick="selectEndTimeHanlder" />
+        android:onClick="sendMsgSelectTimeHanlder" />
 
     <Spinner
         android:layout_width="match_parent"

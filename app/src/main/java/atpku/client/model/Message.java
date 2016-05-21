@@ -7,6 +7,7 @@ import java.util.List;
  */
 public class Message
 {
+    public int messageID;
     public int ownerID;
     public String title;
     public String content;
@@ -19,6 +20,14 @@ public class Message
     public List<Integer> reportUsers;
     public boolean isGlobal;
     public int atPlaceID;
+
+    public int getMessageID() {
+        return messageID;
+    }
+
+    public void setMessageID(int messageID) {
+        this.messageID = messageID;
+    }
 
     public int getOwnerID() {
         return ownerID;
@@ -119,7 +128,8 @@ public class Message
     @Override
     public String toString() {
         return "Message{" +
-                "ownerID=" + ownerID +
+                "messageID=" + messageID +
+                ", ownerID=" + ownerID +
                 ", title='" + title + '\'' +
                 ", content='" + content + '\'' +
                 ", postTime='" + postTime + '\'' +

@@ -1,10 +1,13 @@
 package atpku.client.model;
 
+import java.util.List;
+
 /**
  * Created by wyh on 2016/5/19.
  */
 public class User
 {
+    public int userID;
     public String username;
     public String email;
     public String password;
@@ -15,6 +18,15 @@ public class User
     public int likeReceived;
     public int dislikeReceived;
     public int reportReceived;
+    public List<Integer> feedbacks;
+
+    public int getUserID() {
+        return userID;
+    }
+
+    public void setUserID(int userID) {
+        this.userID = userID;
+    }
 
     public String getUsername() {
         return username;
@@ -96,10 +108,19 @@ public class User
         this.reportReceived = reportReceived;
     }
 
+    public List<Integer> getFeedbacks() {
+        return feedbacks;
+    }
+
+    public void setFeedbacks(List<Integer> feedbacks) {
+        this.feedbacks = feedbacks;
+    }
+
     @Override
     public String toString() {
         return "User{" +
-                "username='" + username + '\'' +
+                "userID=" + userID +
+                ", username='" + username + '\'' +
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
                 ", joinTime='" + joinTime + '\'' +
@@ -109,6 +130,7 @@ public class User
                 ", likeReceived=" + likeReceived +
                 ", dislikeReceived=" + dislikeReceived +
                 ", reportReceived=" + reportReceived +
+                ", feedbacks=" + feedbacks +
                 '}';
     }
 }

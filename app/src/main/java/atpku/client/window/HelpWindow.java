@@ -15,15 +15,14 @@ import atpku.client.R;
 public class HelpWindow extends Activity
 {
     private ActionBar actionBar = null;
-    public void onCreate(Bundle icicle) {
-        super.onCreate(icicle);
-
+    public void onCreate(Bundle savedInstanceState)
+    {
+        super.onCreate(savedInstanceState);
         setContentView(R.layout.usehelp);
+
         actionBar = getActionBar();
-        //actionBar.setDisplayShowHomeEnabled(true);
         actionBar.setHomeButtonEnabled(true);
         actionBar.setDisplayHomeAsUpEnabled(true);
-
     }
 
     public boolean onOptionsItemSelected(MenuItem mi)

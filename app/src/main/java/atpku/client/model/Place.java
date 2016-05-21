@@ -5,9 +5,18 @@ package atpku.client.model;
  */
 public class Place
 {
+    public int placeID;
     public double longitude;
     public double latitude;
     public String name;
+
+    public int getPlaceID() {
+        return placeID;
+    }
+
+    public void setPlaceID(int placeID) {
+        this.placeID = placeID;
+    }
 
     public double getLongitude() {
         return longitude;
@@ -36,7 +45,8 @@ public class Place
     @Override
     public String toString() {
         return "Place{" +
-                "longitude=" + longitude +
+                "placeID=" + placeID +
+                ", longitude=" + longitude +
                 ", latitude=" + latitude +
                 ", name='" + name + '\'' +
                 '}';

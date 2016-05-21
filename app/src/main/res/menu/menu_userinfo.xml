@@ -4,4 +4,13 @@
         android:id="@+id/action_feedback"
         android:title="反馈"
         android:showAsAction="always"/>
+    <item
+        android:id="@+id/action_mymsg"
+        android:title="我的信息"
+        android:showAsAction="always"/>
+    <item
+        android:id="@+id/action_myfeedback"
+        android:title="我的反馈"
+        android:showAsAction="always"/>
+
 </menu>

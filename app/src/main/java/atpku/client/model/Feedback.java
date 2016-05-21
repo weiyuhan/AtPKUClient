@@ -5,10 +5,19 @@ package atpku.client.model;
  */
 public class Feedback
 {
+    public int feedbackID;
     public int userID;
     public String content;
     public String time;
     public boolean isRead;
+
+    public int getFeedbackID() {
+        return feedbackID;
+    }
+
+    public void setFeedbackID(int feedbackID) {
+        this.feedbackID = feedbackID;
+    }
 
     public int getUserID() {
         return userID;
@@ -45,7 +54,8 @@ public class Feedback
     @Override
     public String toString() {
         return "Feedback{" +
-                "userID=" + userID +
+                "feedbackID=" + feedbackID +
+                ", userID=" + userID +
                 ", content='" + content + '\'' +
                 ", time='" + time + '\'' +
                 ", isRead=" + isRead +

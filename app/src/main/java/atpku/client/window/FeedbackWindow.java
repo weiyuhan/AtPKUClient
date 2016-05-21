@@ -22,18 +22,14 @@ public class FeedbackWindow extends Activity
         setContentView(R.layout.feedback);
 
         actionBar = getActionBar();
-        //actionBar.setDisplayShowHomeEnabled(true);
         actionBar.setHomeButtonEnabled(true);
         actionBar.setDisplayHomeAsUpEnabled(true);
     }
-    public void FeedbackSubmitHandler(View source)
+    public void FeedbackSubmitHandler(View source) //发送反馈
     {
 
     }
-    public void FeedbackHandler(View source)
-    {
 
-    }
     public boolean onOptionsItemSelected(MenuItem mi)
     {
         if(mi.isCheckable())

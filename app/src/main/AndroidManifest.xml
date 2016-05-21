@@ -25,6 +25,7 @@
         <meta-data
             android:name="com.amap.api.v2.apikey"
             android:value="2f102d47cdcb4b38bab046efed4aa884"/>
+
         <activity
             android:name="atpku.client.window.LoginWindow"
             android:label="登录">
@@ -36,6 +37,10 @@
         <activity
             android:name="atpku.client.window.SearchMsgWindow"
             android:label="高级搜索">
+        </activity>
+        <activity
+            android:name="atpku.client.window.SearchResultWindow"
+            android:label="搜索结果">
         </activity>
         <activity
             android:name="atpku.client.window.HelpWindow"
@@ -63,6 +68,15 @@
             android:name="atpku.client.window.UserInfoWindow"
             android:label="个人信息">
         </activity>
+        <activity
+            android:name="atpku.client.window.PlaceWindow"
+            android:label="地点">
+        </activity>
+        <activity
+            android:name="atpku.client.window.MsgWindow"
+            android:label="信息">
+        </activity>
+
     </application>
 
 </manifest>

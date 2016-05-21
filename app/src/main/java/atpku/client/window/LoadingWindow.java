@@ -14,12 +14,11 @@ import atpku.client.R;
  */
 public class LoadingWindow extends Activity
 {
-    public void onCreate(Bundle icicle) {
-        super.onCreate(icicle);
-        getActionBar().hide();
-
+    public void onCreate(Bundle savedInstanceState)
+    {
+        super.onCreate(savedInstanceState);
+        getActionBar().hide(); // 隐藏actionBar
         setContentView(R.layout.loading);
-
 
         new Handler().postDelayed(new Runnable()
         {
@@ -30,6 +29,6 @@ public class LoadingWindow extends Activity
                 startActivity(mainIntent);
                 finish();
             }
-        }, 3000); //2900 for release
+        }, 3000); //3000 for release
     }
 }

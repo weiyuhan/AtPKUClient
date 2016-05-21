@@ -20,6 +20,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.ListView;
+import android.widget.SearchView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
@@ -44,7 +45,7 @@ import atpku.client.R;
  * Created by JIANG YUMENG on 2016/5/14.
  * Main map class.
  */
-public class MapWindow extends Activity implements ListView.OnItemClickListener, AMapLocationListener, LocationSource
+public class MapWindow extends Activity implements ListView.OnItemClickListener, AMapLocationListener, LocationSource, SearchView.OnQueryTextListener
 {
     private MapView mapView;
     public static AMap aMap;
@@ -54,6 +55,8 @@ public class MapWindow extends Activity implements ListView.OnItemClickListener,
     public ListView slideMenu;
 
     public DrawerLayout drawerLayout;
+
+    public SearchView search;
 
     public static boolean isLogin = false;
 
@@ -83,9 +86,8 @@ public class MapWindow extends Activity implements ListView.OnItemClickListener,
 
         mapView = (MapView) findViewById(R.id.map);
         mapView.onCreate(savedInstanceState);
-        init();
+        init(); // 初始化地图
 
-        aMap.moveCamera(CameraUpdateFactory.newLatLngZoom(pkuPos, 16));
         volleyQuque = Volley.newRequestQueue(this);
     }
 
@@ -94,7 +96,15 @@ public class MapWindow extends Activity implements ListView.OnItemClickListener,
     {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_map, menu);
-        return super.onCreateOptionsMenu(menu);
+        MenuItem searchItem = menu.findItem(R.id.action_search);
+        search = (SearchView)searchItem.getActionView();
+        search.setOnQueryTextListener(this);
+
+        
+        boolean ret =  super.onCreateOptionsMenu(menu);
+
+
+        return  ret;
     }
 
     public void refreshSlideMenu()
@@ -118,38 +128,38 @@ public class MapWindow extends Activity implements ListView.OnItemClickListener,
         adapter.notifyDataSetChanged();
     }
 
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id)
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id)   //  侧滑菜单
     {
         switch (position)
         {
             case 0:
-                if(isLogin)
+                if(isLogin) //登出
                 {
                     isLogin = false;
                     refreshSlideMenu();
                 }
-                else
+                else //登录
                 {
                     Intent intent = new Intent(this, LoginWindow.class);
                     startActivity(intent);
                 }
                 break;
-            case 1: {
+            case 1: {  //使用说明
                 Intent intent = new Intent(this, HelpWindow.class);
                 startActivity(intent);
             }
                 break;
-            case 2: {
+            case 2: {   //用户信息
                 Intent intent = new Intent(this, UserInfoWindow.class);
                 startActivity(intent);
             }
                 break;
-            case 3: {
+            case 3: {  //高级搜索
                 Intent intent = new Intent(this, SearchMsgWindow.class);
                 startActivity(intent);
             }
                 break;
-            case 4:{
+            case 4:{   //发信信息
                 Intent intent = new Intent(this, SendMsgWindow.class);
                 startActivity(intent);
             }
@@ -172,7 +182,7 @@ public class MapWindow extends Activity implements ListView.OnItemClickListener,
         }
     }
 
-    private void init()
+    private void init()   //初始化高德地图
     {
         if(aMap == null)
         {
@@ -189,20 +199,23 @@ public class MapWindow extends Activity implements ListView.OnItemClickListener,
             aMap.setMyLocationEnabled(true);// 设置为true表示显示定位层并可触发定位，false表示隐藏定位层并不可触发定位，默认是false
             // 设置定位的类型为定位模式 ，可以由定位、跟随或地图根据面向方向旋转几种
             aMap.setMyLocationType(AMap.LOCATION_TYPE_LOCATE);
+
+            aMap.moveCamera(CameraUpdateFactory.newLatLngZoom(pkuPos, 16));
         }
     }
     protected void onResume() {
         super.onResume();
-        //Toast.makeText(this, "hahah", Toast.LENGTH_LONG).show();
         drawerLayout.closeDrawers();
         refreshSlideMenu();
         mapView.onResume();
     }
+
     protected void onPause() {
         super.onPause();
         mapView.onPause();
         deactivate();
     }
+
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         mapView.onSaveInstanceState(outState);
@@ -213,6 +226,11 @@ public class MapWindow extends Activity implements ListView.OnItemClickListener,
         if(null != mlocationClient){
             mlocationClient.onDestroy();
         }
+    }
+
+    public void mapSearchHandler(View source)
+    {
+
     }
 
     public boolean onOptionsItemSelected(MenuItem mi)
@@ -229,6 +247,15 @@ public class MapWindow extends Activity implements ListView.OnItemClickListener,
                 break;
             case R.id.action_refresh:
                 volleyTest();
+                break;
+            case R.id.action_search:{
+                if (search == null)
+                {
+                    //ActionMenuItemView av = (ActionMenuItemView)findViewById(R.id.action_search);
+                }
+                if (search != null)
+                    search.setOnQueryTextListener(this);
+            }
                 break;
             default:
                 break;
@@ -319,4 +346,17 @@ public class MapWindow extends Activity implements ListView.OnItemClickListener,
         });
         volleyQuque.add(stringRequest);
     }
+
+    public boolean onQueryTextChange(String newText)
+    {
+        return true;
+    }
+
+    public boolean onQueryTextSubmit(String query)
+    {
+        Intent intent = new Intent(this, SearchResultWindow.class);
+        startActivity(intent);
+        return false;
+    }
+
 }

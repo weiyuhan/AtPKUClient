@@ -25,6 +25,7 @@ public class SendMsgWindow extends Activity
 {
     public EditText title;
     public EditText content;
+    public EditText startTime;
     public EditText endTime;
     public Spinner place;
     public Button submitButton;
@@ -42,12 +43,13 @@ public class SendMsgWindow extends Activity
 
         title = (EditText)findViewById(R.id.sendMsg_title);
         content = (EditText)findViewById(R.id.sendMsg_content);
+        startTime = (EditText)findViewById(R.id.sendMsg_startTime);
         endTime = (EditText)findViewById(R.id.sendMsg_endTime);
         place = (Spinner)findViewById(R.id.sendMsg_selectPlace);
         submitButton = (Button)findViewById(R.id.sendMsg_submitButton);
     }
 
-    public void selectEndTimeHanlder(View source)
+    public void sendMsgSelectTimeHanlder(View source)
     {
         final EditText text = (EditText)source;
         Calendar calendar = Calendar.getInstance();
@@ -56,7 +58,7 @@ public class SendMsgWindow extends Activity
             public void onDateSet(DatePicker view, int year, int month, int day) {
                 // TODO Auto-generated method stub
                 //更新EditText控件日期 小于10加0
-                text.setText(year + "-" + month + "-" + day);
+                text.setText(year + "-" + (month+1) + "-" + day);
             }
         }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH),
                 calendar.get(Calendar.DAY_OF_MONTH) );

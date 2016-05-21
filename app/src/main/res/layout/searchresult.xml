@@ -4,18 +4,8 @@
     android:layout_height="match_parent">
 
 
-    <Button
+    <ListView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="结果1"
-        android:id="@+id/button13"
-        android:textSize="30dp" />
-
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="结果2"
-        android:id="@+id/button14"
-        android:textSize="30dp" />
-
+        android:id="@+id/searchResult_list" />
 </LinearLayout>

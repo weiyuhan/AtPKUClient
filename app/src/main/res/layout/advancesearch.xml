@@ -27,14 +27,14 @@
         android:layout_height="wrap_content"
         android:id="@+id/advanceSearch_startTime"
         android:hint="起始时间"
-        android:onClick="selectStartTimeHanlder" />
+        android:onClick="searchMsgSelectTimeHanlder" />
 
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/advanceSearch_endTime"
         android:hint="终止时间"
-        android:onClick="selectStartTimeHanlder" />
+        android:onClick="searchMsgSelectTimeHanlder" />
 
 
     <Spinner
