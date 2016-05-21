@@ -27,6 +27,11 @@ import android.widget.ToggleButton;
 import com.amap.api.maps.*;
 import com.amap.api.maps.model.*;
 import com.amap.api.location.*;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -60,6 +65,8 @@ public class MapWindow extends Activity implements ListView.OnItemClickListener,
     private AMapLocationClient mlocationClient;
     private AMapLocationClientOption mLocationOption;
 
+    private com.android.volley.RequestQueue volleyQuque;
+
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
@@ -79,7 +86,7 @@ public class MapWindow extends Activity implements ListView.OnItemClickListener,
         init();
 
         aMap.moveCamera(CameraUpdateFactory.newLatLngZoom(pkuPos, 16));
-
+        volleyQuque = Volley.newRequestQueue(this);
     }
 
 
@@ -220,6 +227,9 @@ public class MapWindow extends Activity implements ListView.OnItemClickListener,
             case R.id.action_switch:
                 switchMapType();
                 break;
+            case R.id.action_refresh:
+                volleyTest();
+                break;
             default:
                 break;
         }
@@ -231,7 +241,6 @@ public class MapWindow extends Activity implements ListView.OnItemClickListener,
         if (mListener != null && amapLocation != null) {
             if (amapLocation != null
                     && amapLocation.getErrorCode() == 0) {
-                //System.out.println("!#%$################################################################################");
                 LatLng currPos = new LatLng(amapLocation.getLatitude(), amapLocation.getLongitude());
                 double distance = AMapUtils.calculateLineDistance(currPos, pkuPos);
                 if(distance < 1000)
@@ -285,5 +294,29 @@ public class MapWindow extends Activity implements ListView.OnItemClickListener,
             mlocationClient.onDestroy();
         }
         mlocationClient = null;
+    }
+
+    public void volleyTest()
+    {
+        StringRequest stringRequest = new StringRequest("http://139.129.22.145:5000",
+                new Response.Listener<String>()
+                {
+                    @Override
+                    public void onResponse(String response)
+                    {
+                        System.out.println("response : " + response);
+                        Toast.makeText(MapWindow.this, "it works!", Toast.LENGTH_LONG).show();
+                        Log.d("TAG", response);
+                    }
+                },
+                new Response.ErrorListener()
+                {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        //System.out.println("error : " + error.getMessage());
+                        Log.e("TAG", error.getMessage(), error);
+                    }
+        });
+        volleyQuque.add(stringRequest);
     }
 }

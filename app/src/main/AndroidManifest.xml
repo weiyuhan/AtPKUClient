@@ -33,7 +33,7 @@
             android:name="atpku.client.window.RegisterWindow"
             android:label="注册">
         </activity>
-        <activity  
+        <activity
             android:name="atpku.client.window.SearchMsgWindow"
             android:label="高级搜索">
         </activity>
