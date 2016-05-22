@@ -134,7 +134,7 @@ public class RegisterWindow extends Activity
                             Toast.makeText(RegisterWindow.this, "注册失败 ：" + result.message, Toast.LENGTH_LONG).show();
                         }
                         Log.d("TAG", response);
-                    }
+                        }
                 },
                 new Response.ErrorListener()
                 {
