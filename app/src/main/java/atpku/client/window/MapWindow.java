@@ -100,7 +100,7 @@ public class MapWindow extends Activity implements ListView.OnItemClickListener,
         search = (SearchView)searchItem.getActionView();
         search.setOnQueryTextListener(this);
 
-        
+
         boolean ret =  super.onCreateOptionsMenu(menu);
 
 
