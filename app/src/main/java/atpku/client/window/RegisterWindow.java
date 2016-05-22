@@ -3,7 +3,9 @@ package atpku.client.window;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -20,6 +22,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
@@ -43,6 +46,8 @@ public class RegisterWindow extends Activity
 
     private RequestQueue volleyQuque;
 
+    SharedPreferences prefs;
+
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
@@ -63,6 +68,8 @@ public class RegisterWindow extends Activity
         submitButton = (Button)findViewById(R.id.regist_submitButton);
 
         volleyQuque = Volley.newRequestQueue(this);
+
+        prefs = PreferenceManager.getDefaultSharedPreferences(this);
     }
 
     public void registSubmitHandler(View source)
@@ -114,6 +121,12 @@ public class RegisterWindow extends Activity
                         if(result.success)
                         {
                             Toast.makeText(RegisterWindow.this, "注册成功", Toast.LENGTH_LONG).show();
+                            SharedPreferences.Editor mEditor = prefs.edit();
+                            mEditor.putString("stunum", stuNumStr);
+                            mEditor.putString("nickname", userNameStr);
+                            mEditor.putString("password", passwordStr);
+                            mEditor.putString("gender", genderStr);
+                            mEditor.apply();
                             RegisterWindow.this.finish();
                         }
                         else
@@ -121,6 +134,8 @@ public class RegisterWindow extends Activity
                             Toast.makeText(RegisterWindow.this, "注册失败 ：" + result.message, Toast.LENGTH_LONG).show();
                         }
                         Log.d("TAG", response);
+                        }
+
                     }
                 },
                 new Response.ErrorListener()
