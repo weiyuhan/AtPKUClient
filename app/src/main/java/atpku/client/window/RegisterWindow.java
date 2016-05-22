@@ -124,7 +124,6 @@ public class RegisterWindow extends Activity
                             SharedPreferences.Editor mEditor = prefs.edit();
                             mEditor.putString("stunum", stuNumStr);
                             mEditor.putString("nickname", userNameStr);
-                            mEditor.putString("password", passwordStr);
                             mEditor.putString("gender", genderStr);
                             mEditor.apply();
                             RegisterWindow.this.finish();
