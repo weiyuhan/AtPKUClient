@@ -9,7 +9,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/login_email"
         android:layout_marginTop="85dp"
-        android:hint="邮箱"
+        android:hint="学号"
         android:singleLine="true"
         android:visibility="visible"
         android:layout_alignStart="@+id/login_password"

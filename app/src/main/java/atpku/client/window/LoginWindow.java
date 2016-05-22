@@ -6,6 +6,7 @@ import android.content.ComponentName;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.Editable;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -58,6 +59,9 @@ public class LoginWindow extends Activity
 
     public void loginHandler(View source) //登录请求
     {
+        Editable edt = email.getText();
+        // you can add a check about whether user input @ here
+        edt.append("@pku.edu.cn");
         StringRequest stringRequest = new StringRequest(StringRequest.Method.POST,"http://139.129.22.145:5000/login",
                 new Response.Listener<String>()
                 {

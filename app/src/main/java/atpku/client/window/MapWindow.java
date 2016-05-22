@@ -104,7 +104,7 @@ public class MapWindow extends Activity implements ListView.OnItemClickListener,
         boolean ret =  super.onCreateOptionsMenu(menu);
 
 
-        return  ret;
+        return ret;
     }
 
     public void refreshSlideMenu()
@@ -187,7 +187,7 @@ public class MapWindow extends Activity implements ListView.OnItemClickListener,
         if(aMap == null)
         {
             aMap = mapView.getMap();
-            ;
+
             aMap.setMyLocationEnabled(true);
             aMap.getUiSettings().setZoomControlsEnabled(false);
             aMap.getUiSettings().setMyLocationButtonEnabled(true);
@@ -200,7 +200,7 @@ public class MapWindow extends Activity implements ListView.OnItemClickListener,
             // 设置定位的类型为定位模式 ，可以由定位、跟随或地图根据面向方向旋转几种
             aMap.setMyLocationType(AMap.LOCATION_TYPE_LOCATE);
 
-            aMap.moveCamera(CameraUpdateFactory.newLatLngZoom(pkuPos, 16));
+            aMap.moveCamera(CameraUpdateFactory.newLatLngZoom(pkuPos, 18));
         }
     }
     protected void onResume() {
@@ -266,8 +266,7 @@ public class MapWindow extends Activity implements ListView.OnItemClickListener,
 
     public void onLocationChanged(AMapLocation amapLocation) {
         if (mListener != null && amapLocation != null) {
-            if (amapLocation != null
-                    && amapLocation.getErrorCode() == 0) {
+            if (amapLocation.getErrorCode() == 0) {
                 LatLng currPos = new LatLng(amapLocation.getLatitude(), amapLocation.getLongitude());
                 double distance = AMapUtils.calculateLineDistance(currPos, pkuPos);
                 if(distance < 1000)
@@ -289,7 +288,7 @@ public class MapWindow extends Activity implements ListView.OnItemClickListener,
             //设置定位监听
             mlocationClient.setLocationListener(this);
             //设置为高精度定位模式
-            mLocationOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Hight_Accuracy);
+            mLocationOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Device_Sensors);
 //设置是否返回地址信息（默认返回地址信息）
             mLocationOption.setNeedAddress(true);
 //设置是否只定位一次,默认为false

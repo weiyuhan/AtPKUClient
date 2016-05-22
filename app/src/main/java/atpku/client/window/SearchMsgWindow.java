@@ -80,7 +80,7 @@ public class SearchMsgWindow extends Activity
             public void onDateSet(DatePicker view, int year, int month, int day) {
                 // TODO Auto-generated method stub
                 //更新EditText控件日期 小于10加0
-                text.setText(year + "-" + month + "-" + day);
+                text.setText(year + "-" + (month+1) + "-" + day);   // month+1 because month started from 0 by default!
             }
         }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH),
                 calendar.get(Calendar.DAY_OF_MONTH) );

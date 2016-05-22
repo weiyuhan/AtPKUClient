@@ -7,13 +7,11 @@
 
     <EditText
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:inputType="textMultiLine"
         android:ems="10"
         android:id="@+id/feedbackContent"
-        android:layout_gravity="center_horizontal"
-        android:layout_weight="0.15"
-        android:lines="7"
+        android:layout_weight="0.75"
         android:hint="请在这里填写您的建议或意见" />
 
     <Button
@@ -22,7 +20,7 @@
         android:text="提交反馈"
         android:id="@+id/feedback_submit"
         android:layout_gravity="center_horizontal"
-        android:textSize="20dp"
+        android:textSize="20sp"
         android:onClick="FeedbackSubmitHandler" />
 
 </LinearLayout>
