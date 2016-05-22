@@ -135,8 +135,6 @@ public class RegisterWindow extends Activity
                         }
                         Log.d("TAG", response);
                         }
-
-                    }
                 },
                 new Response.ErrorListener()
                 {
