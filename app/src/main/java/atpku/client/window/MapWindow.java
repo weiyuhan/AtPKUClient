@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -25,9 +26,11 @@ import android.widget.Toast;
 import android.widget.ToggleButton;
 
 
+import com.alibaba.fastjson.JSON;
 import com.amap.api.maps.*;
 import com.amap.api.maps.model.*;
 import com.amap.api.location.*;
+import com.android.volley.AuthFailureError;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -36,10 +39,13 @@ import com.android.volley.toolbox.Volley;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
 import atpku.client.R;
+import atpku.client.model.PostResult;
 
 /**
  * Created by JIANG YUMENG on 2016/5/14.
@@ -59,6 +65,7 @@ public class MapWindow extends Activity implements ListView.OnItemClickListener,
     public SearchView search;
 
     public static boolean isLogin = false;
+
 
     public static double pkuLng = 116.31059288978577;
     public static double pkuLat = 39.99183503192985;
@@ -135,8 +142,56 @@ public class MapWindow extends Activity implements ListView.OnItemClickListener,
             case 0:
                 if(isLogin) //登出
                 {
-                    isLogin = false;
-                    refreshSlideMenu();
+                    final SharedPreferences prefs = getSharedPreferences("login", 2);
+                    final String cookie = prefs.getString("Cookie", "");
+                    System.out.println("mycookie : " + cookie);
+                    StringRequest stringRequest = new StringRequest(StringRequest.Method.POST,"http://139.129.22.145:5000/logout",
+                            new Response.Listener<String>()
+                            {
+                                @Override
+                                public void onResponse(String response)
+                                {
+                                    PostResult result = JSON.parseObject(response, PostResult.class);
+                                    if(result.success)
+                                    {
+                                        Toast.makeText(MapWindow.this, "已登出" , Toast.LENGTH_LONG).show();
+                                        MapWindow.isLogin = false;
+                                        refreshSlideMenu();
+                                        SharedPreferences.Editor editPrefs = prefs.edit();
+                                        editPrefs.remove("Cookie");
+                                        editPrefs.commit();
+                                    }
+                                    else
+                                    {
+                                        Toast.makeText(MapWindow.this, "登出失败" + result.message, Toast.LENGTH_LONG).show();
+                                        MapWindow.isLogin = false;
+                                        refreshSlideMenu();
+                                        SharedPreferences.Editor editPrefs = prefs.edit();
+                                        editPrefs.remove("Cookie");
+                                        editPrefs.commit();
+                                    }
+                                    Log.d("TAG", response);
+                                }
+                            },
+                            new Response.ErrorListener()
+                            {
+                                @Override
+                                public void onErrorResponse(VolleyError error) {
+                                    Log.e("TAG", error.getMessage(), error);
+                                }
+                            }){
+                        public Map<String, String> getHeaders() throws AuthFailureError {
+                            HashMap localHashMap = new HashMap();
+                            localHashMap.put("Cookie", cookie);
+                            localHashMap.put("cookie", cookie);
+                            localHashMap.put("Set-Cookie", cookie);
+                            return localHashMap;
+                        }
+                        protected Map<String, String> getParams() {
+                                return new HashMap<String, String>();
+                        }
+                    };
+                    volleyQuque.add(stringRequest);
                 }
                 else //登录
                 {

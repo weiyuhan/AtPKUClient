@@ -17,12 +17,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
+import com.android.volley.NetworkResponse;
+import com.android.volley.ParseError;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.HttpHeaderParser;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
+import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -99,6 +103,28 @@ public class LoginWindow extends Activity
                 params.put("email", email.getText().toString());
                 params.put("password", password.getText().toString());
                 return params;
+            }
+
+            @Override
+            protected Response<String> parseNetworkResponse(
+                    NetworkResponse response) {
+                // TODO Auto-generated method stub
+                try {
+
+                    Map<String, String> responseHeaders = response.headers;
+                    String rawCookies = responseHeaders.get("Set-Cookie");
+                    System.out.println("getcookie : " + rawCookies);
+
+                    SharedPreferences prefs = getSharedPreferences("login",1);
+                    SharedPreferences.Editor mEditor = prefs.edit();
+                    mEditor.putString("Cookie", rawCookies);
+                    mEditor.commit();
+
+                    String dataString = new String(response.data, "UTF-8");
+                    return Response.success(dataString, HttpHeaderParser.parseCacheHeaders(response));
+                } catch (UnsupportedEncodingException e) {
+                    return Response.error(new ParseError(e));
+                }
             }
         };
         volleyQuque.add(stringRequest);

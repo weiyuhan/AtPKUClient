@@ -46,7 +46,6 @@ public class RegisterWindow extends Activity
 
     private RequestQueue volleyQuque;
 
-    SharedPreferences prefs;
 
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -69,7 +68,7 @@ public class RegisterWindow extends Activity
 
         volleyQuque = Volley.newRequestQueue(this);
 
-        prefs = PreferenceManager.getDefaultSharedPreferences(this);
+
     }
 
     public void registSubmitHandler(View source)
@@ -121,11 +120,12 @@ public class RegisterWindow extends Activity
                         if(result.success)
                         {
                             Toast.makeText(RegisterWindow.this, "注册成功", Toast.LENGTH_LONG).show();
+                            SharedPreferences prefs = getSharedPreferences("userinfo",1);
                             SharedPreferences.Editor mEditor = prefs.edit();
                             mEditor.putString("stunum", stuNumStr);
                             mEditor.putString("nickname", userNameStr);
                             mEditor.putString("gender", genderStr);
-                            mEditor.apply();
+                            mEditor.commit();
                             RegisterWindow.this.finish();
                         }
                         else
