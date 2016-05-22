@@ -23,9 +23,8 @@ dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile files('libs/AMap_Search_v2.6.0_20150914.jar')
     compile files('libs/android-support-v4.jar')
-    compile files('libs/gson.jar')
-    compile files('libs/org.json.jar')
     compile files('libs/AMap_3DMap_v2.6.0_20150914.jar')
     compile files('libs/AMap_Location_V2.4.1_20160414.jar')
     compile files('libs/Volley.jar')
+    compile files('libs/fastjson-1.2.7.jar')
 }
