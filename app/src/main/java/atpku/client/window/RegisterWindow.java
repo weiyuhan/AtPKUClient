@@ -99,7 +99,7 @@ public class RegisterWindow extends Activity
             genderStrTmp = "f";
         final String genderStr = genderStrTmp;
 
-        StringRequest stringRequest = new StringRequest(StringRequest.Method.POST,"http://139.129.22.145:5000",
+        StringRequest stringRequest = new StringRequest(StringRequest.Method.POST,"http://139.129.22.145:5000/register",
                 new Response.Listener<String>()
                 {
                     @Override

@@ -56,7 +56,7 @@ public class LoginWindow extends Activity
 
     public void loginHandler(View source) //登录请求
     {
-        StringRequest stringRequest = new StringRequest(StringRequest.Method.POST,"http://139.129.22.145:5000",
+        StringRequest stringRequest = new StringRequest(StringRequest.Method.POST,"http://139.129.22.145:5000/login",
                 new Response.Listener<String>()
                 {
                     @Override
