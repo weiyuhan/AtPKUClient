@@ -14,6 +14,7 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.Toast;
 
+import com.alibaba.fastjson.JSON;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -28,6 +29,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import atpku.client.R;
+import atpku.client.model.PostResult;
 
 public class RegisterWindow extends Activity
 {
@@ -114,22 +116,24 @@ public class RegisterWindow extends Activity
                     @Override
                     public void onResponse(String response)
                     {
-                        System.out.println("response : " + response);
-                        //Toast.makeText(RegisterWindow.this, "it works!", Toast.LENGTH_LONG).show();
+                        PostResult result = JSON.parseObject(response,PostResult.class);
+                        System.out.println(result.toString());
+                        if(result.success)
+                        {
+                            Toast.makeText(RegisterWindow.this, "注册成功", Toast.LENGTH_LONG).show();
+                            SharedPreferences.Editor mEditor = prefs.edit();
+                            mEditor.putString("stunum", stuNumStr);
+                            mEditor.putString("nickname", userNameStr);
+                            mEditor.putString("password", passwordStr);
+                            mEditor.putString("gender", genderStr);
+                            mEditor.apply();
+                            RegisterWindow.this.finish();
+                        }
+                        else
+                        {
+                            Toast.makeText(RegisterWindow.this, "注册失败 ：" + result.message, Toast.LENGTH_LONG).show();
+                        }
                         Log.d("TAG", response);
-                        try {
-                            JSONObject jsonResponse = new JSONObject(response);
-                            String success = jsonResponse.getString("success");
-                            if (success == "true") {
-                                SharedPreferences.Editor mEditor = prefs.edit();
-                                mEditor.putString("stunum", stuNumStr);
-                                mEditor.putString("nickname", userNameStr);
-                                mEditor.putString("password", passwordStr);
-                                mEditor.putString("gender", genderStr);
-                                mEditor.apply();
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
                         }
 
                     }
@@ -147,7 +151,7 @@ public class RegisterWindow extends Activity
                 //在这里设置需要post的参数
                 Map<String, String> params = new HashMap<String, String>();
                 params.put("nickname", userNameStr);
-                params.put("email", stuNumStr + ".pku.edu.cn");
+                params.put("email", stuNumStr + "@pku.edu.cn");
                 params.put("password", passwordStr);
                 params.put("gender", genderStr);
                 return params;

@@ -1,9 +1,11 @@
 package atpku.client.model;
 
+import java.io.Serializable;
+
 /**
  * Created by wyh on 2016/5/19.
  */
-public class Place
+public class Place implements Serializable
 {
     public int placeID;
     public double longitude;

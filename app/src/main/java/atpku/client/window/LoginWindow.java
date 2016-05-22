@@ -15,6 +15,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.alibaba.fastjson.JSON;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -25,6 +26,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import atpku.client.R;
+import atpku.client.model.PostResult;
 
 
 public class LoginWindow extends Activity
@@ -62,8 +64,19 @@ public class LoginWindow extends Activity
                     @Override
                     public void onResponse(String response)
                     {
-                        System.out.println("response : " + response);
-                        //Toast.makeText(LoginWindow.this, "it works!", Toast.LENGTH_LONG).show();
+                        PostResult result = JSON.parseObject(response, PostResult.class);
+                        System.out.println(result.toString());
+                        if(result.success)
+                        {
+                            Toast.makeText(LoginWindow.this, "登录成功", Toast.LENGTH_LONG).show();
+                            LoginWindow.this.finish();
+                            MapWindow.isLogin = true;
+                        }
+                        else
+                        {
+                            Toast.makeText(LoginWindow.this, "登录失败 ：" + result.message, Toast.LENGTH_LONG).show();
+                            MapWindow.isLogin = false;
+                        }
                         Log.d("TAG", response);
                     }
                 },

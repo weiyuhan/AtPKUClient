@@ -1,9 +1,11 @@
 package atpku.client.model;
 
+import java.io.Serializable;
+
 /**
  * Created by wyh on 2016/5/19.
  */
-public class Feedback
+public class Feedback implements Serializable
 {
     public int feedbackID;
     public int userID;

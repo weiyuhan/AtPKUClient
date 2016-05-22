@@ -1,11 +1,12 @@
 package atpku.client.model;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Created by wyh on 2016/5/19.
  */
-public class User
+public class User implements Serializable
 {
     public int userID;
     public String username;
