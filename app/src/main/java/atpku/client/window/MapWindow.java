@@ -142,7 +142,7 @@ public class MapWindow extends Activity implements ListView.OnItemClickListener,
             case 0:
                 if(isLogin) //登出
                 {
-                    final SharedPreferences prefs = getSharedPreferences("login", 2);
+                    final SharedPreferences prefs = getSharedPreferences("login", Context.MODE_PRIVATE);
                     final String cookie = prefs.getString("Cookie", "");
                     System.out.println("mycookie : " + cookie);
                     StringRequest stringRequest = new StringRequest(StringRequest.Method.POST,"http://139.129.22.145:5000/logout",
@@ -159,7 +159,7 @@ public class MapWindow extends Activity implements ListView.OnItemClickListener,
                                         refreshSlideMenu();
                                         SharedPreferences.Editor editPrefs = prefs.edit();
                                         editPrefs.remove("Cookie");
-                                        editPrefs.commit();
+                                        editPrefs.apply();
                                     }
                                     else
                                     {
@@ -168,7 +168,7 @@ public class MapWindow extends Activity implements ListView.OnItemClickListener,
                                         refreshSlideMenu();
                                         SharedPreferences.Editor editPrefs = prefs.edit();
                                         editPrefs.remove("Cookie");
-                                        editPrefs.commit();
+                                        editPrefs.apply();
                                     }
                                     Log.d("TAG", response);
                                 }

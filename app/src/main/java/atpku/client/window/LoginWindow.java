@@ -3,6 +3,7 @@ package atpku.client.window;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -114,11 +115,13 @@ public class LoginWindow extends Activity
                     Map<String, String> responseHeaders = response.headers;
                     String rawCookies = responseHeaders.get("Set-Cookie");
                     System.out.println("getcookie : " + rawCookies);
+                    String[] splitedRaw = rawCookies.split(";");
+                    String Cookie = splitedRaw[0];
 
-                    SharedPreferences prefs = getSharedPreferences("login",1);
+                    SharedPreferences prefs = getSharedPreferences("login", Context.MODE_PRIVATE);
                     SharedPreferences.Editor mEditor = prefs.edit();
-                    mEditor.putString("Cookie", rawCookies);
-                    mEditor.commit();
+                    mEditor.putString("Cookie", Cookie);
+                    mEditor.apply();
 
                     String dataString = new String(response.data, "UTF-8");
                     return Response.success(dataString, HttpHeaderParser.parseCacheHeaders(response));

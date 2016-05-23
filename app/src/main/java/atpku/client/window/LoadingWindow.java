@@ -1,6 +1,7 @@
 package atpku.client.window;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.PixelFormat;
@@ -21,7 +22,7 @@ public class LoadingWindow extends Activity
         getActionBar().hide(); // 隐藏actionBar
         setContentView(R.layout.loading);
 
-        SharedPreferences prefs = getSharedPreferences("login", 1);
+        SharedPreferences prefs = getSharedPreferences("login", Context.MODE_PRIVATE);
         final String cookie = prefs.getString("Cookie", "");
         System.out.println("mycookie : " + cookie);
 
