@@ -31,6 +31,7 @@ import com.amap.api.maps.*;
 import com.amap.api.maps.model.*;
 import com.amap.api.location.*;
 import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -45,7 +46,9 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import atpku.client.R;
+import atpku.client.httputil.StringRequestWithCookie;
 import atpku.client.model.PostResult;
+import atpku.client.model.User;
 
 /**
  * Created by JIANG YUMENG on 2016/5/14.
@@ -76,6 +79,18 @@ public class MapWindow extends Activity implements ListView.OnItemClickListener,
     private AMapLocationClientOption mLocationOption;
 
     private com.android.volley.RequestQueue volleyQuque;
+
+    private static String cookie = null;
+    public static String getCookie()
+    {
+        if(cookie != null)
+            return cookie;
+        return "";
+    }
+    public static void setCookie(String cookie)
+    {
+        MapWindow.cookie = cookie;
+    }
 
     public void onCreate(Bundle savedInstanceState)
     {
@@ -142,10 +157,7 @@ public class MapWindow extends Activity implements ListView.OnItemClickListener,
             case 0:
                 if(isLogin) //登出
                 {
-                    final SharedPreferences prefs = getSharedPreferences("login", Context.MODE_PRIVATE);
-                    final String cookie = prefs.getString("Cookie", "");
-                    System.out.println("mycookie : " + cookie);
-                    StringRequest stringRequest = new StringRequest(StringRequest.Method.POST,"http://139.129.22.145:5000/logout",
+                    StringRequestWithCookie stringRequest = new StringRequestWithCookie(StringRequest.Method.POST,"http://139.129.22.145:5000/logout",
                             new Response.Listener<String>()
                             {
                                 @Override
@@ -154,21 +166,17 @@ public class MapWindow extends Activity implements ListView.OnItemClickListener,
                                     PostResult result = JSON.parseObject(response, PostResult.class);
                                     if(result.success)
                                     {
-                                        Toast.makeText(MapWindow.this, "已登出" , Toast.LENGTH_LONG).show();
+                                        Toast.makeText(MapWindow.this, result.message , Toast.LENGTH_LONG).show();
                                         MapWindow.isLogin = false;
                                         refreshSlideMenu();
+                                        SharedPreferences prefs = getSharedPreferences("login", Context.MODE_PRIVATE);
                                         SharedPreferences.Editor editPrefs = prefs.edit();
                                         editPrefs.remove("Cookie");
                                         editPrefs.apply();
                                     }
                                     else
                                     {
-                                        Toast.makeText(MapWindow.this, "登出失败" + result.message, Toast.LENGTH_LONG).show();
-                                        MapWindow.isLogin = false;
-                                        refreshSlideMenu();
-                                        SharedPreferences.Editor editPrefs = prefs.edit();
-                                        editPrefs.remove("Cookie");
-                                        editPrefs.apply();
+                                        Toast.makeText(MapWindow.this, result.message, Toast.LENGTH_LONG).show();
                                     }
                                     Log.d("TAG", response);
                                 }
@@ -179,16 +187,7 @@ public class MapWindow extends Activity implements ListView.OnItemClickListener,
                                 public void onErrorResponse(VolleyError error) {
                                     Log.e("TAG", error.getMessage(), error);
                                 }
-                            }){
-                        public Map<String, String> getHeaders() throws AuthFailureError {
-                            HashMap localHashMap = new HashMap();
-                            localHashMap.put("cookie", cookie);
-                            return localHashMap;
-                        }
-                        protected Map<String, String> getParams() {
-                            return new HashMap<String, String>();
-                        }
-                    };
+                            }, null);
                     volleyQuque.add(stringRequest);
                 }
                 else //登录
@@ -203,6 +202,33 @@ public class MapWindow extends Activity implements ListView.OnItemClickListener,
             }
                 break;
             case 2: {   //用户信息
+                StringRequestWithCookie stringRequest = new StringRequestWithCookie(StringRequest.Method.GET,"http://139.129.22.145:5000/profile",
+                        new Response.Listener<String>()
+                        {
+                            @Override
+                            public void onResponse(String response)
+                            {
+                                PostResult result = JSON.parseObject(response, PostResult.class);
+                                if(result.success)
+                                {
+                                    User user = JSON.parseObject(result.data, User.class);
+                                    System.out.println(user);
+                                }
+                                else
+                                {
+                                    Toast.makeText(MapWindow.this, result.message, Toast.LENGTH_LONG).show();
+                                }
+                                Log.d("TAG", response);
+                            }
+                        },
+                        new Response.ErrorListener()
+                        {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                Log.e("TAG", error.getMessage(), error);
+                            }
+                        }, null);
+                volleyQuque.add(stringRequest);
                 Intent intent = new Intent(this, UserInfoWindow.class);
                 startActivity(intent);
             }
@@ -299,13 +325,8 @@ public class MapWindow extends Activity implements ListView.OnItemClickListener,
                 switchMapType();
                 break;
             case R.id.action_refresh:
-                volleyTest();
                 break;
             case R.id.action_search:{
-                if (search == null)
-                {
-                    //ActionMenuItemView av = (ActionMenuItemView)findViewById(R.id.action_search);
-                }
                 if (search != null)
                     search.setOnQueryTextListener(this);
             }
@@ -375,29 +396,6 @@ public class MapWindow extends Activity implements ListView.OnItemClickListener,
         mlocationClient = null;
     }
 
-    public void volleyTest()
-    {
-        StringRequest stringRequest = new StringRequest("http://139.129.22.145:5000",
-                new Response.Listener<String>()
-                {
-                    @Override
-                    public void onResponse(String response)
-                    {
-                        System.out.println("response : " + response);
-                        Toast.makeText(MapWindow.this, "it works!", Toast.LENGTH_LONG).show();
-                        Log.d("TAG", response);
-                    }
-                },
-                new Response.ErrorListener()
-                {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        //System.out.println("error : " + error.getMessage());
-                        Log.e("TAG", error.getMessage(), error);
-                    }
-        });
-        volleyQuque.add(stringRequest);
-    }
 
     public boolean onQueryTextChange(String newText)
     {

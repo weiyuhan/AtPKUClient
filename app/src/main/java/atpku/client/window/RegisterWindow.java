@@ -119,7 +119,7 @@ public class RegisterWindow extends Activity
                         System.out.println(result.toString());
                         if(result.success)
                         {
-                            Toast.makeText(RegisterWindow.this, "注册成功", Toast.LENGTH_LONG).show();
+                            Toast.makeText(RegisterWindow.this, result.message, Toast.LENGTH_LONG).show();
                             SharedPreferences prefs = getSharedPreferences("userinfo",1);
                             SharedPreferences.Editor mEditor = prefs.edit();
                             mEditor.putString("stunum", stuNumStr);
@@ -130,7 +130,7 @@ public class RegisterWindow extends Activity
                         }
                         else
                         {
-                            Toast.makeText(RegisterWindow.this, "注册失败 ：" + result.message, Toast.LENGTH_LONG).show();
+                            Toast.makeText(RegisterWindow.this, result.message, Toast.LENGTH_LONG).show();
                         }
                         Log.d("TAG", response);
                         }

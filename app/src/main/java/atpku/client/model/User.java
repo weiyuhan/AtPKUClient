@@ -8,33 +8,35 @@ import java.util.List;
  */
 public class User implements Serializable
 {
-    public int userID;
-    public String username;
+    public int id;
+    public String nickname;
     public String email;
-    public String password;
-    public String joinTime;
-    public boolean isBanned;
-    public int gender;
+    public String date_joined;
+    public String last_login;
+    public String isAdmin;
+
+
+    public String isBanned;
+    public String gender;
     public int commentReceived;
     public int likeReceived;
     public int dislikeReceived;
     public int reportReceived;
-    public List<Integer> feedbacks;
 
-    public int getUserID() {
-        return userID;
+    public int getId() {
+        return id;
     }
 
-    public void setUserID(int userID) {
-        this.userID = userID;
+    public void setId(int id) {
+        this.id = id;
     }
 
-    public String getUsername() {
-        return username;
+    public String getNickname() {
+        return nickname;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
     }
 
     public String getEmail() {
@@ -45,35 +47,27 @@ public class User implements Serializable
         this.email = email;
     }
 
-    public String getPassword() {
-        return password;
+    public String getDate_joined() {
+        return date_joined;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setDate_joined(String date_joined) {
+        this.date_joined = date_joined;
     }
 
-    public String getJoinTime() {
-        return joinTime;
+    public String getLast_login() {
+        return last_login;
     }
 
-    public void setJoinTime(String joinTime) {
-        this.joinTime = joinTime;
+    public void setLast_login(String last_login) {
+        this.last_login = last_login;
     }
 
-    public boolean isBanned() {
-        return isBanned;
-    }
-
-    public void setIsBanned(boolean isBanned) {
-        this.isBanned = isBanned;
-    }
-
-    public int getGender() {
+    public String getGender() {
         return gender;
     }
 
-    public void setGender(int gender) {
+    public void setGender(String gender) {
         this.gender = gender;
     }
 
@@ -109,29 +103,38 @@ public class User implements Serializable
         this.reportReceived = reportReceived;
     }
 
-    public List<Integer> getFeedbacks() {
-        return feedbacks;
+
+    public String getIsBanned() {
+        return isBanned;
     }
 
-    public void setFeedbacks(List<Integer> feedbacks) {
-        this.feedbacks = feedbacks;
+    public void setIsBanned(String isBanned) {
+        this.isBanned = isBanned;
+    }
+
+    public String getIsAdmin() {
+        return isAdmin;
+    }
+
+    public void setIsAdmin(String isAdmin) {
+        this.isAdmin = isAdmin;
     }
 
     @Override
     public String toString() {
         return "User{" +
-                "userID=" + userID +
-                ", username='" + username + '\'' +
+                "id=" + id +
+                ", nickname='" + nickname + '\'' +
                 ", email='" + email + '\'' +
-                ", password='" + password + '\'' +
-                ", joinTime='" + joinTime + '\'' +
-                ", isBanned=" + isBanned +
-                ", gender=" + gender +
+                ", date_joined='" + date_joined + '\'' +
+                ", last_login='" + last_login + '\'' +
+                ", isAdmin='" + isAdmin + '\'' +
+                ", isBanned='" + isBanned + '\'' +
+                ", gender='" + gender + '\'' +
                 ", commentReceived=" + commentReceived +
                 ", likeReceived=" + likeReceived +
                 ", dislikeReceived=" + dislikeReceived +
                 ", reportReceived=" + reportReceived +
-                ", feedbacks=" + feedbacks +
                 '}';
     }
 }

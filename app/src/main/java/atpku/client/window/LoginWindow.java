@@ -64,9 +64,10 @@ public class LoginWindow extends Activity
 
     public void loginHandler(View source) //登录请求
     {
-        Editable edt = email.getText();
+        Editable editEmail = email.getText();
         // you can add a check about whether user input @ here
-        edt.append("@pku.edu.cn");
+        if(!editEmail.toString().contains("@"))
+            editEmail.append("@pku.edu.cn");
         StringRequest stringRequest = new StringRequest(StringRequest.Method.POST,"http://139.129.22.145:5000/login",
                 new Response.Listener<String>()
                 {
@@ -77,13 +78,13 @@ public class LoginWindow extends Activity
                         System.out.println(result.toString());
                         if(result.success)
                         {
-                            Toast.makeText(LoginWindow.this, "登录成功", Toast.LENGTH_LONG).show();
+                            Toast.makeText(LoginWindow.this, result.message, Toast.LENGTH_LONG).show();
                             LoginWindow.this.finish();
                             MapWindow.isLogin = true;
                         }
                         else
                         {
-                            Toast.makeText(LoginWindow.this, "登录失败 ：" + result.message, Toast.LENGTH_LONG).show();
+                            Toast.makeText(LoginWindow.this, result.message, Toast.LENGTH_LONG).show();
                             MapWindow.isLogin = false;
                         }
                         Log.d("TAG", response);
@@ -115,13 +116,18 @@ public class LoginWindow extends Activity
                     Map<String, String> responseHeaders = response.headers;
                     String rawCookies = responseHeaders.get("Set-Cookie");
                     System.out.println("getcookie : " + rawCookies);
-                    String[] splitedRaw = rawCookies.split(";");
-                    String Cookie = splitedRaw[0];
+                    if(rawCookies != null)
+                    {
+                        String[] splitedRaw = rawCookies.split(";");
+                        String Cookie = splitedRaw[0];
 
-                    SharedPreferences prefs = getSharedPreferences("login", Context.MODE_PRIVATE);
-                    SharedPreferences.Editor mEditor = prefs.edit();
-                    mEditor.putString("Cookie", Cookie);
-                    mEditor.apply();
+                        SharedPreferences prefs = getSharedPreferences("login", Context.MODE_PRIVATE);
+                        SharedPreferences.Editor mEditor = prefs.edit();
+                        mEditor.putString("Cookie", Cookie);
+                        mEditor.apply();
+
+                        MapWindow.setCookie(rawCookies);
+                    }
 
                     String dataString = new String(response.data, "UTF-8");
                     return Response.success(dataString, HttpHeaderParser.parseCacheHeaders(response));

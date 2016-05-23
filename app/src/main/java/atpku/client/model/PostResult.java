@@ -9,6 +9,24 @@ public class PostResult implements Serializable
 {
     public boolean success;
     public String message;
+    public String data;
+
+    @Override
+    public String toString() {
+        return "PostResult{" +
+                "success=" + success +
+                ", message='" + message + '\'' +
+                ", data='" + data + '\'' +
+                '}';
+    }
+
+    public String getData() {
+        return data;
+    }
+
+    public void setData(String data) {
+        this.data = data;
+    }
 
     public boolean isSuccess() {
         return success;
@@ -26,11 +44,4 @@ public class PostResult implements Serializable
         this.message = message;
     }
 
-    @Override
-    public String toString() {
-        return "PostResult{" +
-                "success=" + success +
-                ", message='" + message + '\'' +
-                '}';
-    }
 }

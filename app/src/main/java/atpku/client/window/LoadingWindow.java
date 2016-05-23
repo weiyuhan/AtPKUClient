@@ -23,8 +23,9 @@ public class LoadingWindow extends Activity
         setContentView(R.layout.loading);
 
         SharedPreferences prefs = getSharedPreferences("login", Context.MODE_PRIVATE);
-        final String cookie = prefs.getString("Cookie", "");
+        String cookie = prefs.getString("Cookie", "");
         System.out.println("mycookie : " + cookie);
+        MapWindow.setCookie(cookie);
 
         new Handler().postDelayed(new Runnable()
         {
@@ -33,6 +34,7 @@ public class LoadingWindow extends Activity
                 /* Create an Intent that will start the Main WordPress Activity. */
                 Intent mainIntent = new Intent(LoadingWindow.this, MapWindow.class);
                 startActivity(mainIntent);
+                String cookie = MapWindow.getCookie();
                 if(!cookie.equals(""))
                 {
                     MapWindow.isLogin = true;
