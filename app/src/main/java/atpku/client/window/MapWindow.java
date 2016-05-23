@@ -182,13 +182,11 @@ public class MapWindow extends Activity implements ListView.OnItemClickListener,
                             }){
                         public Map<String, String> getHeaders() throws AuthFailureError {
                             HashMap localHashMap = new HashMap();
-                            localHashMap.put("Cookie", cookie);
                             localHashMap.put("cookie", cookie);
-                            localHashMap.put("Set-Cookie", cookie);
                             return localHashMap;
                         }
                         protected Map<String, String> getParams() {
-                                return new HashMap<String, String>();
+                            return new HashMap<String, String>();
                         }
                     };
                     volleyQuque.add(stringRequest);
