@@ -63,6 +63,22 @@ public class User implements Serializable
         this.last_login = last_login;
     }
 
+    public String getIsAdmin() {
+        return isAdmin;
+    }
+
+    public void setIsAdmin(String isAdmin) {
+        this.isAdmin = isAdmin;
+    }
+
+    public boolean isBanned() {
+        return isBanned;
+    }
+
+    public void setIsBanned(boolean isBanned) {
+        this.isBanned = isBanned;
+    }
+
     public String getGender() {
         return gender;
     }
@@ -103,23 +119,6 @@ public class User implements Serializable
         this.reportReceived = reportReceived;
     }
 
-
-    public boolean isBanned() {
-        return isBanned;
-    }
-
-    public void setIsBanned(boolean isBanned) {
-        this.isBanned = isBanned;
-    }
-
-    public String getIsAdmin() {
-        return isAdmin;
-    }
-
-    public void setIsAdmin(String isAdmin) {
-        this.isAdmin = isAdmin;
-    }
-
     @Override
     public String toString() {
         return "User{" +
@@ -129,7 +128,7 @@ public class User implements Serializable
                 ", date_joined='" + date_joined + '\'' +
                 ", last_login='" + last_login + '\'' +
                 ", isAdmin='" + isAdmin + '\'' +
-                ", isBanned='" + isBanned + '\'' +
+                ", isBanned=" + isBanned +
                 ", gender='" + gender + '\'' +
                 ", commentReceived=" + commentReceived +
                 ", likeReceived=" + likeReceived +

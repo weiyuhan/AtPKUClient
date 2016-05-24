@@ -63,7 +63,8 @@ public class UserInfoWindow extends Activity
                 status.setText(status.getText() + "禁言");
             else
                 status.setText(status.getText() + "正常");
-            joinTime.setText(joinTime.getText() + user.date_joined);
+            String[] time = user.date_joined.split("T");
+            joinTime.setText(joinTime.getText() + time[0] + " " + time[1]);
             commentReceived.setText(commentReceived.getText() + String.valueOf(user.commentReceived));
             likeReceived.setText(likeReceived.getText() + String.valueOf(user.likeReceived));
             dislikeReceived.setText(dislikeReceived.getText() + String.valueOf(user.dislikeReceived));

@@ -37,6 +37,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -72,31 +73,6 @@ public class MapWindow extends Activity implements
     public static double pkuLat = 39.99183503192985;
     public static LatLng pkuPos = new LatLng(pkuLat,pkuLng);
 
-    public static double LiJLng = 116.313;
-    public static double LiJLat = 39.9916;
-    public static LatLng LiJPos = new LatLng(LiJLat,LiJLng);
-
-    public static double Li1Lng = 116.313;
-    public static double Li1Lat = 39.9907;
-    public static LatLng Li1Pos = new LatLng(Li1Lat,Li1Lng);
-
-    public static double ErJLng = 116.313;
-    public static double ErJLat = 39.9893;
-    public static LatLng ErJPos = new LatLng(ErJLat,ErJLng);
-
-    public static double L1Lng = 116.311;
-    public static double L1Lat = 39.991;
-    public static LatLng L1Pos = new LatLng(L1Lat,L1Lng);
-    public static double L2Lng = 116.311;
-    public static double L2Lat = 39.992;
-    public static LatLng L2Pos = new LatLng(L2Lat,L2Lng);
-    public static double L3Lng = 116.312;
-    public static double L3Lat = 39.991;
-    public static LatLng L3Pos = new LatLng(L3Lat,L3Lng);
-    public static double L4Lng = 116.312;
-    public static double L4Lat = 39.992;
-    public static LatLng L4Pos = new LatLng(L4Lat,L4Lng);
-
     private OnLocationChangedListener mListener;
     private AMapLocationClient mlocationClient;
     private AMapLocationClientOption mLocationOption;
@@ -105,7 +81,9 @@ public class MapWindow extends Activity implements
 
     private static String cookie = null;
 
-    public static List<Place> places;
+    public static Map<String, Place> places;
+    public static Map<String, Marker> markers;
+
     public static String getCookie()
     {
         if(cookie != null)
@@ -133,9 +111,8 @@ public class MapWindow extends Activity implements
 
         mapView = (MapView) findViewById(R.id.map);
         mapView.onCreate(savedInstanceState);
-        init(); // 初始化地图
-
         volleyQuque = Volley.newRequestQueue(this);
+        init(); // 初始化地图
     }
 
 
@@ -303,31 +280,7 @@ public class MapWindow extends Activity implements
             aMap.setMyLocationType(AMap.LOCATION_TYPE_LOCATE);
 
             aMap.moveCamera(CameraUpdateFactory.newLatLngZoom(pkuPos, 18));
-
-            MarkerOptions markerOptions = new MarkerOptions();
-            markerOptions.position(Li1Pos);
-            markerOptions.title("理一").snippet("理科一号楼");
-            aMap.addMarker(markerOptions);
-            markerOptions.position(LiJPos);
-            markerOptions.title("理教").snippet("理科教学楼");
-            aMap.addMarker(markerOptions);
-            markerOptions.position(ErJPos);
-            markerOptions.title("二教").snippet("第二教学楼");
-            aMap.addMarker(markerOptions);
-
-            MarkerOptions markerOption = new MarkerOptions();
-            markerOption.position(L1Pos);
-            markerOption.title("L1").snippet("1");
-            aMap.addMarker(markerOption);
-            markerOption.position(L2Pos);
-            markerOption.title("L2").snippet("2");
-            aMap.addMarker(markerOption);
-            markerOption.position(L3Pos);
-            markerOption.title("L3").snippet("3");
-            aMap.addMarker(markerOption);
-            markerOption.position(L4Pos);
-            markerOption.title("L4").snippet("4");
-            aMap.addMarker(markerOption);
+            refreshMarkers();
         }
     }
     protected void onResume() {
@@ -405,7 +358,13 @@ public class MapWindow extends Activity implements
                             String jsonPlaces = result.data;
                             List<Place> places = JSON.parseArray(jsonPlaces, Place.class);
                             System.out.println(places);
-                            MapWindow.places = places;
+                            if(MapWindow.places == null) {
+                                MapWindow.places = new HashMap<String, Place>();
+                            }
+                            for(Place place: places) {
+                                MapWindow.places.put(place.getName(), place);
+                            }
+                            refreshMarkers();
                         }
                         else
                         {
@@ -415,6 +374,23 @@ public class MapWindow extends Activity implements
                     }
                 }, params);
         volleyQuque.add(stringRequest);
+    }
+
+    public void refreshMarkers() {
+        if(MapWindow.markers == null) {
+            MapWindow.markers = new HashMap<String, Marker>();
+        }
+        MarkerOptions markerOptions = new MarkerOptions();
+        LatLng pos;
+        Set<String> keys = MapWindow.places.keySet();
+        for(String placename: keys) {
+            Place place = MapWindow.places.get(placename);
+            pos = new LatLng(place.getLat(), place.getLng());
+            markerOptions.position(pos);
+            markerOptions.title(placename);
+            Marker temp = aMap.addMarker(markerOptions);
+            MapWindow.markers.put(placename, temp);
+        }
     }
 
     public void onLocationChanged(AMapLocation amapLocation) {
@@ -489,18 +465,9 @@ public class MapWindow extends Activity implements
     }
 
     public boolean onMarkerClick(final Marker marker) {
-        if(marker.getTitle().equals("理一")) {
-            Toast.makeText(MapWindow.this, "理一 clicked.", Toast.LENGTH_LONG).show();
-        }
-        else if(marker.getTitle().equals("理教")) {
-            Toast.makeText(MapWindow.this, "理教 clicked.", Toast.LENGTH_LONG).show();
-        }
-        else if(marker.getTitle().equals("二教")) {
-            Toast.makeText(MapWindow.this, "二教 clicked.", Toast.LENGTH_LONG).show();
-        }
-        else {
-            Toast.makeText(MapWindow.this, "Test marker Clicked.", Toast.LENGTH_LONG).show();
-        }
-        return true;
+        String placename = marker.getTitle();
+        Place place = MapWindow.places.get(placename);
+        int placeid = place.getId();
+        return false;
     }
 }
