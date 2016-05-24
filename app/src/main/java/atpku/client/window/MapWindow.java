@@ -6,9 +6,6 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
@@ -18,12 +15,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.CompoundButton;
 import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.Toast;
-import android.widget.ToggleButton;
 
 
 import com.alibaba.fastjson.JSON;
@@ -56,7 +50,9 @@ import atpku.client.model.User;
  * Created by JIANG YUMENG on 2016/5/14.
  * Main map class.
  */
-public class MapWindow extends Activity implements ListView.OnItemClickListener, AMapLocationListener, LocationSource, SearchView.OnQueryTextListener
+public class MapWindow extends Activity implements
+        ListView.OnItemClickListener, AMapLocationListener, LocationSource,
+        SearchView.OnQueryTextListener, AMap.OnMarkerClickListener
 {
     private MapView mapView;
     public static AMap aMap;
@@ -75,6 +71,31 @@ public class MapWindow extends Activity implements ListView.OnItemClickListener,
     public static double pkuLng = 116.31059288978577;
     public static double pkuLat = 39.99183503192985;
     public static LatLng pkuPos = new LatLng(pkuLat,pkuLng);
+
+    public static double LiJLng = 116.313;
+    public static double LiJLat = 39.9916;
+    public static LatLng LiJPos = new LatLng(LiJLat,LiJLng);
+
+    public static double Li1Lng = 116.313;
+    public static double Li1Lat = 39.9907;
+    public static LatLng Li1Pos = new LatLng(Li1Lat,Li1Lng);
+
+    public static double ErJLng = 116.313;
+    public static double ErJLat = 39.9893;
+    public static LatLng ErJPos = new LatLng(ErJLat,ErJLng);
+
+    public static double L1Lng = 116.311;
+    public static double L1Lat = 39.991;
+    public static LatLng L1Pos = new LatLng(L1Lat,L1Lng);
+    public static double L2Lng = 116.311;
+    public static double L2Lat = 39.992;
+    public static LatLng L2Pos = new LatLng(L2Lat,L2Lng);
+    public static double L3Lng = 116.312;
+    public static double L3Lat = 39.991;
+    public static LatLng L3Pos = new LatLng(L3Lat,L3Lng);
+    public static double L4Lng = 116.312;
+    public static double L4Lat = 39.992;
+    public static LatLng L4Pos = new LatLng(L4Lat,L4Lng);
 
     private OnLocationChangedListener mListener;
     private AMapLocationClient mlocationClient;
@@ -274,7 +295,7 @@ public class MapWindow extends Activity implements ListView.OnItemClickListener,
             aMap.getUiSettings().setMyLocationButtonEnabled(true);
             aMap.getUiSettings().setCompassEnabled(true);
 
-
+            aMap.setOnMarkerClickListener(this);// 设置Marker点击监听
             aMap.setLocationSource(this);// 设置定位监听
             aMap.getUiSettings().setMyLocationButtonEnabled(true);// 设置默认定位按钮是否显示
             aMap.setMyLocationEnabled(true);// 设置为true表示显示定位层并可触发定位，false表示隐藏定位层并不可触发定位，默认是false
@@ -282,6 +303,31 @@ public class MapWindow extends Activity implements ListView.OnItemClickListener,
             aMap.setMyLocationType(AMap.LOCATION_TYPE_LOCATE);
 
             aMap.moveCamera(CameraUpdateFactory.newLatLngZoom(pkuPos, 18));
+
+            MarkerOptions markerOptions = new MarkerOptions();
+            markerOptions.position(Li1Pos);
+            markerOptions.title("理一").snippet("理科一号楼");
+            aMap.addMarker(markerOptions);
+            markerOptions.position(LiJPos);
+            markerOptions.title("理教").snippet("理科教学楼");
+            aMap.addMarker(markerOptions);
+            markerOptions.position(ErJPos);
+            markerOptions.title("二教").snippet("第二教学楼");
+            aMap.addMarker(markerOptions);
+
+            MarkerOptions markerOption = new MarkerOptions();
+            markerOption.position(L1Pos);
+            markerOption.title("L1").snippet("1");
+            aMap.addMarker(markerOption);
+            markerOption.position(L2Pos);
+            markerOption.title("L2").snippet("2");
+            aMap.addMarker(markerOption);
+            markerOption.position(L3Pos);
+            markerOption.title("L3").snippet("3");
+            aMap.addMarker(markerOption);
+            markerOption.position(L4Pos);
+            markerOption.title("L4").snippet("4");
+            aMap.addMarker(markerOption);
         }
     }
     protected void onResume() {
@@ -321,8 +367,7 @@ public class MapWindow extends Activity implements ListView.OnItemClickListener,
             mi.setChecked(true);
         }
 
-        switch (mi.getItemId())
-        {
+        switch (mi.getItemId()) {
             case R.id.action_switch:
                 switchMapType();
                 break;
@@ -343,9 +388,12 @@ public class MapWindow extends Activity implements ListView.OnItemClickListener,
 
     public void refreshPlaces()
     {
-
-
-        StringRequest stringRequest = new StringRequest(Request.Method.GET,"http://139.129.22.145:5000/places",
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("lngbeg", "-180");
+        params.put("lngend", "180");
+        params.put("latbeg", "-90");
+        params.put("latend", "90");
+        StringRequestWithCookie stringRequest = new StringRequestWithCookie(Request.Method.GET,"http://139.129.22.145:5000/places",
                 new Response.Listener<String>()
                 {
                     @Override
@@ -365,24 +413,7 @@ public class MapWindow extends Activity implements ListView.OnItemClickListener,
                         }
                         Log.d("TAG", response);
                     }
-                }, new Response.ErrorListener()
-        {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.e("TAG", error.getMessage(), error);
-            }
-        })
-        {
-            protected Map<String, String> getParams()
-            {
-                Map<String, String> params = new HashMap<String, String>();
-                params.put("lngbeg", "-180");
-                params.put("lngend", "180");
-                params.put("latbeg", "-90");
-                params.put("latend", "90");
-                return params;
-            }
-        };
+                }, params);
         volleyQuque.add(stringRequest);
     }
 
@@ -457,4 +488,19 @@ public class MapWindow extends Activity implements ListView.OnItemClickListener,
         return false;
     }
 
+    public boolean onMarkerClick(final Marker marker) {
+        if(marker.getTitle().equals("理一")) {
+            Toast.makeText(MapWindow.this, "理一 clicked.", Toast.LENGTH_LONG).show();
+        }
+        else if(marker.getTitle().equals("理教")) {
+            Toast.makeText(MapWindow.this, "理教 clicked.", Toast.LENGTH_LONG).show();
+        }
+        else if(marker.getTitle().equals("二教")) {
+            Toast.makeText(MapWindow.this, "二教 clicked.", Toast.LENGTH_LONG).show();
+        }
+        else {
+            Toast.makeText(MapWindow.this, "Test marker Clicked.", Toast.LENGTH_LONG).show();
+        }
+        return true;
+    }
 }

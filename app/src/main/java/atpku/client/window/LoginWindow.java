@@ -65,7 +65,6 @@ public class LoginWindow extends Activity
     public void loginHandler(View source) //登录请求
     {
         Editable editEmail = email.getText();
-        // you can add a check about whether user input @ here
         if(!editEmail.toString().contains("@"))
             editEmail.append("@pku.edu.cn");
         StringRequest stringRequest = new StringRequest(StringRequest.Method.POST,"http://139.129.22.145:5000/login",
