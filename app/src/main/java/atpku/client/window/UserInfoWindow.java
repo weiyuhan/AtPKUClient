@@ -13,6 +13,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import atpku.client.R;
+import atpku.client.model.User;
 
 /**
  * Created by JIANG YUMENG on 2016/5/14.
@@ -50,6 +51,24 @@ public class UserInfoWindow extends Activity
         dislikeReceived = (TextView)findViewById(R.id.userInfo_dislikeReceived);
         reportReceived = (TextView)findViewById(R.id.userInfo_reportReceived);
         feedbackList = (ListView)findViewById(R.id.userInfo_feedbackList);
+
+        Intent intent = this.getIntent();
+        User user = (User)intent.getSerializableExtra("user");
+        System.out.println(user);
+        if(user != null)
+        {
+            studentNum.setText(studentNum.getText() + user.email);
+            username.setText(username.getText() + user.nickname);
+            if(user.isBanned)
+                status.setText(status.getText() + "禁言");
+            else
+                status.setText(status.getText() + "正常");
+            joinTime.setText(joinTime.getText() + user.date_joined);
+            commentReceived.setText(commentReceived.getText() + String.valueOf(user.commentReceived));
+            likeReceived.setText(likeReceived.getText() + String.valueOf(user.likeReceived));
+            dislikeReceived.setText(dislikeReceived.getText() + String.valueOf(user.dislikeReceived));
+            reportReceived.setText(reportReceived.getText() + String.valueOf(user.reportReceived));
+        }
 
     }
 

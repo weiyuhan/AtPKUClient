@@ -1,7 +1,10 @@
 package atpku.client.httputil;
 
+import android.util.Log;
+
 import com.android.volley.AuthFailureError;
 import com.android.volley.Response;
+import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 
 import java.util.HashMap;
@@ -15,6 +18,28 @@ import atpku.client.window.MapWindow;
 public class StringRequestWithCookie extends StringRequest
 {
     private Map<String, String> params;
+    public StringRequestWithCookie(int method, String url, Response.Listener<String> listener, Map<String,String> params)
+    {
+        super(method,url,listener,new Response.ErrorListener()
+        {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e("TAG", error.getMessage(), error);
+            }
+        });
+        this.params = params;
+    }
+    public StringRequestWithCookie(String url, Response.Listener<String> listener, Map<String,String> params)
+    {
+        super(url,listener,new Response.ErrorListener()
+        {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e("TAG", error.getMessage(), error);
+            }
+        });
+        this.params = params;
+    }
     public StringRequestWithCookie(int method, String url, Response.Listener<String> listener, Response.ErrorListener errorListener, Map<String,String> params)
     {
         super(method,url,listener,errorListener);
@@ -37,4 +62,5 @@ public class StringRequestWithCookie extends StringRequest
         else
             return params;
     }
+
 }

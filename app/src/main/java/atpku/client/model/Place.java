@@ -7,33 +7,33 @@ import java.io.Serializable;
  */
 public class Place implements Serializable
 {
-    public int placeID;
-    public double longitude;
-    public double latitude;
+    public int id;
+    public double lng;
+    public double lat;
     public String name;
 
-    public int getPlaceID() {
-        return placeID;
+    public int getId() {
+        return id;
     }
 
-    public void setPlaceID(int placeID) {
-        this.placeID = placeID;
+    public void setId(int id) {
+        this.id = id;
     }
 
-    public double getLongitude() {
-        return longitude;
+    public double getLng() {
+        return lng;
     }
 
-    public void setLongitude(double longitude) {
-        this.longitude = longitude;
+    public void setLng(double lng) {
+        this.lng = lng;
     }
 
-    public double getLatitude() {
-        return latitude;
+    public double getLat() {
+        return lat;
     }
 
-    public void setLatitude(double latitude) {
-        this.latitude = latitude;
+    public void setLat(double lat) {
+        this.lat = lat;
     }
 
     public String getName() {
@@ -47,9 +47,9 @@ public class Place implements Serializable
     @Override
     public String toString() {
         return "Place{" +
-                "placeID=" + placeID +
-                ", longitude=" + longitude +
-                ", latitude=" + latitude +
+                "id=" + id +
+                ", lng=" + lng +
+                ", lat=" + lat +
                 ", name='" + name + '\'' +
                 '}';
     }

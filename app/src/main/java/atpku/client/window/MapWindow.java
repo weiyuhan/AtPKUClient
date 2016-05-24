@@ -41,12 +41,14 @@ import com.android.volley.toolbox.Volley;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
 import atpku.client.R;
 import atpku.client.httputil.StringRequestWithCookie;
+import atpku.client.model.Place;
 import atpku.client.model.PostResult;
 import atpku.client.model.User;
 
@@ -81,6 +83,8 @@ public class MapWindow extends Activity implements ListView.OnItemClickListener,
     private com.android.volley.RequestQueue volleyQuque;
 
     private static String cookie = null;
+
+    public static List<Place> places;
     public static String getCookie()
     {
         if(cookie != null)
@@ -155,83 +159,15 @@ public class MapWindow extends Activity implements ListView.OnItemClickListener,
         switch (position)
         {
             case 0:
-                if(isLogin) //登出
-                {
-                    StringRequestWithCookie stringRequest = new StringRequestWithCookie(StringRequest.Method.POST,"http://139.129.22.145:5000/logout",
-                            new Response.Listener<String>()
-                            {
-                                @Override
-                                public void onResponse(String response)
-                                {
-                                    PostResult result = JSON.parseObject(response, PostResult.class);
-                                    if(result.success)
-                                    {
-                                        Toast.makeText(MapWindow.this, result.message , Toast.LENGTH_LONG).show();
-                                        MapWindow.isLogin = false;
-                                        refreshSlideMenu();
-                                        SharedPreferences prefs = getSharedPreferences("login", Context.MODE_PRIVATE);
-                                        SharedPreferences.Editor editPrefs = prefs.edit();
-                                        editPrefs.remove("Cookie");
-                                        editPrefs.apply();
-                                    }
-                                    else
-                                    {
-                                        Toast.makeText(MapWindow.this, result.message, Toast.LENGTH_LONG).show();
-                                    }
-                                    Log.d("TAG", response);
-                                }
-                            },
-                            new Response.ErrorListener()
-                            {
-                                @Override
-                                public void onErrorResponse(VolleyError error) {
-                                    Log.e("TAG", error.getMessage(), error);
-                                }
-                            }, null);
-                    volleyQuque.add(stringRequest);
-                }
-                else //登录
-                {
-                    Intent intent = new Intent(this, LoginWindow.class);
-                    startActivity(intent);
-                }
+                logOutOrLogIn();
                 break;
             case 1: {  //使用说明
                 Intent intent = new Intent(this, HelpWindow.class);
                 startActivity(intent);
             }
                 break;
-            case 2: {   //用户信息
-                StringRequestWithCookie stringRequest = new StringRequestWithCookie(StringRequest.Method.GET,"http://139.129.22.145:5000/profile",
-                        new Response.Listener<String>()
-                        {
-                            @Override
-                            public void onResponse(String response)
-                            {
-                                PostResult result = JSON.parseObject(response, PostResult.class);
-                                if(result.success)
-                                {
-                                    User user = JSON.parseObject(result.data, User.class);
-                                    System.out.println(user);
-                                }
-                                else
-                                {
-                                    Toast.makeText(MapWindow.this, result.message, Toast.LENGTH_LONG).show();
-                                }
-                                Log.d("TAG", response);
-                            }
-                        },
-                        new Response.ErrorListener()
-                        {
-                            @Override
-                            public void onErrorResponse(VolleyError error) {
-                                Log.e("TAG", error.getMessage(), error);
-                            }
-                        }, null);
-                volleyQuque.add(stringRequest);
-                Intent intent = new Intent(this, UserInfoWindow.class);
-                startActivity(intent);
-            }
+            case 2:
+                startUserInfoWindow();
                 break;
             case 3: {  //高级搜索
                 Intent intent = new Intent(this, SearchMsgWindow.class);
@@ -246,6 +182,72 @@ public class MapWindow extends Activity implements ListView.OnItemClickListener,
             default:
                 break;
 
+        }
+    }
+
+    public void startUserInfoWindow()
+    {
+        StringRequestWithCookie stringRequest = new StringRequestWithCookie(StringRequest.Method.GET,"http://139.129.22.145:5000/profile",
+                new Response.Listener<String>()
+                {
+                    @Override
+                    public void onResponse(String response)
+                    {
+                        PostResult result = JSON.parseObject(response, PostResult.class);
+                        if(result.success)
+                        {
+                            User user = JSON.parseObject(result.data, User.class);
+                            Intent intent = new Intent(MapWindow.this, UserInfoWindow.class);
+                            Bundle bundle = new Bundle();
+                            bundle.putSerializable("user", user);
+                            intent.putExtras(bundle);
+                            startActivity(intent);
+                            System.out.println(user);
+                        }
+                        else
+                        {
+                            Toast.makeText(MapWindow.this, result.message, Toast.LENGTH_LONG).show();
+                        }
+                        Log.d("TAG", response);
+                    }
+                }, null);
+        volleyQuque.add(stringRequest);
+    }
+
+    public void logOutOrLogIn()
+    {
+        if(isLogin) //登出
+        {
+            StringRequestWithCookie stringRequest = new StringRequestWithCookie(StringRequest.Method.POST,"http://139.129.22.145:5000/logout",
+                    new Response.Listener<String>()
+                    {
+                        @Override
+                        public void onResponse(String response)
+                        {
+                            PostResult result = JSON.parseObject(response, PostResult.class);
+                            if(result.success)
+                            {
+                                Toast.makeText(MapWindow.this, result.message , Toast.LENGTH_LONG).show();
+                                MapWindow.isLogin = false;
+                                refreshSlideMenu();
+                                SharedPreferences prefs = getSharedPreferences("login", Context.MODE_PRIVATE);
+                                SharedPreferences.Editor editPrefs = prefs.edit();
+                                editPrefs.remove("Cookie");
+                                editPrefs.apply();
+                            }
+                            else
+                            {
+                                Toast.makeText(MapWindow.this, result.message, Toast.LENGTH_LONG).show();
+                            }
+                            Log.d("TAG", response);
+                        }
+                    }, null);
+            volleyQuque.add(stringRequest);
+        }
+        else //登录
+        {
+            Intent intent = new Intent(this, LoginWindow.class);
+            startActivity(intent);
         }
     }
 
@@ -325,6 +327,7 @@ public class MapWindow extends Activity implements ListView.OnItemClickListener,
                 switchMapType();
                 break;
             case R.id.action_refresh:
+                refreshPlaces();
                 break;
             case R.id.action_search:{
                 if (search != null)
@@ -336,6 +339,51 @@ public class MapWindow extends Activity implements ListView.OnItemClickListener,
         }
         return true;
 
+    }
+
+    public void refreshPlaces()
+    {
+
+
+        StringRequest stringRequest = new StringRequest(Request.Method.GET,"http://139.129.22.145:5000/places",
+                new Response.Listener<String>()
+                {
+                    @Override
+                    public void onResponse(String response)
+                    {
+                        PostResult result = JSON.parseObject(response, PostResult.class);
+                        if(result.success)
+                        {
+                            String jsonPlaces = result.data;
+                            List<Place> places = JSON.parseArray(jsonPlaces, Place.class);
+                            System.out.println(places);
+                            MapWindow.places = places;
+                        }
+                        else
+                        {
+                            Toast.makeText(MapWindow.this, result.message, Toast.LENGTH_LONG).show();
+                        }
+                        Log.d("TAG", response);
+                    }
+                }, new Response.ErrorListener()
+        {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e("TAG", error.getMessage(), error);
+            }
+        })
+        {
+            protected Map<String, String> getParams()
+            {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("lngbeg", "-180");
+                params.put("lngend", "180");
+                params.put("latbeg", "-90");
+                params.put("latend", "90");
+                return params;
+            }
+        };
+        volleyQuque.add(stringRequest);
     }
 
     public void onLocationChanged(AMapLocation amapLocation) {

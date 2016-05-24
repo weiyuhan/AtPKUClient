@@ -16,7 +16,7 @@ public class User implements Serializable
     public String isAdmin;
 
 
-    public String isBanned;
+    public boolean isBanned;
     public String gender;
     public int commentReceived;
     public int likeReceived;
@@ -104,11 +104,11 @@ public class User implements Serializable
     }
 
 
-    public String getIsBanned() {
+    public boolean isBanned() {
         return isBanned;
     }
 
-    public void setIsBanned(String isBanned) {
+    public void setIsBanned(boolean isBanned) {
         this.isBanned = isBanned;
     }
 
