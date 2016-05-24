@@ -393,7 +393,7 @@ public class MapWindow extends Activity implements
         params.put("lngend", "180");
         params.put("latbeg", "-90");
         params.put("latend", "90");
-        StringRequestWithCookie stringRequest = new StringRequestWithCookie(Request.Method.GET,"http://139.129.22.145:5000/places",
+        StringRequestWithCookie stringRequest = new StringRequestWithCookie(Request.Method.GET,"http://139.129.22.145:5000/places?lngbeg=-180&lngend=180&latbeg=-90&latend=90",
                 new Response.Listener<String>()
                 {
                     @Override

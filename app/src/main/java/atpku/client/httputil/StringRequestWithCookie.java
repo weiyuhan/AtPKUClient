@@ -1,12 +1,18 @@
 package atpku.client.httputil;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.util.Log;
 
 import com.android.volley.AuthFailureError;
+import com.android.volley.NetworkResponse;
+import com.android.volley.ParseError;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.HttpHeaderParser;
 import com.android.volley.toolbox.StringRequest;
 
+import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -61,6 +67,17 @@ public class StringRequestWithCookie extends StringRequest
             return new HashMap<String, String>();
         else
             return params;
+    }
+
+    protected Response<String> parseNetworkResponse(
+            NetworkResponse response) {
+        // TODO Auto-generated method stub
+        try {
+            String dataString = new String(response.data, "UTF-8");
+            return Response.success(dataString, HttpHeaderParser.parseCacheHeaders(response));
+        } catch (UnsupportedEncodingException e) {
+            return Response.error(new ParseError(e));
+        }
     }
 
 }
