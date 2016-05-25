@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.os.Bundle;
+import android.text.InputFilter;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -64,6 +65,9 @@ public class SendMsgWindow extends Activity
         place = (Spinner)findViewById(R.id.sendMsg_selectPlace);
         submitButton = (Button)findViewById(R.id.sendMsg_submitButton);
 
+        InputFilter[] filters = {new InputFilter.LengthFilter(18)};
+        title.setFilters(filters);
+
         volleyQuque = Volley.newRequestQueue(this);
 
         ArrayAdapter<String> adapter =  new ArrayAdapter<String>(this,
@@ -97,6 +101,21 @@ public class SendMsgWindow extends Activity
         Map<String, String> params = new HashMap<String, String>();
 
         // 需要在本地检查title和content的合法性，比如不能为空，长度不能过长（可能需要与后端交流
+        if (title.getText().toString().equals(""))
+        {
+            Toast.makeText(SendMsgWindow.this, "请填写标题", Toast.LENGTH_LONG).show();
+            return;
+        }
+        if (startTime.getText().toString().equals(""))
+        {
+            Toast.makeText(SendMsgWindow.this, "请选择起始时间", Toast.LENGTH_LONG).show();
+            return;
+        }
+        if (endTime.getText().toString().equals(""))
+        {
+            Toast.makeText(SendMsgWindow.this, "请选择截止时间", Toast.LENGTH_LONG).show();
+            return;
+        }
         params.put("title", title.getText().toString());
         params.put("content", content.getText().toString());
 
@@ -105,10 +124,12 @@ public class SendMsgWindow extends Activity
         params.put("atPlaceid", String.valueOf(chosen.getId()));
 
         // startTime和endTime的格式可能需要转化！需要与后端交流
-        params.put("startTime", startTime.getText().toString());
-        params.put("endTime", endTime.getText().toString());
+        String startTimeStr = startTime.getText().toString()+" 00:00:00";
+        String endTimeStr =  endTime.getText().toString()+" 23:59:59";
+        params.put("startTime", startTimeStr);
+        params.put("endTime", endTimeStr);
 
-        StringRequestWithCookie stringRequest = new StringRequestWithCookie(Request.Method.POST,"http://139.129.22.145:5000/messages",
+        StringRequestWithCookie stringRequest = new StringRequestWithCookie(Request.Method.POST,"http://139.129.22.145:5000/message",
                 new Response.Listener<String>()
                 {
                     @Override
