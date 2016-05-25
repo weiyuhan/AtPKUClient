@@ -17,6 +17,7 @@ import atpku.client.R;
 public class PlaceWindow extends Activity
 {
     public ListView msgList;
+    private int placeID;
 
     public ActionBar actionBar;
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +30,9 @@ public class PlaceWindow extends Activity
         actionBar.setDisplayHomeAsUpEnabled(true);
 
         msgList = (ListView)findViewById(R.id.place_msgList);
+
+        Intent intent = this.getIntent();
+        placeID = (int)intent.getSerializableExtra("id");
     }
 
     public boolean onCreateOptionsMenu(Menu menu)

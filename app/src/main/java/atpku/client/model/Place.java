@@ -1,6 +1,7 @@
 package atpku.client.model;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * Created by wyh on 2016/5/19.
@@ -11,6 +12,15 @@ public class Place implements Serializable
     public double lng;
     public double lat;
     public String name;
+    public List<Message> globalMessageList;
+
+    public List<Message> getGlobalMessageList() {
+        return globalMessageList;
+    }
+
+    public void setGlobalMessageList(List<Message> globalMessageList) {
+        this.globalMessageList = globalMessageList;
+    }
 
     public int getId() {
         return id;
@@ -52,5 +62,10 @@ public class Place implements Serializable
                 ", lat=" + lat +
                 ", name='" + name + '\'' +
                 '}';
+    }
+
+    // 暂时只显示第0条
+    public String snippetString() {
+        return globalMessageList.get(0).snippetString();
     }
 }

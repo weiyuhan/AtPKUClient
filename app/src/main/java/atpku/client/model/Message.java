@@ -10,6 +10,7 @@ public class Message implements Serializable
 {
     public int messageID;
     public int ownerID;
+    public String ownerNickname;
     public String title;
     public String content;
     public String postTime;
@@ -21,6 +22,23 @@ public class Message implements Serializable
     public List<Integer> reportUsers;
     public boolean isGlobal;
     public int atPlaceID;
+    public int heat;
+
+    public String getOwnerNickname() {
+        return ownerNickname;
+    }
+
+    public void setOwnerNickname(String ownerNickname) {
+        this.ownerNickname = ownerNickname;
+    }
+
+    public int getHeat() {
+        return heat;
+    }
+
+    public void setHeat(int heat) {
+        this.heat = heat;
+    }
 
     public int getMessageID() {
         return messageID;
@@ -131,17 +149,23 @@ public class Message implements Serializable
         return "Message{" +
                 "messageID=" + messageID +
                 ", ownerID=" + ownerID +
+                ", ownerNickname='" + ownerNickname + '\'' +
                 ", title='" + title + '\'' +
-                ", content='" + content + '\'' +
                 ", postTime='" + postTime + '\'' +
-                ", startTime='" + startTime + '\'' +
-                ", endTime='" + endTime + '\'' +
-                ", comments=" + comments +
-                ", likeUsers=" + likeUsers +
-                ", dislikeUsers=" + dislikeUsers +
-                ", reportUsers=" + reportUsers +
-                ", isGlobal=" + isGlobal +
-                ", atPlaceID=" + atPlaceID +
+                ", heat=" + heat +
                 '}';
     }
+
+    // Marker的snippet的显示内容
+    public String snippetString() {
+        return "Message{" +
+                "messageID=" + messageID +
+                ", ownerID=" + ownerID +
+                ", ownerNickname='" + ownerNickname + '\'' +
+                ", title='" + title + '\'' +
+                ", postTime='" + postTime + '\'' +
+                ", heat=" + heat +
+                '}';
+    }
+
 }

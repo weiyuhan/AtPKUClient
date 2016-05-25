@@ -47,5 +47,6 @@
         android:text="发送"
         android:id="@+id/sendMsg_submitButton"
         android:layout_gravity="center_horizontal"
-        android:textSize="30dp" />
+        android:textSize="30dp"
+        android:onClick="sendMsgSubmitHandler" />
 </LinearLayout>

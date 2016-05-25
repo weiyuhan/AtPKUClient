@@ -43,6 +43,7 @@ import java.util.TimerTask;
 
 import atpku.client.R;
 import atpku.client.httputil.StringRequestWithCookie;
+import atpku.client.model.Message;
 import atpku.client.model.Place;
 import atpku.client.model.PostResult;
 import atpku.client.model.User;
@@ -341,11 +342,7 @@ public class MapWindow extends Activity implements
 
     public void refreshPlaces()
     {
-        Map<String, String> params = new HashMap<String, String>();
-        params.put("lngbeg", "-180");
-        params.put("lngend", "180");
-        params.put("latbeg", "-90");
-        params.put("latend", "90");
+        // 获取所有place并刷新所有Marker的显示
         StringRequestWithCookie stringRequest = new StringRequestWithCookie(Request.Method.GET,"http://139.129.22.145:5000/places?lngbeg=-180&lngend=180&latbeg=-90&latend=90",
                 new Response.Listener<String>()
                 {
@@ -372,8 +369,32 @@ public class MapWindow extends Activity implements
                         }
                         Log.d("TAG", response);
                     }
-                }, params);
+                }, null);
         volleyQuque.add(stringRequest);
+
+        // 获取所有place的热门信息列表
+        for(final String placename:MapWindow.places.keySet()) {
+            final Place place = MapWindow.places.get(placename);
+            StringRequestWithCookie stringRequest2 = new StringRequestWithCookie(Request.Method.GET,
+                    "http://139.129.22.145:5000/hotmessages/" + String.valueOf(place.getId()),
+                    new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+                            PostResult result = JSON.parseObject(response, PostResult.class);
+                            if (result.success) {
+                                String jsonMessages = result.data;
+                                List<Message> messages = JSON.parseArray(jsonMessages, Message.class);
+                                place.setGlobalMessageList(messages);
+                                Marker marker = MapWindow.markers.get(placename);
+                                marker.setSnippet(place.snippetString());
+                            } else {
+                                Toast.makeText(MapWindow.this, result.message, Toast.LENGTH_LONG).show();
+                            }
+                            Log.d("TAG", response);
+                        }
+                    }, null);
+            volleyQuque.add(stringRequest2);
+        }
     }
 
     public void refreshMarkers() {
@@ -468,6 +489,17 @@ public class MapWindow extends Activity implements
         String placename = marker.getTitle();
         Place place = MapWindow.places.get(placename);
         int placeid = place.getId();
-        return false;
+        if(marker.isInfoWindowShown()) {
+            Intent intent = new Intent(this, PlaceWindow.class);
+            Bundle bundle = new Bundle();
+            bundle.putSerializable("id", placeid);
+            intent.putExtras(bundle);
+            startActivity(intent);
+            marker.hideInfoWindow();
+            return true;
+        }
+        else {
+            return false;
+        }
     }
 }
