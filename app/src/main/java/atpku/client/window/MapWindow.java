@@ -497,6 +497,7 @@ public class MapWindow extends Activity implements
             Intent intent = new Intent(this, PlaceWindow.class);
             Bundle bundle = new Bundle();
             bundle.putSerializable("id", placeid);
+            bundle.putSerializable("name", placename);
             intent.putExtras(bundle);
             startActivity(intent);
             marker.hideInfoWindow();

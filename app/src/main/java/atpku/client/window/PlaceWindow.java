@@ -52,6 +52,8 @@ public class PlaceWindow extends Activity {
 
         Intent intent = this.getIntent();
         placeID = (int) intent.getSerializableExtra("id");
+        CharSequence label = (CharSequence) intent.getSerializableExtra("name");
+        setTitle(label);
         volleyQuque = Volley.newRequestQueue(this);
         refreshMessageList();
     }

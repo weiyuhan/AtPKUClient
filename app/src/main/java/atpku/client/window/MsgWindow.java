@@ -2,12 +2,14 @@ package atpku.client.window;
 
 import android.app.ActionBar;
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import atpku.client.R;
 
@@ -26,6 +28,8 @@ public class MsgWindow extends Activity
     public EditText commentText;
     public Button commentButton;
     public ListView commentList;
+
+    private int messageID;
 
     public ActionBar actionBar;
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +51,9 @@ public class MsgWindow extends Activity
         commentText = (EditText)findViewById(R.id.msg_addComment);
         commentButton = (Button)findViewById(R.id.msg_commentButton);
         commentList = (ListView)findViewById(R.id.msg_commentList);
+
+        Intent intent = this.getIntent();
+        messageID = (int) intent.getSerializableExtra("messageID");
     }
 
     public boolean onOptionsItemSelected(MenuItem mi)
