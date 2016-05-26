@@ -2,8 +2,6 @@ package atpku.client.window;
 
 import android.app.ActionBar;
 import android.app.Activity;
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -20,7 +18,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import atpku.client.R;
-import atpku.client.httputil.StringRequestWithCookie;
+import atpku.client.util.StringRequestWithCookie;
 import atpku.client.model.PostResult;
 
 /**

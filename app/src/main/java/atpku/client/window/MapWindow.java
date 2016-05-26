@@ -2,7 +2,6 @@ package atpku.client.window;
 
 import android.app.ActionBar;
 import android.app.Activity;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -24,25 +23,18 @@ import com.alibaba.fastjson.JSON;
 import com.amap.api.maps.*;
 import com.amap.api.maps.model.*;
 import com.amap.api.location.*;
-import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
-import com.android.volley.RequestQueue;
 import com.android.volley.Response;
-import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import atpku.client.R;
-import atpku.client.httputil.StringRequestWithCookie;
+import atpku.client.util.StringRequestWithCookie;
 import atpku.client.model.Message;
 import atpku.client.model.Place;
 import atpku.client.model.PostResult;

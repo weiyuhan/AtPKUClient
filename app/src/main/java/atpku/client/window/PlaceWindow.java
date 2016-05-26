@@ -5,36 +5,30 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.alibaba.fastjson.JSON;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.toolbox.Volley;
 
-import org.json.JSONObject;
-import org.json.JSONArray;
-import org.json.JSONException;
-
-import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import atpku.client.R;
-import atpku.client.httputil.StringRequestWithCookie;
+import atpku.client.util.StringRequestWithCookie;
+import atpku.client.model.Message;
 import atpku.client.model.PostResult;
-import atpku.client.model.User;
 
 /**
  * Created by wyh on 2016/5/19.
@@ -78,22 +72,15 @@ public class PlaceWindow extends Activity {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        try {
-                            JSONObject jsonResponse = new JSONObject(response);
-                            JSONArray messageArray = jsonResponse.getJSONArray("data");
-                            for (int i = 0; i < messageArray.length(); i++) {
-                                String time = messageArray.getJSONObject(i).getString("postTime")
-                                        .replaceAll("T", " ").substring(5);
-                                adapter.add(new Message(messageArray.getJSONObject(i).getInt("id"),
-                                        messageArray.getJSONObject(i).getString("title"),
-                                        time,
-                                        messageArray.getJSONObject(i).getJSONObject("owner").getString("nickname")));
+                        PostResult result = JSON.parseObject(response, PostResult.class);
+                        if(result.success) {
+                            List<Message> messages = JSON.parseArray(result.data, Message.class);
+                            for(Message message:messages) {
+                                adapter.add(message);
                             }
-                            msgList.setAdapter(adapter);
-                            adapter.notifyDataSetChanged();
-                        } catch (JSONException e) {
-                            Toast.makeText(PlaceWindow.this, "failed!", Toast.LENGTH_LONG).show();
                         }
+                        msgList.setAdapter(adapter);
+                        adapter.notifyDataSetChanged();
                     }
                 }, params);
         volleyQuque.add(stringRequest);
@@ -134,7 +121,7 @@ public class PlaceWindow extends Activity {
             LayoutInflater inflater = getLayoutInflater();
             View view = inflater.inflate(mResourceId, null);
             view.setClickable(true);
-            final int msgid = msg.getID();
+            final int msgid = msg.getId();
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -152,41 +139,8 @@ public class PlaceWindow extends Activity {
 
             titleText.setText(msg.getTitle());
             timeText.setText(msg.getPostTime());
-            nicknameText.setText(msg.getOwnerNickname());
+            nicknameText.setText(msg.owner.getNickname());
             return view;
-        }
-    }
-
-    class Message {
-        private int id;
-        private String title;
-        private String postTime;
-        private String heat;
-        private int ownerid;
-        private String ownerNickname;
-        private String ownerGender;
-
-        public Message(int id, String title, String postTime, String ownerNickname) {
-            this.id = id;
-            this.title = title;
-            this.postTime = postTime;
-            this.ownerNickname = ownerNickname;
-        }
-
-        public int getID() {
-            return this.id;
-        }
-
-        public String getTitle() {
-            return this.title;
-        }
-
-        public String getPostTime() {
-            return this.postTime + "";
-        }
-
-        public String getOwnerNickname() {
-            return this.ownerNickname;
         }
     }
 }

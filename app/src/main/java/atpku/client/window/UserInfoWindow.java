@@ -2,14 +2,12 @@ package atpku.client.window;
 
 import android.app.ActionBar;
 import android.app.Activity;
-import android.content.ComponentName;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -24,7 +22,7 @@ import com.android.volley.toolbox.Volley;
 import java.util.List;
 
 import atpku.client.R;
-import atpku.client.httputil.StringRequestWithCookie;
+import atpku.client.util.StringRequestWithCookie;
 import atpku.client.model.Feedback;
 import atpku.client.model.PostResult;
 import atpku.client.model.User;
