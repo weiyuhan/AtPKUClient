@@ -450,7 +450,7 @@ public class MapWindow extends Activity implements
             //设置定位监听
             mlocationClient.setLocationListener(this);
             //设置为高精度定位模式
-            mLocationOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Device_Sensors);
+            mLocationOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Hight_Accuracy);
 //设置是否返回地址信息（默认返回地址信息）
             mLocationOption.setNeedAddress(true);
 //设置是否只定位一次,默认为false
