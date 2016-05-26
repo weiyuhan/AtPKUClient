@@ -139,6 +139,7 @@ public class SendMsgWindow extends Activity
                         if(result.success)
                         {
                             Toast.makeText(SendMsgWindow.this, "发送成功", Toast.LENGTH_LONG).show();
+                            finish();
                         }
                         else
                         {

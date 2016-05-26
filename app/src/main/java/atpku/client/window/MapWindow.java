@@ -54,7 +54,8 @@ import atpku.client.model.User;
  */
 public class MapWindow extends Activity implements
         ListView.OnItemClickListener, AMapLocationListener, LocationSource,
-        SearchView.OnQueryTextListener, AMap.OnMarkerClickListener, AMap.OnCameraChangeListener
+        SearchView.OnQueryTextListener, AMap.OnMarkerClickListener, AMap.OnCameraChangeListener,
+        AMap.OnMapClickListener
 {
     private MapView mapView;
     public static AMap aMap;
@@ -82,6 +83,7 @@ public class MapWindow extends Activity implements
     private AMapLocationClientOption mLocationOption;
 
     private com.android.volley.RequestQueue volleyQuque;
+    private Marker shownMarker = null;
 
     private static String cookie = null;
 
@@ -286,6 +288,7 @@ public class MapWindow extends Activity implements
 
             aMap.moveCamera(CameraUpdateFactory.newLatLngZoom(pkuPos, defaultZoom));
             aMap.setOnCameraChangeListener(this);
+            aMap.setOnMapClickListener(this);
             refreshMarkers();
         }
     }
@@ -508,12 +511,17 @@ public class MapWindow extends Activity implements
             return true;
         }
         else {
+            shownMarker = marker;
             return false;
         }
     }
 
     //对正在移动地图事件回调
     public void onCameraChange(CameraPosition cameraPosition)
+    {
+    }
+    //对移动地图结束事件回调
+    public void onCameraChangeFinish(CameraPosition cameraPosition)
     {
         LatLng target = cameraPosition.target;
         double distance = AMapUtils.calculateLineDistance(target, pkuPos);
@@ -527,8 +535,10 @@ public class MapWindow extends Activity implements
             aMap.moveCamera(CameraUpdateFactory.zoomTo(minZoom));
         }
     }
-    //对移动地图结束事件回调
-    public void onCameraChangeFinish(CameraPosition cameraPosition)
-    {
+    public void onMapClick(LatLng latLng) {
+        if(shownMarker != null) {
+            shownMarker.hideInfoWindow();
+            shownMarker = null;
+        }
     }
 }

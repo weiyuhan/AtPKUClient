@@ -47,7 +47,7 @@ public class LoadingWindow extends Activity
         System.out.println("mycookie : " + cookie);
         MapWindow.setCookie(cookie);
         volleyQuque = Volley.newRequestQueue(this);
-        refreshPlaces();
+        initPlaces();
         /*
         new Handler().postDelayed(new Runnable()
         {
@@ -66,7 +66,7 @@ public class LoadingWindow extends Activity
         }, 3000); //3000 for release
         */
     }
-    public void refreshPlaces()
+    public void initPlaces()
     {
         Map<String, String> params = new HashMap<String, String>();
         params.put("lngbeg", "-180");
