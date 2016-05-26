@@ -101,24 +101,21 @@
                         android:textColor="#3498db"
                         android:layout_margin="5sp" />
 
-                    <LinearLayout
-                        android:orientation="vertical"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_marginTop="80sp">
-
-
-                    </LinearLayout>
-
                 </LinearLayout>
 
             </LinearLayout>
 
-            <ListView
+            <LinearLayout
+                android:orientation="vertical"
                 android:layout_width="match_parent"
-                android:layout_height="fill_parent"
-                android:id="@+id/userInfo_feedbackList"
-                android:layout_gravity="center_horizontal" />
+                android:layout_height="315dp">
+
+                <ListView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/userInfo_feedbackList"
+                    android:layout_gravity="center_horizontal" />
+            </LinearLayout>
 
         </LinearLayout>
     </ScrollView>

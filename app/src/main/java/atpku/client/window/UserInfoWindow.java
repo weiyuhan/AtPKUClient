@@ -91,6 +91,11 @@ public class UserInfoWindow extends Activity
 
     }
 
+    protected void onResume() {
+        super.onResume();
+        getFeedback();
+    }
+
     public boolean onCreateOptionsMenu(Menu menu)
     {
         MenuInflater inflater = getMenuInflater();
@@ -119,9 +124,6 @@ public class UserInfoWindow extends Activity
                 Intent intent = new Intent(UserInfoWindow.this, SearchResultWindow.class);
                 startActivity(intent);
             }
-                break;
-            case R.id.action_myfeedback:
-                getFeedback();
                 break;
             default:
                 break;
