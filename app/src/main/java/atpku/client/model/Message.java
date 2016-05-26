@@ -158,14 +158,7 @@ public class Message implements Serializable
 
     // Marker的snippet的显示内容
     public String snippetString() {
-        return "Message{" +
-                "messageID=" + messageID +
-                ", ownerID=" + ownerID +
-                ", ownerNickname='" + ownerNickname + '\'' +
-                ", title='" + title + '\'' +
-                ", postTime='" + postTime + '\'' +
-                ", heat=" + heat +
-                '}';
+        return title;
     }
 
 }

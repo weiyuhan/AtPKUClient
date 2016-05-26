@@ -12,14 +12,14 @@ public class Place implements Serializable
     public double lng;
     public double lat;
     public String name;
-    public List<Message> globalMessageList;
+    public Message globalMessage;
 
-    public List<Message> getGlobalMessageList() {
-        return globalMessageList;
+    public Message getGlobalMessage() {
+        return globalMessage;
     }
 
-    public void setGlobalMessageList(List<Message> globalMessageList) {
-        this.globalMessageList = globalMessageList;
+    public void setGlobalMessage(Message globalMessage) {
+        this.globalMessage = globalMessage;
     }
 
     public int getId() {
@@ -61,11 +61,14 @@ public class Place implements Serializable
                 ", lng=" + lng +
                 ", lat=" + lat +
                 ", name='" + name + '\'' +
+                ", globalMessage=" + globalMessage +
                 '}';
     }
 
     // 暂时只显示第0条
     public String snippetString() {
-        return globalMessageList.get(0).snippetString();
+        if(globalMessage == null)
+            return null;
+        return globalMessage.snippetString();
     }
 }

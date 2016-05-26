@@ -12,9 +12,12 @@ import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
+import com.amap.api.maps.model.Marker;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.toolbox.Volley;
+
+import org.json.JSONException;
 
 import java.util.HashMap;
 import java.util.List;
@@ -22,6 +25,7 @@ import java.util.Map;
 
 import atpku.client.R;
 import atpku.client.httputil.StringRequestWithCookie;
+import atpku.client.model.Message;
 import atpku.client.model.Place;
 import atpku.client.model.PostResult;
 
@@ -31,6 +35,7 @@ import atpku.client.model.PostResult;
 public class LoadingWindow extends Activity
 {
     private com.android.volley.RequestQueue volleyQuque;
+    public static int loadingPlaceIndex = 0;
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
@@ -43,12 +48,12 @@ public class LoadingWindow extends Activity
         MapWindow.setCookie(cookie);
         volleyQuque = Volley.newRequestQueue(this);
         refreshPlaces();
-
+        /*
         new Handler().postDelayed(new Runnable()
         {
             public void run()
             {
-                /* Create an Intent that will start the Main WordPress Activity. */
+
                 Intent mainIntent = new Intent(LoadingWindow.this, MapWindow.class);
                 startActivity(mainIntent);
                 String cookie = MapWindow.getCookie();
@@ -59,6 +64,7 @@ public class LoadingWindow extends Activity
                 finish();
             }
         }, 3000); //3000 for release
+        */
     }
     public void refreshPlaces()
     {
@@ -82,13 +88,55 @@ public class LoadingWindow extends Activity
                             if(MapWindow.places == null) {
                                 MapWindow.places = new HashMap<String, Place>();
                             }
-                            for(Place place: places) {
+                            if(MapWindow.markers == null)
+                            {
+                                MapWindow.markers = new HashMap<String, Marker>();
+                            }
+                            final int count = MapWindow.places.keySet().size();
+                            for(final Place place: places)
+                            {
                                 MapWindow.places.put(place.getName(), place);
+                                StringRequestWithCookie globalMsgRequest = new StringRequestWithCookie(Request.Method.GET,
+                                        "http://139.129.22.145:5000/hotmessages/" + String.valueOf(place.getId()),
+                                        new Response.Listener<String>() {
+                                            @Override
+                                            public void onResponse(String response)
+                                            {
+                                                String placename = place.getName();
+                                                PostResult result = JSON.parseObject(response, PostResult.class);
+                                                System.out.println(result);
+                                                if (result.success)
+                                                {
+                                                    Message message = JSON.parseObject(result.data, Message.class);;
+                                                    place.setGlobalMessage(message);
+                                                    Marker marker = MapWindow.markers.get(placename);
+                                                    if(marker != null && message != null)
+                                                    {
+                                                        marker.setSnippet(place.snippetString());
+                                                    }
+                                                }
+                                                Log.d("TAG", response);
+                                                loadingPlaceIndex++;
+                                                if(loadingPlaceIndex >= count)
+                                                {
+                                                    LoadingWindow.this.finish();
+                                                }
+                                            }
+                                        }, null);
+                                volleyQuque.add(globalMsgRequest);
+                            }
+                            Intent mainIntent = new Intent(LoadingWindow.this, MapWindow.class);
+                            startActivity(mainIntent);
+                            String cookie = MapWindow.getCookie();
+                            if(!cookie.equals(""))
+                            {
+                                MapWindow.isLogin = true;
                             }
                         }
                         else
                         {
                             Toast.makeText(LoadingWindow.this, result.message, Toast.LENGTH_LONG).show();
+                            finish();
                         }
                         Log.d("TAG", response);
                     }
