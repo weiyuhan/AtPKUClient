@@ -7,26 +7,26 @@ import java.io.Serializable;
  */
 public class Feedback implements Serializable
 {
-    public int feedbackID;
-    public int userID;
+    public int id;
+    public User user;
     public String content;
-    public String time;
+    public String postTime;
     public boolean isRead;
 
-    public int getFeedbackID() {
-        return feedbackID;
+    public int getId() {
+        return id;
     }
 
-    public void setFeedbackID(int feedbackID) {
-        this.feedbackID = feedbackID;
+    public void setId(int id) {
+        this.id = id;
     }
 
-    public int getUserID() {
-        return userID;
+    public User getUser() {
+        return user;
     }
 
-    public void setUserID(int userID) {
-        this.userID = userID;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public String getContent() {
@@ -37,12 +37,12 @@ public class Feedback implements Serializable
         this.content = content;
     }
 
-    public String getTime() {
-        return time;
+    public String getPostTime() {
+        return postTime;
     }
 
-    public void setTime(String time) {
-        this.time = time;
+    public void setPostTime(String postTime) {
+        this.postTime = postTime;
     }
 
     public boolean isRead() {
@@ -56,11 +56,18 @@ public class Feedback implements Serializable
     @Override
     public String toString() {
         return "Feedback{" +
-                "feedbackID=" + feedbackID +
-                ", userID=" + userID +
+                "id=" + id +
+                ", user='" + user + '\'' +
                 ", content='" + content + '\'' +
-                ", time='" + time + '\'' +
+                ", postTime='" + postTime + '\'' +
                 ", isRead=" + isRead +
                 '}';
+    }
+
+    public String toShowString()
+    {
+        if(isRead)
+            return "已读 ： " + content;
+        return "未读 ： " + content;
     }
 }
