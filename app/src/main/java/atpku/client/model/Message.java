@@ -1,6 +1,7 @@
 package atpku.client.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -10,11 +11,11 @@ public class Message implements Serializable
 {
     public int id;
     public User owner;
-    public List<Integer> comments;
+    public List<Comment> comments;
     public Place atPlace;
-    public List<Integer> likeUsers;
-    public List<Integer> dislikeUsers;
-    public List<Integer> reportUsers;
+    public List<User> likeUsers;
+    public List<User> dislikeUsers;
+    public List<User> reportUsers;
     public String title;
     public String content;
     public String postTime;
@@ -39,11 +40,11 @@ public class Message implements Serializable
         this.owner = owner;
     }
 
-    public List<Integer> getComments() {
+    public List<Comment> getComments() {
         return comments;
     }
 
-    public void setComments(List<Integer> comments) {
+    public void setComments(List<Comment> comments) {
         this.comments = comments;
     }
 
@@ -55,27 +56,47 @@ public class Message implements Serializable
         this.atPlace = atPlace;
     }
 
-    public List<Integer> getLikeUsers() {
+    public List<User> getLikeUsers() {
         return likeUsers;
     }
 
-    public void setLikeUsers(List<Integer> likeUsers) {
+    public void setLikeUsers(List<User> likeUsers) {
         this.likeUsers = likeUsers;
     }
 
-    public List<Integer> getDislikeUsers() {
+    public List<Integer> getLikeUserIds()
+    {
+        List<Integer> result = new ArrayList<Integer>();
+        for (User user : likeUsers)
+        {
+            result.add(user.getId());
+        }
+        return result;
+    }
+
+    public List<User> getDislikeUsers() {
         return dislikeUsers;
     }
 
-    public void setDislikeUsers(List<Integer> dislikeUsers) {
+    public void setDislikeUsers(List<User> dislikeUsers) {
         this.dislikeUsers = dislikeUsers;
     }
 
-    public List<Integer> getReportUsers() {
+    public List<Integer> getDislikeUserIds()
+    {
+        List<Integer> result = new ArrayList<Integer>();
+        for (User user : dislikeUsers)
+        {
+            result.add(user.getId());
+        }
+        return result;
+    }
+
+    public List<User> getReportUsers() {
         return reportUsers;
     }
 
-    public void setReportUsers(List<Integer> reportUsers) {
+    public void setReportUsers(List<User> reportUsers) {
         this.reportUsers = reportUsers;
     }
 

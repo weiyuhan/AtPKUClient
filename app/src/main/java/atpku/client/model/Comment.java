@@ -7,34 +7,34 @@ import java.io.Serializable;
  */
 public class Comment implements Serializable
 {
-    public int commentID;
-    public int atMsgID;
-    public int ownerID;
+    public int id;
+    public User owner;
     public String content;
     public String commentTime;
+    public int message;
 
-    public int getCommentID() {
-        return commentID;
+    public int getId() {
+        return id;
     }
 
-    public void setCommentID(int commentID) {
-        this.commentID = commentID;
+    public void setId(int commentID) {
+        this.id = commentID;
     }
 
-    public int getAtMsgID() {
-        return atMsgID;
+    public int getMessage() {
+        return message;
     }
 
-    public void setAtMsgID(int atMsgID) {
-        this.atMsgID = atMsgID;
+    public void setMessage(int atMsgID) {
+        this.message = atMsgID;
     }
 
-    public int getOwnerID() {
-        return ownerID;
+    public User getOwner() {
+        return owner;
     }
 
-    public void setOwnerID(int ownerID) {
-        this.ownerID = ownerID;
+    public void setOwner(User owner) {
+        this.owner = owner;
     }
 
     public String getContent() {
@@ -50,15 +50,15 @@ public class Comment implements Serializable
     }
 
     public void setCommentTime(String commentTime) {
-        this.commentTime = commentTime;
+        this.commentTime = commentTime.replace("T", " ");
     }
 
     @Override
     public String toString() {
         return "Comment{" +
-                "commentID=" + commentID +
-                ", atMsgID=" + atMsgID +
-                ", ownerID=" + ownerID +
+                "id=" + id +
+                ", owner=" + owner.getId() +
+                ", message=" + message +
                 ", content='" + content + '\'' +
                 ", commentTime='" + commentTime + '\'' +
                 '}';

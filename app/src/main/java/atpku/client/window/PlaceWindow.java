@@ -125,14 +125,14 @@ public class PlaceWindow extends Activity {
             view.setClickable(true);
             final int msgid = msg.getId();
             view.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(PlaceWindow.this, MsgWindow.class);
-                    Bundle bundle = new Bundle();
-                    bundle.putSerializable("messageID", msgid);
-                    intent.putExtras(bundle);
-                    startActivity(intent);
-                }
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(PlaceWindow.this, MsgWindow.class);
+                        Bundle bundle = new Bundle();
+                        bundle.putSerializable("messageID", msgid);
+                        intent.putExtras(bundle);
+                        startActivity(intent);
+                    }
             });
 
             TextView titleText = (TextView) view.findViewById(R.id.title);

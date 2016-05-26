@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_alignLeft="@+id/content"
+    android:padding="12dip"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/content"
+        android:layout_marginRight="4dp"
+        android:text="Content"
+        android:textSize="16dip" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/content"
+        android:id="@+id/nickname"
+        android:text="Nickname"
+        android:textColor="#A0A0A0"
+        android:textSize="14dip"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/content"
+        android:layout_alignParentRight="true"
+        android:id="@+id/time"
+        android:text="Time"
+        android:textColor="#A0A0A0"
+        android:textSize="14dip"/>
+
+</RelativeLayout>
