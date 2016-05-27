@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,6 +28,7 @@ import java.util.List;
 import java.util.Map;
 
 import atpku.client.R;
+import atpku.client.model.Place;
 import atpku.client.util.StringRequestWithCookie;
 import atpku.client.model.Message;
 import atpku.client.model.PostResult;
@@ -34,11 +36,13 @@ import atpku.client.model.PostResult;
 /**
  * Created by wyh on 2016/5/19.
  */
-public class PlaceWindow extends Activity {
+public class PlaceWindow extends Activity implements SearchView.OnQueryTextListener
+{
     public ListView msgList;
     private int placeID;
     public ActionBar actionBar;
     private RequestQueue volleyQuque;
+    public SearchView search;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,6 +66,11 @@ public class PlaceWindow extends Activity {
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_place, menu);
+
+        MenuItem searchItem = menu.findItem(R.id.action_place_search);
+        search = (SearchView)searchItem.getActionView();
+        search.setOnQueryTextListener(this);
+
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -100,9 +109,18 @@ public class PlaceWindow extends Activity {
             case android.R.id.home:
                 super.onBackPressed();
                 break;
-            case R.id.action_sendmsg: {
+            case R.id.action_sendmsg:
+            {
                 Intent intent = new Intent(this, SendMsgWindow.class);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("placeId", placeID);
+                intent.putExtras(bundle);
                 startActivity(intent);
+            }
+            break;
+            case R.id.action_place_search:{
+                if (search != null)
+                    search.setOnQueryTextListener(this);
             }
             break;
             default:
@@ -147,5 +165,25 @@ public class PlaceWindow extends Activity {
             nicknameText.setText(msg.owner.getNickname());
             return view;
         }
+    }
+
+    public boolean onQueryTextChange(String newText)
+    {
+        return true;
+    }
+
+    public boolean onQueryTextSubmit(String query)
+    {
+        HashMap<String, String> params = new HashMap<String, String>();
+        // 按标题搜索
+        params.put("title", query);
+        params.put("placeid", String.valueOf(placeID));
+        Intent intent = new Intent(PlaceWindow.this, SearchResultWindow.class);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("params", params);
+        bundle.putSerializable("caller", "MapWindow");
+        intent.putExtras(bundle);
+        startActivity(intent);
+        return false;
     }
 }

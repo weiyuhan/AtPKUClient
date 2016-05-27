@@ -3,6 +3,7 @@ package atpku.client.window;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.InputFilter;
 import android.util.Log;
@@ -48,6 +49,9 @@ public class SendMsgWindow extends Activity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.sendmsg);
 
+        Intent intent = this.getIntent();
+        int placeId = (Integer)intent.getSerializableExtra("placeId");
+
         actionBar = getActionBar();
         //actionBar.setDisplayShowHomeEnabled(true);
         actionBar.setHomeButtonEnabled(true);
@@ -68,10 +72,21 @@ public class SendMsgWindow extends Activity
 
         ArrayAdapter<String> adapter =  new ArrayAdapter<String>(this,
                 android.R.layout.simple_expandable_list_item_1);
-        for(String placename:MapWindow.places.keySet()) {
+        int position = -1;
+        int index = 0;
+        for(String placename:MapWindow.places.keySet())
+        {
+            Place place = MapWindow.places.get(placename);
+            if(place.getId() == placeId)
+                position = index;
             adapter.add(placename);
+            index++;
         }
         place.setAdapter(adapter);
+        if(placeId != -1 && position != -1)
+        {
+            place.setSelection(position);
+        }
     }
 
     public void sendMsgSelectTimeHanlder(View source)

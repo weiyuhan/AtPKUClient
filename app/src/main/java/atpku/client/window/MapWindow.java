@@ -70,6 +70,8 @@ public class MapWindow extends Activity implements
     private static double maxDistance = 2000;
     private static float minZoom = 15;
 
+    private LatLng currPos;
+
     private OnLocationChangedListener mListener;
     private AMapLocationClient mlocationClient;
     private AMapLocationClientOption mLocationOption;
@@ -97,6 +99,8 @@ public class MapWindow extends Activity implements
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.map);
+
+        currPos = pkuPos;
 
         drawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
 
@@ -171,8 +175,27 @@ public class MapWindow extends Activity implements
                 startActivity(intent);
             }
                 break;
-            case 4:{   //发信信息
+            case 4:{   //发信息
+                Place nearPlace = null;
+                double minDistance = 50000;
+                for(String placename:MapWindow.places.keySet())
+                {
+                    Place place = places.get(placename);
+                    LatLng placePos = new LatLng(place.getLat(), place.getLng());
+                    double distance = AMapUtils.calculateLineDistance(currPos, placePos);
+                    if(distance < minDistance)
+                    {
+                        minDistance = distance;
+                        nearPlace = place;
+                    }
+                }
                 Intent intent = new Intent(this, SendMsgWindow.class);
+                Bundle bundle = new Bundle();
+                if(nearPlace != null)
+                    bundle.putSerializable("placeId", nearPlace.getId());
+                else
+                    bundle.putSerializable("placeId", -1);
+                intent.putExtras(bundle);
                 startActivity(intent);
             }
                 break;
@@ -418,12 +441,13 @@ public class MapWindow extends Activity implements
     public void onLocationChanged(AMapLocation amapLocation) {
         if (mListener != null && amapLocation != null) {
             if (amapLocation.getErrorCode() == 0) {
-                LatLng currPos = new LatLng(amapLocation.getLatitude(), amapLocation.getLongitude());
+                currPos = new LatLng(amapLocation.getLatitude(), amapLocation.getLongitude());
                 double distance = AMapUtils.calculateLineDistance(currPos, pkuPos);
                 if(distance < maxDistance)
                     mListener.onLocationChanged(amapLocation);// 显示系统小蓝点
                 else
                 {
+                    currPos = pkuPos;
                     aMap.moveCamera(CameraUpdateFactory.changeLatLng(pkuPos));
                 }
             }
