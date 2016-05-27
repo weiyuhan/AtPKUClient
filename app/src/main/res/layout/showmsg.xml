@@ -1,44 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="12dp"
     android:weightSum="1">
 
     <LinearLayout
-        android:orientation="horizontal"
+        android:orientation="vertical"
+        android:background="#FFFFFF"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal">
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="12dip"
+            android:layout_gravity="center_horizontal">
 
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="信息标题"
+                android:id="@+id/msg_title"
+                android:textStyle="bold"
+                android:textSize="18dip" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="作者"
+                android:id="@+id/msg_author"
+                android:textSize="15dip"
+                android:textColor="#A0A0A0"
+                android:layout_marginLeft="14dp"/>
+
+        </LinearLayout>
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="信息标题"
-            android:id="@+id/msg_title"
-            android:textSize="35dp" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="作者"
-            android:id="@+id/msg_author" />
-
+            android:text="信息内容"
+            android:id="@+id/msg_content"
+            android:layout_weight="0.18"
+            android:padding="12dp"
+            android:textSize="15dip" />
     </LinearLayout>
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="信息内容"
-        android:id="@+id/msg_content"
-        android:layout_weight="0.18"
-        android:lines="6" />
+    <ImageView
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:background="#D0D0D0" />
 
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:padding="12dp"
         android:layout_gravity="center_horizontal">
 
         <TextView
@@ -57,6 +76,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="-1"
+            android:layout_marginLeft="15dp"
             android:id="@+id/msg_dislikeNum" />
 
         <Button
@@ -66,6 +86,10 @@
             android:id="@+id/msg_dislikeButton" />
     </LinearLayout>
 
+    <ImageView
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:background="#D0D0D0" />
 
     <LinearLayout
         android:orientation="horizontal"

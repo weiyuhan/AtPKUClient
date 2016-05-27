@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -76,6 +77,7 @@ public class MsgWindow extends Activity
 
         CharSequence label = (CharSequence) "";
         setTitle(label);
+        getWindow().setSoftInputMode( WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         Intent intent = this.getIntent();
         messageID = (int) intent.getSerializableExtra("messageID");
         volleyQuque = Volley.newRequestQueue(this);
@@ -88,9 +90,56 @@ public class MsgWindow extends Activity
                         new Response.Listener<String>() {
                             @Override
                             public void onResponse(String response) {
-                                likeNum.setText(msg.getLikeUsers().size()+1+"");
+                                PostResult result = JSON.parseObject(response, PostResult.class);
+                                if(result.success) {
+                                    //likeNum.setText(msg.getLikeUsers().size()+1+"");
+                                    refreshMessageInfo();
+                                }
                             }
                         }, null);
+                volleyQuque.add(stringRequest);
+            }
+        });
+        dislikeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                StringRequestWithCookie stringRequest = new StringRequestWithCookie(Request.Method.POST,
+                        "http://139.129.22.145:5000/message/"+messageID+"/dislike",
+                        new Response.Listener<String>() {
+                            @Override
+                            public void onResponse(String response) {
+                                PostResult result = JSON.parseObject(response, PostResult.class);
+                                if(result.success) {
+                                    //dislikeNum.setText(msg.getDislikeUsers().size()+1+"");
+                                    refreshMessageInfo();
+                                }
+                            }
+                        }, null);
+                volleyQuque.add(stringRequest);
+            }
+        });
+        commentButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (commentText.getText().toString().equals(""))
+                {
+                    Toast.makeText(MsgWindow.this, "评论不能为空", Toast.LENGTH_LONG).show();
+                    return;
+                }
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("content", commentText.getText().toString());
+                StringRequestWithCookie stringRequest = new StringRequestWithCookie(Request.Method.POST,
+                        "http://139.129.22.145:5000/message/"+messageID+"/comment",
+                        new Response.Listener<String>() {
+                            @Override
+                            public void onResponse(String response) {
+                                PostResult result = JSON.parseObject(response, PostResult.class);
+                                if(result.success) {
+                                    Toast.makeText(MsgWindow.this, "评论成功！", Toast.LENGTH_LONG).show();
+                                    refreshMessageInfo();
+                                }
+                            }
+                        }, params);
                 volleyQuque.add(stringRequest);
             }
         });
@@ -130,6 +179,8 @@ public class MsgWindow extends Activity
                             content.setText(msg.getContent());
                             likeNum.setText(msg.getLikeUsers().size()+"");
                             dislikeNum.setText(msg.getDislikeUsers().size()+"");
+                            commentText.setText("");
+                            commentText.clearFocus();
                             for(Comment comment:msg.comments) {
                                 adapter.add(comment);
                             }

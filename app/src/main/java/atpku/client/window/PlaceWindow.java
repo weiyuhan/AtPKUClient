@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
 import com.android.volley.Request;
@@ -81,6 +82,8 @@ public class PlaceWindow extends Activity {
                                 adapter.add(message);
                             }
                         }
+                        else
+                            Toast.makeText(PlaceWindow.this, result.message, Toast.LENGTH_LONG).show();
                         msgList.setAdapter(adapter);
                         adapter.notifyDataSetChanged();
                     }
