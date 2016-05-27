@@ -372,10 +372,10 @@ public class MapWindow extends Activity implements
                                                 System.out.println(result);
                                                 if (result.success)
                                                 {
-                                                    Message message = JSON.parseObject(result.data, Message.class);;
-                                                    place.setGlobalMessage(message);
+                                                    List<Message> messages = JSON.parseArray(result.data, Message.class);;
+                                                    place.setGlobalMessages(messages);
                                                     Marker marker = MapWindow.markers.get(placename);
-                                                    if(marker != null && message != null)
+                                                    if(marker != null && messages != null)
                                                     {
                                                         marker.setSnippet(place.snippetString());
                                                     }
@@ -411,10 +411,7 @@ public class MapWindow extends Activity implements
             markerOptions.title(placename);
             Marker marker = aMap.addMarker(markerOptions);
             MapWindow.markers.put(placename, marker);
-            if(place.getGlobalMessage() != null)
-            {
-                marker.setSnippet(place.snippetString());
-            }
+            marker.setSnippet(place.snippetString());
         }
     }
 

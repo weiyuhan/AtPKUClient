@@ -102,10 +102,10 @@ public class LoadingWindow extends Activity
                                                 System.out.println(result);
                                                 if (result.success)
                                                 {
-                                                    Message message = JSON.parseObject(result.data, Message.class);;
-                                                    place.setGlobalMessage(message);
+                                                    List<Message> messages = JSON.parseArray(result.data, Message.class);;
+                                                    place.setGlobalMessages(messages);
                                                     Marker marker = MapWindow.markers.get(placename);
-                                                    if(marker != null && message != null)
+                                                    if(marker != null && messages != null)
                                                     {
                                                         marker.setSnippet(place.snippetString());
                                                     }
