@@ -186,4 +186,9 @@ public class PlaceWindow extends Activity implements SearchView.OnQueryTextListe
         startActivity(intent);
         return false;
     }
+
+    protected void onResume() {
+        super.onResume();
+        refreshMessageList();
+    }
 }

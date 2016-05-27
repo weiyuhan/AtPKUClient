@@ -13,7 +13,7 @@ public class User implements Serializable
     public String email;
     public String date_joined;
     public String last_login;
-    public String isAdmin;
+    public boolean isAdmin;
 
 
     public boolean isBanned;
@@ -63,11 +63,11 @@ public class User implements Serializable
         this.last_login = last_login;
     }
 
-    public String getIsAdmin() {
+    public boolean getIsAdmin() {
         return isAdmin;
     }
 
-    public void setIsAdmin(String isAdmin) {
+    public void setIsAdmin(boolean isAdmin) {
         this.isAdmin = isAdmin;
     }
 

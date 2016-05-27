@@ -84,12 +84,14 @@ public class MapWindow extends Activity implements
     public static Map<String, Place> places;
     public static Map<String, Marker> markers;
 
+
     public static String getCookie()
     {
         if(cookie != null)
             return cookie;
         return "";
     }
+
     public static void setCookie(String cookie)
     {
         MapWindow.cookie = cookie;
