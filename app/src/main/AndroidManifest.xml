@@ -24,7 +24,7 @@
         <service android:name="com.amap.api.location.APSService"></service>
         <meta-data
             android:name="com.amap.api.v2.apikey"
-            android:value="2f102d47cdcb4b38bab046efed4aa884"/>
+            android:value="134016dc0a8ee4636d18d3cab6b68b9c"/>
 
         <activity
             android:name="atpku.client.window.LoginWindow"

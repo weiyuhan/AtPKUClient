@@ -3,121 +3,117 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            android:orientation="vertical" android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="vertical" android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="22sp"
+            android:id="@+id/userInfo_layout">
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+            </LinearLayout>
 
             <LinearLayout
                 android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_margin="22sp"
-                android:id="@+id/userInfo_layout">
+                android:layout_marginTop="20sp">
 
-                <LinearLayout
-                    android:orientation="horizontal"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-                </LinearLayout>
-
-                <LinearLayout
-                    android:orientation="vertical"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginTop="20sp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="邮箱："
-                        android:id="@+id/userInfo_studentNum"
-                        android:textSize="20sp"
-                        android:textColor="#3498db"
-                        android:layout_margin="5sp" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="用户名："
-                        android:id="@+id/userInfo_username"
-                        android:textSize="20sp"
-                        android:textColor="#3498db"
-                        android:layout_margin="5sp" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="状态："
-                        android:id="@+id/userInfo_status"
-                        android:textSize="20dp"
-                        android:textColor="#3498db"
-                        android:layout_margin="5sp" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="加入时间："
-                        android:id="@+id/userInfo_joinTime"
-                        android:textSize="20dp"
-                        android:textColor="#3498db"
-                        android:layout_margin="5sp" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="收到评论数："
-                        android:id="@+id/userInfo_commentReceived"
-                        android:textSize="20dp"
-                        android:textColor="#3498db"
-                        android:layout_margin="5sp" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="收到过的赞："
-                        android:id="@+id/userInfo_likeReceived"
-                        android:textSize="20dp"
-                        android:textColor="#3498db"
-                        android:layout_margin="5sp" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="收到过的踩："
-                        android:id="@+id/userInfo_dislikeReceived"
-                        android:textSize="20dp"
-                        android:textColor="#3498db"
-                        android:layout_margin="5sp" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="被举报次数："
-                        android:id="@+id/userInfo_reportReceived"
-                        android:textSize="20dp"
-                        android:textColor="#3498db"
-                        android:layout_margin="5sp" />
-
-                </LinearLayout>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:orientation="vertical"
-                android:layout_width="match_parent"
-                android:layout_height="315dp">
-
-                <ListView
-                    android:layout_width="match_parent"
+                <TextView
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/userInfo_feedbackList"
-                    android:layout_gravity="center_horizontal" />
+                    android:text="邮箱："
+                    android:id="@+id/userInfo_studentNum"
+                    android:textSize="20sp"
+                    android:textColor="#3498db"
+                    android:layout_margin="5sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="用户名："
+                    android:id="@+id/userInfo_username"
+                    android:textSize="20sp"
+                    android:textColor="#3498db"
+                    android:layout_margin="5sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="状态："
+                    android:id="@+id/userInfo_status"
+                    android:textSize="20dp"
+                    android:textColor="#3498db"
+                    android:layout_margin="5sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="加入时间："
+                    android:id="@+id/userInfo_joinTime"
+                    android:textSize="20dp"
+                    android:textColor="#3498db"
+                    android:layout_margin="5sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="收到评论数："
+                    android:id="@+id/userInfo_commentReceived"
+                    android:textSize="20dp"
+                    android:textColor="#3498db"
+                    android:layout_margin="5sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="收到过的赞："
+                    android:id="@+id/userInfo_likeReceived"
+                    android:textSize="20dp"
+                    android:textColor="#3498db"
+                    android:layout_margin="5sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="收到过的踩："
+                    android:id="@+id/userInfo_dislikeReceived"
+                    android:textSize="20dp"
+                    android:textColor="#3498db"
+                    android:layout_margin="5sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="被举报次数："
+                    android:id="@+id/userInfo_reportReceived"
+                    android:textSize="20dp"
+                    android:textColor="#3498db"
+                    android:layout_margin="5sp" />
+
             </LinearLayout>
 
         </LinearLayout>
-    </ScrollView>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="315dp">
+
+            <ListView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/userInfo_feedbackList"
+                android:layout_gravity="center_horizontal" />
+        </LinearLayout>
+
+    </LinearLayout>
 
 </LinearLayout>
