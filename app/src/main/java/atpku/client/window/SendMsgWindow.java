@@ -42,6 +42,7 @@ public class SendMsgWindow extends Activity
     public Button submitButton;
     public ActionBar actionBar;
     private com.android.volley.RequestQueue volleyQuque;
+
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);

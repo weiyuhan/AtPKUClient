@@ -14,12 +14,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
+import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import atpku.client.R;
 import atpku.client.util.StringRequestWithCookie;
@@ -42,6 +45,8 @@ public class UserInfoWindow extends Activity
     public TextView dislikeReceived;
     public TextView reportReceived;
     public ListView feedbackList;
+
+    private User user;
 
     public ActionBar actionBar;
     private RequestQueue volleyQuque;
@@ -69,7 +74,7 @@ public class UserInfoWindow extends Activity
         volleyQuque = Volley.newRequestQueue(this);
 
         Intent intent = this.getIntent();
-        User user = (User)intent.getSerializableExtra("user");
+        user = (User)intent.getSerializableExtra("user");
         System.out.println(user);
         if(user != null)
         {
@@ -119,7 +124,13 @@ public class UserInfoWindow extends Activity
             }
                 break;
             case R.id.action_mymsg:{
+                HashMap<String, String> params = new HashMap<String, String>();
+                params.put("nickname", user.getNickname());
                 Intent intent = new Intent(UserInfoWindow.this, SearchResultWindow.class);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("params", params);
+                bundle.putSerializable("caller", "UserInfoWindow");
+                intent.putExtras(bundle);
                 startActivity(intent);
             }
                 break;

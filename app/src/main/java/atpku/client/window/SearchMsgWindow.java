@@ -5,17 +5,30 @@ import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Switch;
+import android.widget.Toast;
+
+import com.alibaba.fastjson.JSON;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.toolbox.Volley;
 
 import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Map;
 
 import atpku.client.R;
+import atpku.client.model.Place;
+import atpku.client.model.PostResult;
+import atpku.client.util.StringRequestWithCookie;
 
 /**
  * Created by wyh on 2016/5/19.
@@ -30,12 +43,12 @@ public class SearchMsgWindow extends Activity
     public Spinner place;
     public Switch isGlobal;
     public Button submitButton;
-
     private ActionBar actionBar = null;
+
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
-
         setContentView(R.layout.advancesearch);
+
         actionBar = getActionBar();
         //actionBar.setDisplayShowHomeEnabled(true);
         actionBar.setHomeButtonEnabled(true);
@@ -50,6 +63,13 @@ public class SearchMsgWindow extends Activity
         isGlobal = (Switch)findViewById(R.id.advanceSearch_global);
         submitButton = (Button)findViewById(R.id.advanceSearch_submitButton);
 
+
+        ArrayAdapter<String> adapter =  new ArrayAdapter<String>(this,
+                android.R.layout.simple_expandable_list_item_1);
+        for(String placename:MapWindow.places.keySet()) {
+            adapter.add(placename);
+        }
+        place.setAdapter(adapter);
     }
 
     public boolean onOptionsItemSelected(MenuItem mi)
@@ -91,7 +111,32 @@ public class SearchMsgWindow extends Activity
 
     public void searchMsgSubmitHandler(View source)
     {
-        Intent intent = new Intent(this,SearchResultWindow.class);
+        HashMap<String, String> params = new HashMap<String, String>();
+        params.put("keyword", content.getText().toString());
+        params.put("nickname", author.getText().toString());
+        params.put("title", title.getText().toString());
+
+        String placename = (String)place.getSelectedItem();
+        Place chosen = MapWindow.places.get(placename);
+        params.put("placeid", String.valueOf(chosen.getId()));
+
+        String temp = startTime.getText().toString();
+        if(!temp.equals(""))
+            params.put("startTime", temp +" 00:00:00");
+        temp = endTime.getText().toString();
+        if(!temp.equals(""))
+            params.put("endTime", temp + " 23:59:59");
+
+        if(isGlobal.isChecked())
+            params.put("isHot", "1");
+        else
+            params.put("isHot", "0");
+
+        Intent intent = new Intent(SearchMsgWindow.this, SearchResultWindow.class);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("params", params);
+        bundle.putSerializable("caller", "SearchMsgWindow");
+        intent.putExtras(bundle);
         startActivity(intent);
     }
 }

@@ -44,8 +44,10 @@ public class MsgWindow extends Activity
     public TextView content;
     public TextView likeNum;
     public TextView dislikeNum;
+    public TextView reportNum;
     public Button likeButton;
     public Button dislikeButton;
+    public Button reportButton;
     public EditText commentText;
     public Button commentButton;
     public ListView commentList;
@@ -71,6 +73,8 @@ public class MsgWindow extends Activity
         likeButton = (Button)findViewById(R.id.msg_likeButton);
         dislikeNum = (TextView)findViewById(R.id.msg_dislikeNum);
         dislikeButton = (Button)findViewById(R.id.msg_dislikeButton);
+        reportNum = (TextView)findViewById(R.id.msg_reportNum);
+        reportButton = (Button)findViewById(R.id.msg_reportButton);
         commentText = (EditText)findViewById(R.id.msg_addComment);
         commentButton = (Button)findViewById(R.id.msg_commentButton);
         commentList = (ListView)findViewById(R.id.msg_commentList);
@@ -86,14 +90,17 @@ public class MsgWindow extends Activity
             @Override
             public void onClick(View v) {
                 StringRequestWithCookie stringRequest = new StringRequestWithCookie(Request.Method.POST,
-                        "http://139.129.22.145:5000/message/"+messageID+"/like",
+                        "http://139.129.22.145:5000/message/" + messageID + "/like",
                         new Response.Listener<String>() {
                             @Override
                             public void onResponse(String response) {
                                 PostResult result = JSON.parseObject(response, PostResult.class);
-                                if(result.success) {
+                                if (result.success) {
                                     //likeNum.setText(msg.getLikeUsers().size()+1+"");
                                     refreshMessageInfo();
+                                }
+                                else {
+                                    Toast.makeText(MsgWindow.this, result.message, Toast.LENGTH_LONG).show();
                                 }
                             }
                         }, null);
@@ -112,6 +119,30 @@ public class MsgWindow extends Activity
                                 if(result.success) {
                                     //dislikeNum.setText(msg.getDislikeUsers().size()+1+"");
                                     refreshMessageInfo();
+                                }
+                                else {
+                                    Toast.makeText(MsgWindow.this, result.message, Toast.LENGTH_LONG).show();
+                                }
+                            }
+                        }, null);
+                volleyQuque.add(stringRequest);
+            }
+        });
+        reportButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                StringRequestWithCookie stringRequest = new StringRequestWithCookie(Request.Method.POST,
+                        "http://139.129.22.145:5000/message/"+messageID+"/report",
+                        new Response.Listener<String>() {
+                            @Override
+                            public void onResponse(String response) {
+                                PostResult result = JSON.parseObject(response, PostResult.class);
+                                if(result.success) {
+                                    //dislikeNum.setText(msg.getDislikeUsers().size()+1+"");
+                                    refreshMessageInfo();
+                                }
+                                else {
+                                    Toast.makeText(MsgWindow.this, result.message, Toast.LENGTH_LONG).show();
                                 }
                             }
                         }, null);
@@ -179,6 +210,7 @@ public class MsgWindow extends Activity
                             content.setText(msg.getContent());
                             likeNum.setText(msg.getLikeUsers().size()+"");
                             dislikeNum.setText(msg.getDislikeUsers().size()+"");
+                            reportNum.setText(msg.getReportUsers().size()+"");
                             commentText.setText("");
                             commentText.clearFocus();
                             for(Comment comment:msg.comments) {

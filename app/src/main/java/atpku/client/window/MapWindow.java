@@ -327,7 +327,7 @@ public class MapWindow extends Activity implements
             case R.id.action_search:{
                 if (search != null)
                     search.setOnQueryTextListener(this);
-            }
+                }
                 break;
             default:
                 break;
@@ -481,7 +481,14 @@ public class MapWindow extends Activity implements
 
     public boolean onQueryTextSubmit(String query)
     {
-        Intent intent = new Intent(this, SearchResultWindow.class);
+        HashMap<String, String> params = new HashMap<String, String>();
+        // 按标题搜索
+        params.put("title", query);
+        Intent intent = new Intent(MapWindow.this, SearchResultWindow.class);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("params", params);
+        bundle.putSerializable("caller", "MapWindow");
+        intent.putExtras(bundle);
         startActivity(intent);
         return false;
     }

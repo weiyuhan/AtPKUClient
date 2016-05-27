@@ -63,8 +63,8 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="16"
-            android:id="@+id/msg_likeNum" />
+            android:id="@+id/msg_likeNum"
+            android:text="0" />
 
         <Button
             android:layout_width="wrap_content"
@@ -75,7 +75,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="-1"
+            android:text="0"
             android:layout_marginLeft="15dp"
             android:id="@+id/msg_dislikeNum" />
 
@@ -84,6 +84,20 @@
             android:layout_height="wrap_content"
             android:text="踩"
             android:id="@+id/msg_dislikeButton" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0"
+            android:layout_marginLeft="15dp"
+            android:id="@+id/msg_reportNum" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="举报"
+            android:id="@+id/msg_reportButton" />
+
     </LinearLayout>
 
     <ImageView
