@@ -76,6 +76,10 @@
             android:name="atpku.client.window.MsgWindow"
             android:label="信息">
         </activity>
+        <activity
+            android:name="atpku.client.window.EditMyInfoWindow"
+            android:label="修改个人资料">
+        </activity>
 
     </application>
 

@@ -68,7 +68,6 @@ public class RegisterWindow extends Activity
 
         volleyQuque = Volley.newRequestQueue(this);
 
-
     }
 
     public void registSubmitHandler(View source)
@@ -103,7 +102,7 @@ public class RegisterWindow extends Activity
             return;
         }
         String genderStrTmp = null;
-        if(male.isActivated())
+        if(male.isChecked())
             genderStrTmp = "m";
         else
             genderStrTmp = "f";
@@ -125,7 +124,7 @@ public class RegisterWindow extends Activity
                             mEditor.putString("stunum", stuNumStr);
                             mEditor.putString("nickname", userNameStr);
                             mEditor.putString("gender", genderStr);
-                            mEditor.commit();
+                            mEditor.apply();
                             RegisterWindow.this.finish();
                         }
                         else
@@ -155,7 +154,6 @@ public class RegisterWindow extends Activity
             }
         };
         volleyQuque.add(stringRequest);
-
 
     }
 

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/editmyinfo_username"
+        android:hint="用户名" />
+
+    <RadioGroup
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="男"
+            android:id="@+id/editmyinfo_male"
+            android:checked="false" />
+
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="女"
+            android:id="@+id/editmyinfo_female"
+            android:checked="false" />
+
+        <RadioButton
+            android:layout_width="76dp"
+            android:layout_height="wrap_content"
+            android:text="私密"
+            android:id="@+id/editmyinfo_secret" />
+    </RadioGroup>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="提交"
+        android:id="@+id/editmyinfo_submitButton"
+        android:layout_gravity="center_horizontal"
+        android:textSize="25sp"
+        android:onClick="editMyInfoSubmitHandler" />
+</LinearLayout>

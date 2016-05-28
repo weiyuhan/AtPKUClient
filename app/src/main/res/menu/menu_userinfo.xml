@@ -8,5 +8,9 @@
         android:id="@+id/action_mymsg"
         android:title="我的信息"
         android:showAsAction="always"/>
+    <item
+        android:id="@+id/action_editmyinfo"
+        android:title="修改个人资料"
+        android:showAsAction="always"/>
 
 </menu>

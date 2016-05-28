@@ -3,6 +3,7 @@ package atpku.client.window;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -80,6 +81,10 @@ public class UserInfoWindow extends Activity
         {
             studentNum.setText(studentNum.getText() + user.email);
             username.setText(username.getText() + user.nickname);
+            if(user.gender.equals("m"))
+                username.setText(username.getText() + " ♂");
+            else if(user.gender.equals("f"))
+                username.setText(username.getText() + " ♀");
             if(user.isBanned)
                 status.setText(status.getText() + "禁言");
             else
@@ -96,6 +101,35 @@ public class UserInfoWindow extends Activity
 
     protected void onResume() {
         super.onResume();
+        StringRequestWithCookie stringRequest = new StringRequestWithCookie(StringRequest.Method.GET,"http://139.129.22.145:5000/profile",
+                new Response.Listener<String>()
+                {
+                    @Override
+                    public void onResponse(String response)
+                    {
+                        PostResult result = JSON.parseObject(response, PostResult.class);
+                        if(result.success)
+                        {
+                            User user = JSON.parseObject(result.data, User.class);
+                            username.setText("用户名：" + user.nickname);
+                            if(user.gender.equals("m"))
+                                username.setText(username.getText() + " ♂");
+                            else if(user.gender.equals("f"))
+                                username.setText(username.getText() + " ♀");
+                            SharedPreferences prefs = getSharedPreferences("userinfo",1);
+                            SharedPreferences.Editor mEditor = prefs.edit();
+                            mEditor.putString("nickname", user.nickname);
+                            mEditor.putString("gender", user.gender);
+                            mEditor.apply();
+                        }
+                        else
+                        {
+                            Toast.makeText(UserInfoWindow.this, result.message, Toast.LENGTH_LONG).show();
+                        }
+                        Log.d("TAG", response);
+                    }
+                }, null);
+        volleyQuque.add(stringRequest);
         getFeedback();
     }
 
@@ -133,6 +167,10 @@ public class UserInfoWindow extends Activity
                 intent.putExtras(bundle);
                 startActivity(intent);
             }
+                break;
+            case R.id.action_editmyinfo:
+                Intent intent = new Intent(UserInfoWindow.this, EditMyInfoWindow.class);
+                startActivity(intent);
                 break;
             default:
                 break;
