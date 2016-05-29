@@ -84,6 +84,8 @@ public class MapWindow extends Activity implements
     public static Map<String, Place> places;
     public static Map<String, Marker> markers;
 
+    public static User user = new User();
+
 
     public static String getCookie()
     {
@@ -118,6 +120,9 @@ public class MapWindow extends Activity implements
 
         volleyQuque = Volley.newRequestQueue(this);
         init(); // 初始化地图
+
+        SharedPreferences prefs = getSharedPreferences("userInfo", 1);
+        user = JSON.parseObject(prefs.getString("userInfoJson", "{}"), User.class);
     }
 
 
@@ -151,6 +156,11 @@ public class MapWindow extends Activity implements
             adapter.add("用户信息");
             adapter.add("高级搜索");
             adapter.add("发送信息");
+            if (user.getIsAdmin())
+            {
+                adapter.add("管理用户");
+                adapter.add("处理举报");
+            }
         }
 
         slideMenu.setAdapter(adapter);

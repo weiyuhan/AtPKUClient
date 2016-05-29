@@ -33,6 +33,7 @@ import java.util.Map;
 
 import atpku.client.R;
 import atpku.client.model.PostResult;
+import atpku.client.model.User;
 
 
 public class LoginWindow extends Activity
@@ -77,6 +78,12 @@ public class LoginWindow extends Activity
                         System.out.println(result.toString());
                         if(result.success)
                         {
+                            User user = JSON.parseObject(result.data, User.class);
+                            MapWindow.user = user;
+                            SharedPreferences prefs = getSharedPreferences("userInfo", 1);
+                            SharedPreferences.Editor mEditor = prefs.edit();
+                            mEditor.putString("userInfoJson", result.data);
+                            mEditor.apply();
                             Toast.makeText(LoginWindow.this, result.message, Toast.LENGTH_LONG).show();
                             LoginWindow.this.finish();
                             MapWindow.isLogin = true;

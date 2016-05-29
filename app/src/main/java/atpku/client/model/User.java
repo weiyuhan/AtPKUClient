@@ -1,5 +1,9 @@
 package atpku.client.model;
 
+import android.app.Activity;
+import android.content.Context;
+import android.content.SharedPreferences;
+
 import java.io.Serializable;
 import java.util.List;
 
