@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_alignLeft="@+id/title"
+    android:layout_below="@id/title"
+    android:padding="12dip"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/title"
+        android:layout_marginRight="4dp"
+        android:text="Title"
+        android:textStyle="bold"
+        android:textSize="16dip" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/title"
+        android:id="@+id/place"
+        android:text="Place"
+        android:textColor="#A0A0A0"
+        android:textSize="14dip"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/title"
+        android:layout_alignParentRight="true"
+        android:id="@+id/time"
+        android:text="Time"
+        android:textColor="#A0A0A0"
+        android:textSize="14dip"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/place"
+        android:id="@+id/msgReportNum"
+        android:text="被举报?次"
+        android:textSize="14dip"/>
+
+</RelativeLayout>

@@ -46,6 +46,7 @@ public class UserListWindow extends Activity implements SearchView.OnQueryTextLi
     private RequestQueue volleyQuque;
     public SearchView search;
     private String nickname = "";
+    private List<User> users = null;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,6 +76,16 @@ public class UserListWindow extends Activity implements SearchView.OnQueryTextLi
 
     public void refreshUserList() {
         final UserAdapter adapter = new UserAdapter(this, R.layout.user_row);
+        if (users != null)
+        {
+            for(User user: users) {
+                if (user.getNickname().contains(nickname))
+                    adapter.add(user);
+            }
+            userList.setAdapter(adapter);
+            adapter.notifyDataSetChanged();
+            return;
+        }
         StringRequestWithCookie stringRequest = null;
         try {
             stringRequest = new StringRequestWithCookie(Request.Method.GET,
@@ -84,7 +95,7 @@ public class UserListWindow extends Activity implements SearchView.OnQueryTextLi
                         public void onResponse(String response) {
                             PostResult result = JSON.parseObject(response, PostResult.class);
                             if(result.success) {
-                                List<User> users = JSON.parseArray(result.data, User.class);
+                                users = JSON.parseArray(result.data, User.class);
                                 for(User user: users) {
                                     adapter.add(user);
                                 }
@@ -137,7 +148,7 @@ public class UserListWindow extends Activity implements SearchView.OnQueryTextLi
             View view = inflater.inflate(mResourceId, null);
             view.setClickable(true);
             final int userid = user.getId();
-            /*view.setOnClickListener(new View.OnClickListener() {
+            view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(UserListWindow.this, UserManagingWindow.class);
@@ -146,7 +157,7 @@ public class UserListWindow extends Activity implements SearchView.OnQueryTextLi
                     intent.putExtras(bundle);
                     startActivity(intent);
                 }
-            });*/
+            });
 
             TextView nicknameText = (TextView) view.findViewById(R.id.nickname);
             TextView isBannedText = (TextView) view.findViewById(R.id.isBanned);
@@ -156,6 +167,10 @@ public class UserListWindow extends Activity implements SearchView.OnQueryTextLi
             if (user.isBanned())
             {
                 isBannedText.setText("被禁言：是");
+            }
+            else
+            {
+                isBannedText.setText("被禁言：否");
             }
             reportedText.setText("被举报次数：" + user.getReportReceived());
             return view;

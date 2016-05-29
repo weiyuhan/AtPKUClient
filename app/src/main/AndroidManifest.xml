@@ -55,6 +55,10 @@
             android:label="管理用户">
         </activity>
         <activity
+            android:name="atpku.client.window.UserManagingWindow"
+            android:label="管理用户">
+        </activity>
+        <activity
             android:name="atpku.client.window.MapWindow">
         </activity>
         <activity
