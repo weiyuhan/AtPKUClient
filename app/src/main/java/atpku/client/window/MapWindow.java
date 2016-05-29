@@ -211,6 +211,10 @@ public class MapWindow extends Activity implements
                 startActivity(intent);
             }
                 break;
+            case 5:{
+                Intent intent = new Intent(this, UserListWindow.class);
+                startActivity(intent);
+            }
             default:
                 break;
 

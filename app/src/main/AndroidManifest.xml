@@ -51,6 +51,10 @@
             android:label="发送信息">
         </activity>
         <activity
+            android:name="atpku.client.window.UserListWindow"
+            android:label="管理用户">
+        </activity>
+        <activity
             android:name="atpku.client.window.MapWindow">
         </activity>
         <activity
