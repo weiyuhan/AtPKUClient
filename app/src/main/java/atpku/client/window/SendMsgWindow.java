@@ -3,35 +3,57 @@ package atpku.client.window;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.DatePickerDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.text.InputFilter;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.sdk.android.oss.ClientException;
+import com.alibaba.sdk.android.oss.ServiceException;
+import com.alibaba.sdk.android.oss.callback.OSSCompletedCallback;
+import com.alibaba.sdk.android.oss.internal.OSSAsyncTask;
+import com.alibaba.sdk.android.oss.model.PutObjectRequest;
+import com.alibaba.sdk.android.oss.model.PutObjectResult;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.toolbox.Volley;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.ListIterator;
 import java.util.Map;
 
+import atpku.client.AtPKUApplication;
 import atpku.client.R;
+import atpku.client.model.Message;
+import atpku.client.util.ImageAdapter;
 import atpku.client.util.StringRequestWithCookie;
 import atpku.client.model.Place;
 import atpku.client.model.PostResult;
+import atpku.client.util.Utillity;
 
 /**
  * Created by wyh on 2016/5/19.
@@ -46,7 +68,15 @@ public class SendMsgWindow extends Activity
     public Button submitButton;
     public ActionBar actionBar;
     private com.android.volley.RequestQueue volleyQuque;
-    public ImageView imageView;
+
+    public ListView imageList;
+    public ImageAdapter imageAdapter;
+
+    public List<String> uploadedImgUris;
+
+    public static int uploadedImgs = 0;
+
+    public List<String> imgUris;
 
     public  static int PHOTO_REQUEST_GALLERY = 0;
 
@@ -70,7 +100,7 @@ public class SendMsgWindow extends Activity
         endTime = (EditText)findViewById(R.id.sendMsg_endTime);
         place = (Spinner)findViewById(R.id.sendMsg_selectPlace);
         submitButton = (Button)findViewById(R.id.sendMsg_submitButton);
-        imageView = (ImageView)findViewById(R.id.sendMsg_image);
+        imageList = (ListView)findViewById(R.id.sendMsg_imageList);
 
         InputFilter[] filters = {new InputFilter.LengthFilter(18)};
         title.setFilters(filters);
@@ -94,6 +124,9 @@ public class SendMsgWindow extends Activity
         {
             place.setSelection(position);
         }
+
+        imgUris = new ArrayList<String>();
+        uploadedImgUris = new ArrayList<String>();
     }
 
     public void sendMsgSelectTimeHanlder(View source)
@@ -116,7 +149,7 @@ public class SendMsgWindow extends Activity
 
     public void sendMsgSubmitHandler(View source)
     {
-        Map<String, String> params = new HashMap<String, String>();
+        final Map<String, String> params = new HashMap<String, String>();
 
         // 需要在本地检查title和content的合法性，比如不能为空，长度不能过长（可能需要与后端交流
         if (title.getText().toString().equals(""))
@@ -147,6 +180,66 @@ public class SendMsgWindow extends Activity
         params.put("startTime", startTimeStr);
         params.put("endTime", endTimeStr);
 
+        System.out.println(imgUris);
+        for(String imgUri:imgUris)
+        {
+            Calendar calendar = Calendar.getInstance();
+            String objectKey = MapWindow.getCookie().substring(10) + calendar.get(Calendar.YEAR) +
+                    calendar.get(Calendar.MONTH) + calendar.get(Calendar.DAY_OF_MONTH) +
+                    calendar.get(Calendar.HOUR_OF_DAY) + calendar.get(Calendar.MINUTE) + calendar.get(Calendar.SECOND);
+            String types = imgUri.substring(imgUri.lastIndexOf(".") - 1);
+            PutObjectRequest put = new PutObjectRequest("public-image-source", objectKey + types, imgUri);
+            OSSAsyncTask task = ((AtPKUApplication)getApplication()).oss.asyncPutObject(put, new OSSCompletedCallback<PutObjectRequest, PutObjectResult>() {
+                @Override
+                public void onSuccess(PutObjectRequest request, PutObjectResult result) {
+                    if(uploadedImgUris == null)
+                    {
+                        uploadedImgUris = new ArrayList<String>();
+                    }
+                    uploadedImgs++;
+                    Log.d("PutObject", "UploadSuccess");
+                    Log.d("ETag", result.getETag());
+                    Log.d("RequestId", result.getRequestId());
+                    System.out.println(uploadedImgs + "    " + imgUris.size());
+                    uploadedImgUris.add("http://" + request.getBucketName() + ".oss-cn-shanghai.aliyuncs.com/" + request.getObjectKey());
+                    if(uploadedImgs >= imgUris.size())
+                    {
+                        sendMsgRequest(params);
+                    }
+                }
+
+                @Override
+                public void onFailure(PutObjectRequest request, ClientException clientExcepion, ServiceException serviceException) {
+                    // 请求异常
+                    uploadedImgs++;
+                    if (clientExcepion != null) {
+                        // 本地异常如网络异常等
+                        clientExcepion.printStackTrace();
+                    }
+                    if (serviceException != null) {
+                        // 服务异常
+                        Log.e("ErrorCode", serviceException.getErrorCode());
+                        Log.e("RequestId", serviceException.getRequestId());
+                        Log.e("HostId", serviceException.getHostId());
+                        Log.e("RawMessage", serviceException.getRawMessage());
+                    }
+                    if(uploadedImgs >= imgUris.size())
+                    {
+                        sendMsgRequest(params);
+                    }
+                }
+            });
+        }
+
+    }
+
+    public void sendMsgRequest(Map<String, String> params)
+    {
+        if(uploadedImgUris != null) {
+            String urisJson = JSON.toJSONString(uploadedImgUris);
+            params.put("images", urisJson);
+        }
+        System.out.println("fuck1");
         StringRequestWithCookie stringRequest = new StringRequestWithCookie(Request.Method.POST,"http://139.129.22.145:5000/message",
                 new Response.Listener<String>()
                 {
@@ -193,18 +286,36 @@ public class SendMsgWindow extends Activity
         Intent intent = new Intent(Intent.ACTION_PICK);
         intent.setType("image/*");
         startActivityForResult(intent, PHOTO_REQUEST_GALLERY);
+
     }
 
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    protected void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        if(imageAdapter == null) {
+            imageAdapter = new ImageAdapter(this, R.layout.image_row);
+            imageList.setAdapter(imageAdapter);
+            imgUris = new ArrayList<String>();
+        }
         if (requestCode == PHOTO_REQUEST_GALLERY) {
             // 从相册返回的数据
             if (data != null) {
                 // 得到图片的全路径
                 Uri uri = data.getData();
-                Picasso.with(this).load(uri).resize(200,200).into(imageView);
+                String uri_s = uri.toString();
+                String imgPath = Utillity.getRealPathFromUri(this, uri);
 
+                System.out.println(imgPath);
+
+                if(!imgUris.contains(imgPath))
+                {
+                    imgUris.add(imgPath);
+                    imageAdapter.add(uri_s);
+                    imageList.setAdapter(imageAdapter);
+                }
             }
-
         }
+
     }
+
+
 }

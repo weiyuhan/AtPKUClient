@@ -30,8 +30,10 @@ import java.util.Map;
 
 import atpku.client.R;
 import atpku.client.model.Comment;
+import atpku.client.model.Image;
 import atpku.client.model.Message;
 import atpku.client.model.PostResult;
+import atpku.client.util.ImageAdapter;
 import atpku.client.util.StringRequestWithCookie;
 
 /**
@@ -53,6 +55,8 @@ public class MsgWindow extends Activity
     public ListView commentList;
     private RequestQueue volleyQuque;
     private Message msg;
+
+    public ListView imageList;
 
     private int messageID;
 
@@ -78,6 +82,7 @@ public class MsgWindow extends Activity
         commentText = (EditText)findViewById(R.id.msg_addComment);
         commentButton = (Button)findViewById(R.id.msg_commentButton);
         commentList = (ListView)findViewById(R.id.msg_commentList);
+        imageList = (ListView)findViewById(R.id.showMsg_imageList);
 
         CharSequence label = (CharSequence) "";
         setTitle(label);
@@ -85,7 +90,7 @@ public class MsgWindow extends Activity
         Intent intent = this.getIntent();
         messageID = (int) intent.getSerializableExtra("messageID");
         volleyQuque = Volley.newRequestQueue(this);
-        refreshMessageInfo();
+        refreshMessageInfo(true);
         likeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -97,7 +102,7 @@ public class MsgWindow extends Activity
                                 PostResult result = JSON.parseObject(response, PostResult.class);
                                 if (result.success) {
                                     //likeNum.setText(msg.getLikeUsers().size()+1+"");
-                                    refreshMessageInfo();
+                                    refreshMessageInfo(false);
                                 }
                                 else {
                                     Toast.makeText(MsgWindow.this, result.message, Toast.LENGTH_LONG).show();
@@ -118,7 +123,7 @@ public class MsgWindow extends Activity
                                 PostResult result = JSON.parseObject(response, PostResult.class);
                                 if(result.success) {
                                     //dislikeNum.setText(msg.getDislikeUsers().size()+1+"");
-                                    refreshMessageInfo();
+                                    refreshMessageInfo(false);
                                 }
                                 else {
                                     Toast.makeText(MsgWindow.this, result.message, Toast.LENGTH_LONG).show();
@@ -139,7 +144,7 @@ public class MsgWindow extends Activity
                                 PostResult result = JSON.parseObject(response, PostResult.class);
                                 if(result.success) {
                                     //dislikeNum.setText(msg.getDislikeUsers().size()+1+"");
-                                    refreshMessageInfo();
+                                    refreshMessageInfo(false);
                                 }
                                 else {
                                     Toast.makeText(MsgWindow.this, result.message, Toast.LENGTH_LONG).show();
@@ -167,7 +172,7 @@ public class MsgWindow extends Activity
                                 PostResult result = JSON.parseObject(response, PostResult.class);
                                 if(result.success) {
                                     Toast.makeText(MsgWindow.this, "评论成功！", Toast.LENGTH_LONG).show();
-                                    refreshMessageInfo();
+                                    refreshMessageInfo(false);
                                 }
                             }
                         }, params);
@@ -195,7 +200,21 @@ public class MsgWindow extends Activity
 
     }
 
-    public void refreshMessageInfo() {
+    public void refreshMessageList()
+    {
+        if(msg != null && msg.images != null)
+        {
+            ImageAdapter adapter = new ImageAdapter(this, R.layout.image_row);
+            for(Image image:msg.images)
+            {
+                System.out.println(image.getUrl());
+                adapter.add(image.getUrl());
+            }
+            imageList.setAdapter(adapter);
+        }
+    }
+
+    public void refreshMessageInfo(final boolean refreshImage) {
         final CommentAdapter adapter = new CommentAdapter(this, R.layout.comment_row);
         StringRequestWithCookie stringRequest = new StringRequestWithCookie(StringRequest.Method.GET,
                 "http://139.129.22.145:5000/message/"+messageID,
@@ -216,6 +235,8 @@ public class MsgWindow extends Activity
                             for(Comment comment:msg.comments) {
                                 adapter.add(comment);
                             }
+                            if(refreshImage)
+                                refreshMessageList();
                         }
                         commentList.setAdapter(adapter);
                         adapter.notifyDataSetChanged();

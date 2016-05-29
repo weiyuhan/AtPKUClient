@@ -429,6 +429,10 @@ public class MapWindow extends Activity implements
         if(MapWindow.markers == null) {
             MapWindow.markers = new HashMap<String, Marker>();
         }
+        if(MapWindow.places == null)
+        {
+            MapWindow.places = new HashMap<String, Place>();
+        }
         MarkerOptions markerOptions = new MarkerOptions();
         LatLng pos;
         Set<String> keys = MapWindow.places.keySet();
