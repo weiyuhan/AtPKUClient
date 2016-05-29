@@ -262,6 +262,7 @@ public class MsgWindow extends Activity
                             if (MapWindow.user.getIsAdmin() || MapWindow.user.getId()==msg.getOwner().getId())
                             {
                                 reportButton.setVisibility(View.GONE);
+                                reportNum.setText(msg.getReportUsers().size()+"举报");
                                 deleteButton.setVisibility(View.VISIBLE);
                             }
                             if(refreshImage)

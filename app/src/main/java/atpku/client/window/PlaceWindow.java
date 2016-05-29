@@ -76,11 +76,8 @@ public class PlaceWindow extends Activity implements SearchView.OnQueryTextListe
 
     public void refreshMessageList() {
         final MessageAdapter adapter = new MessageAdapter(this, R.layout.message_row);
-        Map<String, String> params = new HashMap<String, String>();
-        params.put("keyword", "");
-        params.put("placeid", "" + placeID);
-        StringRequestWithCookie stringRequest = new StringRequestWithCookie(Request.Method.POST,
-                "http://139.129.22.145:5000/message/search",
+        StringRequestWithCookie stringRequest = new StringRequestWithCookie(Request.Method.GET,
+                "http://139.129.22.145:5000/msgsAtPlace/"+placeID,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -96,7 +93,7 @@ public class PlaceWindow extends Activity implements SearchView.OnQueryTextListe
                         msgList.setAdapter(adapter);
                         adapter.notifyDataSetChanged();
                     }
-                }, params);
+                }, null);
         volleyQuque.add(stringRequest);
     }
 
