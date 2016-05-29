@@ -48,6 +48,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
+import java.util.TimeZone;
 
 import atpku.client.AtPKUApplication;
 import atpku.client.R;
@@ -221,7 +222,7 @@ public class SendMsgWindow extends Activity
                     Log.d("ETag", result.getETag());
                     Log.d("RequestId", result.getRequestId());
                     System.out.println(uploadedImgs + "    " + imgUris.size());
-                    uploadedImgUris.add("http://" + request.getBucketName() + ".oss-cn-shanghai.aliyuncs.com/" + request.getObjectKey());
+                    uploadedImgUris.add("http://" + request.getBucketName() + ".img-cn-shanghai.aliyuncs.com/" + request.getObjectKey());
                     if(uploadedImgs >= imgUris.size())
                     {
                         sendMsgRequest(params);

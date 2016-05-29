@@ -10,6 +10,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -33,13 +34,15 @@ import atpku.client.model.Comment;
 import atpku.client.model.Image;
 import atpku.client.model.Message;
 import atpku.client.model.PostResult;
+import atpku.client.util.CommentAdapter;
 import atpku.client.util.ImageAdapter;
+import atpku.client.util.ImageDialog;
 import atpku.client.util.StringRequestWithCookie;
 
 /**
  * Created by wyh on 2016/5/19.
  */
-public class MsgWindow extends Activity
+public class MsgWindow extends Activity implements AdapterView.OnItemClickListener
 {
     public TextView title;
     public TextView author;
@@ -60,6 +63,9 @@ public class MsgWindow extends Activity
     public ListView imageList;
 
     private int messageID;
+    public static String CUT_FILL_BLACK = "@200w_200h_4e_0-0-0bgc";
+    public static String CUT_TO_CYCLESQUARE = "@200w_200h_1e_1c_10-2ci.png";
+    public static String CUT_TO_CYCLE = "@200-1ci";
 
     public ActionBar actionBar;
     protected void onCreate(Bundle savedInstanceState) {
@@ -232,9 +238,10 @@ public class MsgWindow extends Activity
             for(Image image:msg.images)
             {
                 System.out.println(image.getUrl());
-                adapter.add(image.getUrl());
+                adapter.add(image.getUrl() + MsgWindow.CUT_FILL_BLACK);
             }
             imageList.setAdapter(adapter);
+            imageList.setOnItemClickListener(this);
         }
     }
 
@@ -274,28 +281,13 @@ public class MsgWindow extends Activity
         volleyQuque.add(stringRequest);
     }
 
-    class CommentAdapter extends ArrayAdapter<Comment> {
-        private int mResourceId;
-
-        public CommentAdapter(Context context, int textViewResourceId) {
-            super(context, textViewResourceId);
-            this.mResourceId = textViewResourceId;
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            Comment comment = getItem(position);
-            LayoutInflater inflater = getLayoutInflater();
-            View view = inflater.inflate(mResourceId, null);
-
-            TextView contentText = (TextView) view.findViewById(R.id.content);
-            TextView timeText = (TextView) view.findViewById(R.id.time);
-            TextView nicknameText = (TextView) view.findViewById(R.id.nickname);
-
-            contentText.setText(comment.getContent());
-            timeText.setText(comment.getCommentTime());
-            nicknameText.setText(comment.owner.getNickname());
-            return view;
-        }
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id)
+    {
+        String smallImgUrl = (String)parent.getItemAtPosition(position);
+        String imgUrl = smallImgUrl.substring(0, smallImgUrl.lastIndexOf("@"));
+        ImageDialog imageDialog = new ImageDialog(this, imgUrl);
+        imageDialog.show();
     }
+
 }
