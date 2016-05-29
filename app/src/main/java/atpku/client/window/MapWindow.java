@@ -14,6 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.Toast;
@@ -27,6 +28,7 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.squareup.picasso.Picasso;
 
 import java.util.HashMap;
 import java.util.List;
@@ -366,8 +368,9 @@ public class MapWindow extends Activity implements
             case R.id.action_switch:
                 switchMapType();
                 break;
-            case R.id.action_refresh:
+            case R.id.action_refresh: {
                 refreshPlaces();
+            }
                 break;
             case R.id.action_search:{
                 if (search != null)
@@ -445,6 +448,10 @@ public class MapWindow extends Activity implements
     public void refreshMarkers() {
         if(MapWindow.markers == null) {
             MapWindow.markers = new HashMap<String, Marker>();
+        }
+        if(MapWindow.places == null)
+        {
+            MapWindow.places = new HashMap<String, Place>();
         }
         MarkerOptions markerOptions = new MarkerOptions();
         LatLng pos;
