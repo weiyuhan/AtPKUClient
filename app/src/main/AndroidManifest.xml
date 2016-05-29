@@ -49,6 +49,7 @@
         </activity>
         <activity
             android:name="atpku.client.window.SendMsgWindow"
+            android:configChanges="orientation|keyboardHidden"
             android:label="发送信息">
         </activity>
         <activity

@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -83,7 +84,8 @@ public class SendMsgWindow extends Activity
     public  static int PHOTO_REQUEST_GALLERY = 0;
     public  static int PHOTO_REQUEST_CAREMA = 1;
 
-    private Uri cameraImageUri;
+
+    private File cameraImageTempFile;
 
     public void onCreate(Bundle savedInstanceState)
     {
@@ -132,6 +134,10 @@ public class SendMsgWindow extends Activity
 
         imgUris = new ArrayList<String>();
         uploadedImgUris = new ArrayList<String>();
+    }
+
+    public void onConfigurationChanged(Configuration config) {
+        super.onConfigurationChanged(config);
     }
 
     public void sendMsgSelectTimeHanlder(View source)
@@ -301,9 +307,9 @@ public class SendMsgWindow extends Activity
         // 激活相机
         Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
         Calendar calendar = Calendar.getInstance();
-        File tempFile = new File(Environment.getExternalStorageDirectory(),"atpku" + calendar.get(Calendar.MILLISECOND));
+        cameraImageTempFile = new File(Environment.getExternalStorageDirectory(),"atpku" + calendar.get(Calendar.MILLISECOND));
         // 从文件中创建uri
-        cameraImageUri = Uri.fromFile(tempFile);
+        Uri cameraImageUri = Uri.fromFile(cameraImageTempFile);
         intent.putExtra(MediaStore.EXTRA_OUTPUT, cameraImageUri);
         // 开启一个带有返回值的Activity，请求码为PHOTO_REQUEST_CAREMA
         startActivityForResult(intent, PHOTO_REQUEST_CAREMA);
@@ -333,25 +339,24 @@ public class SendMsgWindow extends Activity
                     imgUris.add(imgPath);
                     imageAdapter.add(uri_s);
                     imageList.setAdapter(imageAdapter);
+                    System.out.println(imageAdapter.getCount());
                 }
             }
         }
         if(requestCode == PHOTO_REQUEST_CAREMA)
         {
-            Uri uri = cameraImageUri;
-            String uri_s = uri.toString();
-            String imgPath = Utillity.getRealPathFromUri(this, uri);
+            String imgPath = cameraImageTempFile.getAbsolutePath();
 
             System.out.println(imgPath);
 
             if(!imgUris.contains(imgPath))
             {
                 imgUris.add(imgPath);
-                imageAdapter.add(uri_s);
+                imageAdapter.add(Uri.fromFile(cameraImageTempFile).toString());
                 imageList.setAdapter(imageAdapter);
             }
         }
-
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
 
