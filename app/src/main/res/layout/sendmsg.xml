@@ -41,6 +41,22 @@
         android:layout_gravity="center_horizontal"
         android:spinnerMode="dropdown" />
 
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="添加图片"
+        android:id="@+id/sendMsg_imageButton"
+        android:layout_gravity="center_horizontal"
+        android:textSize="30dp"
+        android:onClick="addImageSubmitHandler" />
+
+    <ImageView
+        android:id="@+id/sendMsg_image"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:background="#D0D0D0" />
+
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

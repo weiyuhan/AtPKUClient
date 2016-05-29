@@ -4,6 +4,7 @@ import android.app.ActionBar;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.InputFilter;
 import android.util.Log;
@@ -13,6 +14,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -20,6 +22,7 @@ import com.alibaba.fastjson.JSON;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.toolbox.Volley;
+import com.squareup.picasso.Picasso;
 
 import java.util.Calendar;
 import java.util.HashMap;
@@ -43,6 +46,9 @@ public class SendMsgWindow extends Activity
     public Button submitButton;
     public ActionBar actionBar;
     private com.android.volley.RequestQueue volleyQuque;
+    public ImageView imageView;
+
+    public  static int PHOTO_REQUEST_GALLERY = 0;
 
     public void onCreate(Bundle savedInstanceState)
     {
@@ -64,6 +70,7 @@ public class SendMsgWindow extends Activity
         endTime = (EditText)findViewById(R.id.sendMsg_endTime);
         place = (Spinner)findViewById(R.id.sendMsg_selectPlace);
         submitButton = (Button)findViewById(R.id.sendMsg_submitButton);
+        imageView = (ImageView)findViewById(R.id.sendMsg_image);
 
         InputFilter[] filters = {new InputFilter.LengthFilter(18)};
         title.setFilters(filters);
@@ -179,5 +186,25 @@ public class SendMsgWindow extends Activity
         }
         return true;
 
+    }
+
+    public void addImageSubmitHandler(View view)
+    {
+        Intent intent = new Intent(Intent.ACTION_PICK);
+        intent.setType("image/*");
+        startActivityForResult(intent, PHOTO_REQUEST_GALLERY);
+    }
+
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == PHOTO_REQUEST_GALLERY) {
+            // 从相册返回的数据
+            if (data != null) {
+                // 得到图片的全路径
+                Uri uri = data.getData();
+                Picasso.with(this).load(uri).resize(200,200).into(imageView);
+
+            }
+
+        }
     }
 }
