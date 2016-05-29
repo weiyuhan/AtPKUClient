@@ -27,19 +27,31 @@
                 android:lines="7"
                 android:hint="内容" />
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="起始日期"
+                android:id="@+id/sendMsg_startDate" />
+
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/sendMsg_startTime"
                 android:layout_gravity="center_horizontal"
-                android:hint="起始时间：2016-5-19"
+                android:hint="起始时间"
                 android:onClick="sendMsgSelectTimeHanlder" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="结束日期"
+                android:id="@+id/sendMsg_endDate" />
 
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/sendMsg_endTime"
-                android:hint="有效期至：2016-5-20"
+                android:hint="结束时间"
                 android:onClick="sendMsgSelectTimeHanlder" />
 
             <Spinner
@@ -76,7 +88,8 @@
             <ListView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/sendMsg_imageList">
+                android:id="@+id/sendMsg_imageList"
+                android:layout_weight="0.5">
             </ListView>
 
             <Button

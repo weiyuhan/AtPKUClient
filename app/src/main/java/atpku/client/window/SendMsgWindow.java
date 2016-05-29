@@ -80,8 +80,8 @@ public class SendMsgWindow extends Activity
 
     public List<String> imgUris;
 
-    public  static int PHOTO_REQUEST_GALLERY = 0;
-    public  static int PHOTO_REQUEST_CAREMA = 1;
+    public static int PHOTO_REQUEST_GALLERY = 0;
+    public static int PHOTO_REQUEST_CAREMA = 1;
 
     private Uri cameraImageUri;
 
@@ -102,7 +102,13 @@ public class SendMsgWindow extends Activity
         title = (EditText)findViewById(R.id.sendMsg_title);
         content = (EditText)findViewById(R.id.sendMsg_content);
         startTime = (EditText)findViewById(R.id.sendMsg_startTime);
+        Calendar c = Calendar.getInstance();
+        int year = c.get(Calendar.YEAR);
+        int month = c.get(Calendar.MONTH);
+        int day = c.get(Calendar.DAY_OF_MONTH);
+        startTime.setText(String.valueOf(year)+"-"+String.valueOf(month+1)+"-"+String.valueOf(day));
         endTime = (EditText)findViewById(R.id.sendMsg_endTime);
+        endTime.setText(String.valueOf(year)+"-"+String.valueOf(month+1)+"-"+String.valueOf(day));
         place = (Spinner)findViewById(R.id.sendMsg_selectPlace);
         submitButton = (Button)findViewById(R.id.sendMsg_submitButton);
         imageList = (ListView)findViewById(R.id.sendMsg_imageList);
