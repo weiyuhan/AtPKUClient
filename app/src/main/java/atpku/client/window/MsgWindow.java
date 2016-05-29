@@ -83,11 +83,6 @@ public class MsgWindow extends Activity
 
         CharSequence label = (CharSequence) "";
         setTitle(label);
-        if (MapWindow.user.getIsAdmin() || MapWindow.user.getId()==msg.getOwner().getId())
-        {
-            reportButton.setVisibility(View.GONE);
-            deleteButton.setVisibility(View.VISIBLE);
-        }
         getWindow().setSoftInputMode( WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         Intent intent = this.getIntent();
         messageID = (int) intent.getSerializableExtra("messageID");
@@ -244,6 +239,11 @@ public class MsgWindow extends Activity
                             commentText.clearFocus();
                             for(Comment comment:msg.comments) {
                                 adapter.add(comment);
+                            }
+                            if (MapWindow.user.getIsAdmin() || MapWindow.user.getId()==msg.getOwner().getId())
+                            {
+                                reportButton.setVisibility(View.GONE);
+                                deleteButton.setVisibility(View.VISIBLE);
                             }
                         }
                         commentList.setAdapter(adapter);
