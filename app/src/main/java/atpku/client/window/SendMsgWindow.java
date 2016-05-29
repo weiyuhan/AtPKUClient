@@ -180,7 +180,10 @@ public class SendMsgWindow extends Activity
         params.put("startTime", startTimeStr);
         params.put("endTime", endTimeStr);
 
-        System.out.println(imgUris);
+        if(imgUris.size() == 0)
+        {
+            sendMsgRequest(params);
+        }
         for(String imgUri:imgUris)
         {
             Calendar calendar = Calendar.getInstance();
@@ -235,7 +238,7 @@ public class SendMsgWindow extends Activity
 
     public void sendMsgRequest(Map<String, String> params)
     {
-        if(uploadedImgUris != null) {
+        if(uploadedImgUris != null && uploadedImgUris.size() != 0) {
             String urisJson = JSON.toJSONString(uploadedImgUris);
             params.put("images", urisJson);
         }
