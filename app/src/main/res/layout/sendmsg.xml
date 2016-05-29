@@ -9,6 +9,7 @@
 
         <LinearLayout
             android:orientation="vertical"
+            android:weightSum="1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -49,14 +50,28 @@
                 android:spinnerMode="dropdown" />
 
 
-            <Button
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="添加图片"
-                android:id="@+id/sendMsg_imageButton"
-                android:layout_gravity="center_horizontal"
-                android:textSize="30dp"
-                android:onClick="addImageSubmitHandler" />
+                android:layout_gravity="center_horizontal">
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="添加图片"
+                    android:id="@+id/button"
+                    android:layout_gravity="center_horizontal"
+                    android:textSize="30dp"
+                    android:onClick="addImageSubmitHandler" />
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="拍照"
+                    android:id="@+id/sendMsg_camera"
+                    android:onClick="useCameraHandler" />
+            </LinearLayout>
 
             <ListView
                 android:layout_width="wrap_content"

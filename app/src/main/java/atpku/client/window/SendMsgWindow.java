@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.text.InputFilter;
 import android.util.Log;
@@ -37,6 +38,7 @@ import com.android.volley.Response;
 import com.android.volley.toolbox.Volley;
 import com.squareup.picasso.Picasso;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
@@ -79,6 +81,9 @@ public class SendMsgWindow extends Activity
     public List<String> imgUris;
 
     public  static int PHOTO_REQUEST_GALLERY = 0;
+    public  static int PHOTO_REQUEST_CAREMA = 1;
+
+    private Uri cameraImageUri;
 
     public void onCreate(Bundle savedInstanceState)
     {
@@ -289,7 +294,19 @@ public class SendMsgWindow extends Activity
         Intent intent = new Intent(Intent.ACTION_PICK);
         intent.setType("image/*");
         startActivityForResult(intent, PHOTO_REQUEST_GALLERY);
+    }
 
+    public void useCameraHandler(View view)
+    {
+        // 激活相机
+        Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
+        Calendar calendar = Calendar.getInstance();
+        File tempFile = new File(Environment.getExternalStorageDirectory(),"atpku" + calendar.get(Calendar.MILLISECOND));
+        // 从文件中创建uri
+        cameraImageUri = Uri.fromFile(tempFile);
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, cameraImageUri);
+        // 开启一个带有返回值的Activity，请求码为PHOTO_REQUEST_CAREMA
+        startActivityForResult(intent, PHOTO_REQUEST_CAREMA);
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data)
@@ -299,9 +316,11 @@ public class SendMsgWindow extends Activity
             imageList.setAdapter(imageAdapter);
             imgUris = new ArrayList<String>();
         }
-        if (requestCode == PHOTO_REQUEST_GALLERY) {
+        if (requestCode == PHOTO_REQUEST_GALLERY)
+        {
             // 从相册返回的数据
-            if (data != null) {
+            if (data != null)
+            {
                 // 得到图片的全路径
                 Uri uri = data.getData();
                 String uri_s = uri.toString();
@@ -315,6 +334,21 @@ public class SendMsgWindow extends Activity
                     imageAdapter.add(uri_s);
                     imageList.setAdapter(imageAdapter);
                 }
+            }
+        }
+        if(requestCode == PHOTO_REQUEST_CAREMA)
+        {
+            Uri uri = cameraImageUri;
+            String uri_s = uri.toString();
+            String imgPath = Utillity.getRealPathFromUri(this, uri);
+
+            System.out.println(imgPath);
+
+            if(!imgUris.contains(imgPath))
+            {
+                imgUris.add(imgPath);
+                imageAdapter.add(uri_s);
+                imageList.setAdapter(imageAdapter);
             }
         }
 
