@@ -48,6 +48,9 @@ public class UserListWindow extends Activity implements SearchView.OnQueryTextLi
     private String nickname = "";
     private List<User> users = null;
 
+    private boolean sortByReport = false;
+    private boolean hideBanned = false;
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.userlist);

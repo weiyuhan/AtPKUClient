@@ -16,6 +16,7 @@ public class Message implements Serializable
     public List<User> likeUsers;
     public List<User> dislikeUsers;
     public List<User> reportUsers;
+    public int reportTimes;
     public String title;
     public String content;
     public String postTime;
@@ -95,6 +96,8 @@ public class Message implements Serializable
     public List<User> getReportUsers() {
         return reportUsers;
     }
+    public int getReportTimes() { return reportTimes; }
+    public void setReportTimes(int reportTimes) { this.reportTimes = reportTimes; }
 
     public void setReportUsers(List<User> reportUsers) {
         this.reportUsers = reportUsers;

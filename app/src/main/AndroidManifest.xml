@@ -59,6 +59,10 @@
             android:label="管理用户">
         </activity>
         <activity
+            android:name="atpku.client.window.ReportHandlingWindow"
+            android:label="处理举报">
+        </activity>
+        <activity
             android:name="atpku.client.window.MapWindow">
         </activity>
         <activity

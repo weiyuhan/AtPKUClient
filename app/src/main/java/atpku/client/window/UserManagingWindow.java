@@ -197,13 +197,13 @@ public class UserManagingWindow extends Activity
 
             TextView titleText = (TextView) view.findViewById(R.id.title);
             TextView timeText = (TextView) view.findViewById(R.id.time);
-            //TextView placeText = (TextView) view.findViewById(R.id.place);
-            //TextView msgReportedText = (TextView) view.findViewById(R.id.msgReportNum);
+            TextView placeText = (TextView) view.findViewById(R.id.place);
+            TextView msgReportedText = (TextView) view.findViewById(R.id.msgReportNum);
 
             titleText.setText(msg.getTitle());
             timeText.setText(msg.getPostTime());
-            //placeText.setText(msg.getAtPlace().getName());
-            //msgReportedText.setText(msg.getReportUsers().size()+"");
+            placeText.setText(msg.getAtPlace().getName());
+            msgReportedText.setText("被举报次数："+msg.getReportTimes());
             return view;
         }
     }

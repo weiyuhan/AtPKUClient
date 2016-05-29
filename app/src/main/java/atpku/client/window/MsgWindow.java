@@ -48,6 +48,7 @@ public class MsgWindow extends Activity
     public Button likeButton;
     public Button dislikeButton;
     public Button reportButton;
+    public Button deleteButton;
     public EditText commentText;
     public Button commentButton;
     public ListView commentList;
@@ -75,12 +76,18 @@ public class MsgWindow extends Activity
         dislikeButton = (Button)findViewById(R.id.msg_dislikeButton);
         reportNum = (TextView)findViewById(R.id.msg_reportNum);
         reportButton = (Button)findViewById(R.id.msg_reportButton);
+        deleteButton = (Button)findViewById(R.id.msg_deleteButton);
         commentText = (EditText)findViewById(R.id.msg_addComment);
         commentButton = (Button)findViewById(R.id.msg_commentButton);
         commentList = (ListView)findViewById(R.id.msg_commentList);
 
         CharSequence label = (CharSequence) "";
         setTitle(label);
+        if (MapWindow.user.getIsAdmin() || MapWindow.user.getId()==msg.getOwner().getId())
+        {
+            reportButton.setVisibility(View.GONE);
+            deleteButton.setVisibility(View.VISIBLE);
+        }
         getWindow().setSoftInputMode( WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         Intent intent = this.getIntent();
         messageID = (int) intent.getSerializableExtra("messageID");
@@ -140,6 +147,28 @@ public class MsgWindow extends Activity
                                 if(result.success) {
                                     //dislikeNum.setText(msg.getDislikeUsers().size()+1+"");
                                     refreshMessageInfo();
+                                }
+                                else {
+                                    Toast.makeText(MsgWindow.this, result.message, Toast.LENGTH_LONG).show();
+                                }
+                            }
+                        }, null);
+                volleyQuque.add(stringRequest);
+            }
+        });
+        deleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                StringRequestWithCookie stringRequest = new StringRequestWithCookie(Request.Method.POST,
+                        "http://139.129.22.145:5000/message/"+messageID+"/delete",
+                        new Response.Listener<String>() {
+                            @Override
+                            public void onResponse(String response) {
+                                PostResult result = JSON.parseObject(response, PostResult.class);
+                                if(result.success) {
+                                    //dislikeNum.setText(msg.getDislikeUsers().size()+1+"");
+                                    Toast.makeText(MsgWindow.this, "删除成功！", Toast.LENGTH_LONG).show();
+                                    finish();
                                 }
                                 else {
                                     Toast.makeText(MsgWindow.this, result.message, Toast.LENGTH_LONG).show();

@@ -98,6 +98,14 @@
             android:text="举报"
             android:id="@+id/msg_reportButton" />
 
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:visibility="gone"
+            android:text="删除"
+            android:id="@+id/msg_deleteButton" />
+
     </LinearLayout>
 
     <ImageView

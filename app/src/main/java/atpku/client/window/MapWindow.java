@@ -215,6 +215,12 @@ public class MapWindow extends Activity implements
                 Intent intent = new Intent(this, UserListWindow.class);
                 startActivity(intent);
             }
+            break;
+            case 6:{
+                Intent intent = new Intent(this, ReportHandlingWindow.class);
+                startActivity(intent);
+            }
+            break;
             default:
                 break;
 
