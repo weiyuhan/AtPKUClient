@@ -30,6 +30,7 @@ import java.util.Map;
 
 import atpku.client.R;
 import atpku.client.model.PostResult;
+import atpku.client.util.StringRequestWithCookie;
 
 public class RegisterWindow extends Activity
 {
@@ -108,7 +109,13 @@ public class RegisterWindow extends Activity
             genderStrTmp = "f";
         final String genderStr = genderStrTmp;
 
-        StringRequest stringRequest = new StringRequest(StringRequest.Method.POST,"http://139.129.22.145:5000/register",
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("nickname", userNameStr);
+        params.put("email", stuNumStr + "@pku.edu.cn");
+        params.put("password", passwordStr);
+        params.put("gender", genderStr);
+        StringRequestWithCookie stringRequest = new StringRequestWithCookie(StringRequest.Method.POST,
+                "http://139.129.22.145:5000/register",
                 new Response.Listener<String>()
                 {
                     @Override
@@ -133,28 +140,8 @@ public class RegisterWindow extends Activity
                         }
                         Log.d("TAG", response);
                         }
-                },
-                new Response.ErrorListener()
-                {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        //System.out.println("error : " + error.getMessage());
-                        Log.e("TAG", error.getMessage(), error);
-                    }
-                }){
-            @Override
-            protected Map<String, String> getParams() {
-                //在这里设置需要post的参数
-                Map<String, String> params = new HashMap<String, String>();
-                params.put("nickname", userNameStr);
-                params.put("email", stuNumStr + "@pku.edu.cn");
-                params.put("password", passwordStr);
-                params.put("gender", genderStr);
-                return params;
-            }
-        };
+                },params);
         volleyQuque.add(stringRequest);
-
     }
 
     public void registerBackHandler(View source)
