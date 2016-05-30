@@ -97,6 +97,7 @@ public class UserManagingWindow extends Activity
                                         if (result.success) {
                                             //likeNum.setText(msg.getLikeUsers().size()+1+"");
                                             refreshUserInfo();
+                                            Toast.makeText(UserManagingWindow.this, "禁言成功", Toast.LENGTH_LONG).show();
                                         }
                                         else {
                                             Toast.makeText(UserManagingWindow.this, result.message, Toast.LENGTH_LONG).show();

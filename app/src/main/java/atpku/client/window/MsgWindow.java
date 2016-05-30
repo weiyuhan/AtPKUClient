@@ -2,9 +2,12 @@ package atpku.client.window;
 
 import android.app.ActionBar;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -46,6 +49,7 @@ import atpku.client.util.StringRequestWithCookie;
 public class MsgWindow extends Activity implements AdapterView.OnItemClickListener
 {
     public TextView title;
+    public TextView time;
     public TextView author;
     public TextView content;
     public TextView likeNum;
@@ -79,6 +83,7 @@ public class MsgWindow extends Activity implements AdapterView.OnItemClickListen
         actionBar.setDisplayHomeAsUpEnabled(true);
 
         title = (TextView)findViewById(R.id.msg_title);
+        time = (TextView)findViewById(R.id.msg_time);
         author = (TextView)findViewById(R.id.msg_author);
         content = (TextView)findViewById(R.id.msg_content);
         likeNum = (TextView)findViewById(R.id.msg_likeNum);
@@ -166,6 +171,38 @@ public class MsgWindow extends Activity implements AdapterView.OnItemClickListen
         deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (MapWindow.user.getIsAdmin() && MapWindow.user.getId()!=msg.getId()) {
+                    new AlertDialog.Builder(MsgWindow.this).setTitle("是否同时禁言该用户？")
+                            .setPositiveButton("是", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    final EditText daysText = new EditText(MsgWindow.this);
+                                    daysText.setInputType(InputType.TYPE_CLASS_NUMBER);
+                                    new AlertDialog.Builder(MsgWindow.this).setTitle("请输入禁言天数").setView(
+                                            daysText).setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            StringRequestWithCookie stringRequest = new StringRequestWithCookie(Request.Method.POST,
+                                                    "http://139.129.22.145:5000/banUser/" + msg.getOwner().getId()
+                                                            + "/" + daysText.getText().toString(),
+                                                    new Response.Listener<String>() {
+                                                        @Override
+                                                        public void onResponse(String response) {
+                                                            PostResult result = JSON.parseObject(response, PostResult.class);
+                                                            if (result.success) {
+                                                                return;
+                                                            } else {
+                                                                Toast.makeText(MsgWindow.this, result.message, Toast.LENGTH_LONG).show();
+                                                            }
+                                                        }
+                                                    }, null);
+                                            volleyQuque.add(stringRequest);
+                                        }
+                                    })
+                                            .setNegativeButton("取消", null).show();
+                                }
+                            }).setNegativeButton("否", null).show();
+                }
                 StringRequestWithCookie stringRequest = new StringRequestWithCookie(Request.Method.POST,
                         "http://139.129.22.145:5000/message/"+messageID+"/delete",
                         new Response.Listener<String>() {
@@ -174,7 +211,7 @@ public class MsgWindow extends Activity implements AdapterView.OnItemClickListen
                                 PostResult result = JSON.parseObject(response, PostResult.class);
                                 if(result.success) {
                                     //dislikeNum.setText(msg.getDislikeUsers().size()+1+"");
-                                    Toast.makeText(MsgWindow.this, "删除成功！", Toast.LENGTH_LONG).show();
+                                    Toast.makeText(MsgWindow.this, "操作成功！", Toast.LENGTH_LONG).show();
                                     finish();
                                 }
                                 else {
@@ -257,6 +294,7 @@ public class MsgWindow extends Activity implements AdapterView.OnItemClickListen
                         if(result.success) {
                             msg = JSON.parseObject(result.data, Message.class);
                             title.setText(msg.getTitle());
+                            time.setText(msg.getPostTime());
                             author.setText(msg.getOwner().getNickname());
                             content.setText(msg.getContent());
                             likeNum.setText(msg.getLikeUsers().size()+"");
