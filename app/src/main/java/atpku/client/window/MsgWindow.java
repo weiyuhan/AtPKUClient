@@ -197,29 +197,23 @@ public class MsgWindow extends Activity implements AdapterView.OnItemClickListen
                                                         }
                                                     }, null);
                                             volleyQuque.add(stringRequest);
+                                            deleteMsg();
                                         }
                                     })
-                                            .setNegativeButton("取消", null).show();
+                                            .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                                                @Override
+                                                public void onClick(DialogInterface dialog, int which) {
+                                                    deleteMsg();
+                                                }
+                                            }).show();
                                 }
-                            }).setNegativeButton("否", null).show();
+                            }).setNegativeButton("否", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            deleteMsg();
+                        }
+                    }).show();
                 }
-                StringRequestWithCookie stringRequest = new StringRequestWithCookie(Request.Method.POST,
-                        "http://139.129.22.145:5000/message/"+messageID+"/delete",
-                        new Response.Listener<String>() {
-                            @Override
-                            public void onResponse(String response) {
-                                PostResult result = JSON.parseObject(response, PostResult.class);
-                                if(result.success) {
-                                    //dislikeNum.setText(msg.getDislikeUsers().size()+1+"");
-                                    Toast.makeText(MsgWindow.this, "操作成功！", Toast.LENGTH_LONG).show();
-                                    finish();
-                                }
-                                else {
-                                    Toast.makeText(MsgWindow.this, result.message, Toast.LENGTH_LONG).show();
-                                }
-                            }
-                        }, null);
-                volleyQuque.add(stringRequest);
             }
         });
         commentButton.setOnClickListener(new View.OnClickListener() {
@@ -247,6 +241,27 @@ public class MsgWindow extends Activity implements AdapterView.OnItemClickListen
                 volleyQuque.add(stringRequest);
             }
         });
+    }
+
+    private void deleteMsg()
+    {
+        StringRequestWithCookie stringRequest = new StringRequestWithCookie(Request.Method.POST,
+                "http://139.129.22.145:5000/message/"+messageID+"/delete",
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        PostResult result = JSON.parseObject(response, PostResult.class);
+                        if(result.success) {
+                            //dislikeNum.setText(msg.getDislikeUsers().size()+1+"");
+                            Toast.makeText(MsgWindow.this, "删除成功！", Toast.LENGTH_LONG).show();
+                            finish();
+                        }
+                        else {
+                            Toast.makeText(MsgWindow.this, result.message, Toast.LENGTH_LONG).show();
+                        }
+                    }
+                }, null);
+        volleyQuque.add(stringRequest);
     }
 
     public boolean onOptionsItemSelected(MenuItem mi)
