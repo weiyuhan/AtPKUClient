@@ -25,6 +25,8 @@ import com.android.volley.toolbox.Volley;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -48,7 +50,6 @@ public class UserListWindow extends Activity implements SearchView.OnQueryTextLi
     private String nickname = "";
     private List<User> users = null;
 
-    private boolean sortByReport = false;
     private boolean hideBanned = false;
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,13 +83,14 @@ public class UserListWindow extends Activity implements SearchView.OnQueryTextLi
         if (users != null)
         {
             for(User user: users) {
-                if (user.getNickname().contains(nickname))
+                if (user.getNickname().contains(nickname) && !(hideBanned && user.isBanned()))
                     adapter.add(user);
             }
             userList.setAdapter(adapter);
             adapter.notifyDataSetChanged();
             return;
         }
+
         StringRequestWithCookie stringRequest = null;
         try {
             stringRequest = new StringRequestWithCookie(Request.Method.GET,
@@ -99,6 +101,12 @@ public class UserListWindow extends Activity implements SearchView.OnQueryTextLi
                             PostResult result = JSON.parseObject(response, PostResult.class);
                             if(result.success) {
                                 users = JSON.parseArray(result.data, User.class);
+                                Collections.sort(users, new Comparator<User>() {
+                                    @Override
+                                    public int compare(User lhs, User rhs) {
+                                        return rhs.getReportReceived()-lhs.getReportReceived();
+                                    }
+                                });
                                 for(User user: users) {
                                     adapter.add(user);
                                 }
@@ -127,6 +135,20 @@ public class UserListWindow extends Activity implements SearchView.OnQueryTextLi
             case R.id.action_user_search:{
                 if (search != null)
                     search.setOnQueryTextListener(this);
+            }
+            break;
+            case R.id.action_mode_change:{
+                if (hideBanned)
+                {
+                    hideBanned = false;
+                    mi.setTitle("只看未禁言");
+                }
+                else
+                {
+                    hideBanned = true;
+                    mi.setTitle("查看全部用户");
+                }
+                refreshUserList();
             }
             break;
             default:
