@@ -31,7 +31,7 @@ public class ImageDialog extends Dialog
         this.setContentView(layoutRes);
         imageView = (ImageView)findViewById(R.id.imgDialog_image);
 
-        Picasso.with(context).load(imgUrl).into(imageView);
+        Picasso.with(context).load(imgUrl).placeholder(R.mipmap.image_loading).error(R.mipmap.image_error).into(imageView);
     }
 
 }

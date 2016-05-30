@@ -10,6 +10,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -20,6 +21,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.squareup.picasso.Picasso;
 
 import java.util.HashMap;
 import java.util.List;
@@ -47,6 +49,8 @@ public class UserInfoWindow extends Activity
     public TextView reportReceived;
     public ListView feedbackList;
 
+    public ImageView avatarView;
+
     private User user;
 
     public ActionBar actionBar;
@@ -71,11 +75,16 @@ public class UserInfoWindow extends Activity
         dislikeReceived = (TextView)findViewById(R.id.userInfo_dislikeReceived);
         reportReceived = (TextView)findViewById(R.id.userInfo_reportReceived);
         feedbackList = (ListView)findViewById(R.id.userInfo_feedbackList);
+        avatarView = (ImageView)findViewById(R.id.userInfo_avatar);
 
         volleyQuque = Volley.newRequestQueue(this);
 
-        Intent intent = this.getIntent();
-        user = (User)intent.getSerializableExtra("user");
+
+    }
+
+    public void refreshUserInfo()
+    {
+        user = MapWindow.user;
         System.out.println(user);
         if(user != null)
         {
@@ -95,8 +104,9 @@ public class UserInfoWindow extends Activity
             likeReceived.setText(likeReceived.getText() + String.valueOf(user.likeReceived));
             dislikeReceived.setText(dislikeReceived.getText() + String.valueOf(user.dislikeReceived));
             reportReceived.setText(reportReceived.getText() + String.valueOf(user.reportReceived));
-        }
 
+            Picasso.with(this).load(user.avatar).placeholder(R.mipmap.image_loading).error(R.mipmap.image_error).resize(200,200).into(avatarView);
+        }
     }
 
     protected void onResume() {
@@ -110,17 +120,8 @@ public class UserInfoWindow extends Activity
                         PostResult result = JSON.parseObject(response, PostResult.class);
                         if(result.success)
                         {
-                            User user = JSON.parseObject(result.data, User.class);
-                            username.setText("用户名：" + user.nickname);
-                            if(user.gender.equals("m"))
-                                username.setText(username.getText() + " ♂");
-                            else if(user.gender.equals("f"))
-                                username.setText(username.getText() + " ♀");
-                            SharedPreferences prefs = getSharedPreferences("userinfo",1);
-                            SharedPreferences.Editor mEditor = prefs.edit();
-                            mEditor.putString("nickname", user.nickname);
-                            mEditor.putString("gender", user.gender);
-                            mEditor.apply();
+                            MapWindow.user = JSON.parseObject(result.data, User.class);
+                            refreshUserInfo();
                         }
                         else
                         {

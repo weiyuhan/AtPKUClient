@@ -89,6 +89,7 @@ public class MapWindow extends Activity implements
     public static User user = new User();
 
 
+
     public static String getCookie()
     {
         if(cookie != null)
@@ -115,7 +116,7 @@ public class MapWindow extends Activity implements
         refreshSlideMenu();
 
         actionBar = getActionBar();
-        actionBar.setDisplayShowHomeEnabled(true);
+        actionBar.setDisplayShowHomeEnabled(true);;
 
         mapView = (MapView) findViewById(R.id.map);
         mapView.onCreate(savedInstanceState);
@@ -231,31 +232,9 @@ public class MapWindow extends Activity implements
 
     public void startUserInfoWindow()
     {
-        StringRequestWithCookie stringRequest = new StringRequestWithCookie(StringRequest.Method.GET,"http://139.129.22.145:5000/profile",
-                new Response.Listener<String>()
-                {
-                    @Override
-                    public void onResponse(String response)
-                    {
-                        PostResult result = JSON.parseObject(response, PostResult.class);
-                        if(result.success)
-                        {
-                            User user = JSON.parseObject(result.data, User.class);
-                            Intent intent = new Intent(MapWindow.this, UserInfoWindow.class);
-                            Bundle bundle = new Bundle();
-                            bundle.putSerializable("user", user);
-                            intent.putExtras(bundle);
-                            startActivity(intent);
-                            System.out.println(user);
-                        }
-                        else
-                        {
-                            Toast.makeText(MapWindow.this, result.message, Toast.LENGTH_LONG).show();
-                        }
-                        Log.d("TAG", response);
-                    }
-                }, null);
-        volleyQuque.add(stringRequest);
+        Intent intent = new Intent(MapWindow.this, UserInfoWindow.class);
+        startActivity(intent);
+        System.out.println(user);
     }
 
     public void logOutOrLogIn()

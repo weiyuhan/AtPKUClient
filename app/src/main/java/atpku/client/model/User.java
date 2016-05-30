@@ -27,6 +27,20 @@ public class User implements Serializable
     public int dislikeReceived;
     public int reportReceived;
 
+    public String avatar;
+
+    public boolean isAdmin() {
+        return isAdmin;
+    }
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
+
     public int getId() {
         return id;
     }
@@ -131,13 +145,14 @@ public class User implements Serializable
                 ", email='" + email + '\'' +
                 ", date_joined='" + date_joined + '\'' +
                 ", last_login='" + last_login + '\'' +
-                ", isAdmin='" + isAdmin + '\'' +
+                ", isAdmin=" + isAdmin +
                 ", isBanned=" + isBanned +
                 ", gender='" + gender + '\'' +
                 ", commentReceived=" + commentReceived +
                 ", likeReceived=" + likeReceived +
                 ", dislikeReceived=" + dislikeReceived +
                 ", reportReceived=" + reportReceived +
+                ", avatar='" + avatar + '\'' +
                 '}';
     }
 }
