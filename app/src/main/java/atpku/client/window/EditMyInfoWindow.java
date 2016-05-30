@@ -123,23 +123,7 @@ public class EditMyInfoWindow extends Activity implements View.OnClickListener
         {
             System.out.println(avatarUrl);
             params.put("avatar", avatarUrl);
-            StringRequestWithCookie stringRequest = new StringRequestWithCookie(Request.Method.POST,
-                    "http://139.129.22.145:5000/profile",
-                    new Response.Listener<String>() {
-                        @Override
-                        public void onResponse(String response) {
-                            PostResult result = JSON.parseObject(response, PostResult.class);
-                            if(result.success) {
-                                Toast.makeText(EditMyInfoWindow.this, result.message, Toast.LENGTH_LONG).show();
-                                finish();
-                            }
-                            else {
-                                Toast.makeText(EditMyInfoWindow.this, result.message, Toast.LENGTH_LONG).show();
-                            }
-                            Log.d("TAG", response);
-                        }
-                    }, params);
-            volleyQuque.add(stringRequest);
+            needSubmit = true;
         }
 
         if(needSubmit) {
@@ -191,7 +175,8 @@ public class EditMyInfoWindow extends Activity implements View.OnClickListener
             if (data != null) {
                 // 得到图片的全路径
                 Uri uri = data.getData();
-                crop(uri);
+                if(uri != null)
+                    crop(uri);
             }
 
         }
@@ -199,17 +184,20 @@ public class EditMyInfoWindow extends Activity implements View.OnClickListener
             // 从剪切图片返回的数据
             if (data != null) {
                 Bitmap bitmap = data.getParcelableExtra("data");
-                saveBitmap(bitmap);
-                Uri uri = Uri.fromFile(avatarFile);
-                Picasso.with(this).load(uri).placeholder(R.mipmap.image_loading).error(R.mipmap.default_avatar_1).resize(200,200).into(avatarView);
+                if(bitmap != null) {
+                    saveBitmap(bitmap);
+                    Uri uri = Uri.fromFile(avatarFile);
+                    Picasso.with(this).load(uri).placeholder(R.mipmap.image_loading).error(R.mipmap.default_avatar_1).resize(200, 200).into(avatarView);
 
-                String avatarPath = uri.getEncodedPath();
-                modifyAvatar = true;
-                System.out.println(avatarPath);
-                try {
-                    modifyAvater(avatarPath);
-                }catch (Exception e){e.printStackTrace();}
-
+                    String avatarPath = uri.getEncodedPath();
+                    modifyAvatar = true;
+                    System.out.println(avatarPath);
+                    try {
+                        modifyAvater(avatarPath);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
             }
         }
     }

@@ -88,22 +88,22 @@ public class UserInfoWindow extends Activity
         System.out.println(user);
         if(user != null)
         {
-            studentNum.setText(studentNum.getText() + user.email);
-            username.setText(username.getText() + user.nickname);
+            studentNum.setText("邮箱：" + user.email);
+            username.setText("用户名：" + user.nickname);
             if(user.gender.equals("m"))
                 username.setText(username.getText() + " ♂");
             else if(user.gender.equals("f"))
                 username.setText(username.getText() + " ♀");
             if(user.isBanned)
-                status.setText(status.getText() + "禁言");
+                status.setText("状态：" + "禁言");
             else
-                status.setText(status.getText() + "正常");
+                status.setText("状态：" + "正常");
             String[] time = user.date_joined.split("T");
-            joinTime.setText(joinTime.getText() + time[0] + " " + time[1]);
-            commentReceived.setText(commentReceived.getText() + String.valueOf(user.commentReceived));
-            likeReceived.setText(likeReceived.getText() + String.valueOf(user.likeReceived));
-            dislikeReceived.setText(dislikeReceived.getText() + String.valueOf(user.dislikeReceived));
-            reportReceived.setText(reportReceived.getText() + String.valueOf(user.reportReceived));
+            joinTime.setText("加入时间：" + time[0] + " " + time[1]);
+            commentReceived.setText("收到评论数：" + String.valueOf(user.commentReceived));
+            likeReceived.setText("收到过的赞：" + String.valueOf(user.likeReceived));
+            dislikeReceived.setText("收到过的踩：" + String.valueOf(user.dislikeReceived));
+            reportReceived.setText("被举报次数：" + String.valueOf(user.reportReceived));
 
             Picasso.with(this).load(user.avatar).placeholder(R.mipmap.image_loading).error(R.mipmap.default_avatar_1).resize(200,200).into(avatarView);
         }
