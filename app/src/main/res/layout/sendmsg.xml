@@ -27,6 +27,12 @@
                 android:lines="7"
                 android:hint="内容" />
 
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal">
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -40,6 +46,13 @@
                 android:layout_gravity="center_horizontal"
                 android:hint="起始时间"
                 android:onClick="sendMsgSelectTimeHanlder" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -54,6 +67,8 @@
                 android:hint="结束时间"
                 android:onClick="sendMsgSelectTimeHanlder" />
 
+        </LinearLayout>
+
             <Spinner
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -62,31 +77,10 @@
                 android:spinnerMode="dropdown" />
 
 
-            <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal">
 
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="添加图片"
-                    android:id="@+id/button"
-                    android:layout_gravity="center_horizontal"
-                    android:textSize="30dp"
-                    android:onClick="addImageSubmitHandler" />
-
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="拍照"
-                    android:id="@+id/sendMsg_camera"
-                    android:onClick="useCameraHandler" />
-            </LinearLayout>
 
             <GridView android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:numColumns="auto_fit"
                 android:columnWidth="90dp"
                 android:stretchMode="columnWidth"
@@ -94,6 +88,8 @@
                 android:horizontalSpacing="10dp"
                 android:id="@+id/sendMsg_imageList">
             </GridView>
+
+
 
             <Button
                 android:layout_width="wrap_content"
@@ -103,6 +99,7 @@
                 android:layout_gravity="center_horizontal"
                 android:textSize="30dp"
                 android:onClick="sendMsgSubmitHandler" />
+
 
         </LinearLayout>
     </ScrollView>

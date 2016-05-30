@@ -122,13 +122,21 @@ public class SendMsgWindow extends Activity implements AdapterView.OnItemClickLi
         imageList = (GridView)findViewById(R.id.sendMsg_imageList);
         imageList.setOnItemClickListener(this);
 
+        imageAdapter = new ImageAdapter(this, R.layout.image_row);
+        imageAdapter.add(String.valueOf(R.mipmap.camera));
+        imageAdapter.add(String.valueOf(R.mipmap.plus));
+
+
+        imageList.setAdapter(imageAdapter);
+
+        imgUris = new ArrayList<String>();
+
         InputFilter[] filters = {new InputFilter.LengthFilter(18)};
         title.setFilters(filters);
 
         volleyQuque = Volley.newRequestQueue(this);
 
-        ArrayAdapter<String> adapter =  new ArrayAdapter<String>(this,
-                android.R.layout.simple_expandable_list_item_1);
+        ArrayAdapter<String> adapter =  new ArrayAdapter<String>(this, R.layout.place_spiner_row);
         int position = -1;
         int index = 0;
         for(String placename:MapWindow.places.keySet())
@@ -208,6 +216,7 @@ public class SendMsgWindow extends Activity implements AdapterView.OnItemClickLi
         {
             sendMsgRequest(params);
         }
+        System.out.println(imgUris);
         for(String imgUri:imgUris)
         {
             Calendar calendar = Calendar.getInstance();
@@ -320,7 +329,13 @@ public class SendMsgWindow extends Activity implements AdapterView.OnItemClickLi
         // 激活相机
         Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
         Calendar calendar = Calendar.getInstance();
-        cameraImageTempFile = new File(Environment.getExternalStorageDirectory(),"atpku" + calendar.get(Calendar.MILLISECOND));
+        File cameraDir =  new File(Environment.getExternalStorageDirectory(),"AtPKUCameraTemp");
+        if(!cameraDir.exists())
+            cameraDir.mkdirs();
+        cameraImageTempFile = new File(cameraDir,"atpku" + calendar.get(Calendar.YEAR) +
+                calendar.get(Calendar.MONTH) + calendar.get(Calendar.DAY_OF_MONTH) +
+                calendar.get(Calendar.HOUR_OF_DAY) + calendar.get(Calendar.MINUTE) + calendar.get(Calendar.SECOND) +
+                calendar.get(Calendar.MILLISECOND) + ".jpg");
         // 从文件中创建uri
         Uri cameraImageUri = Uri.fromFile(cameraImageTempFile);
         intent.putExtra(MediaStore.EXTRA_OUTPUT, cameraImageUri);
@@ -330,11 +345,6 @@ public class SendMsgWindow extends Activity implements AdapterView.OnItemClickLi
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data)
     {
-        if(imageAdapter == null) {
-            imageAdapter = new ImageAdapter(this, R.layout.image_row);
-            imageList.setAdapter(imageAdapter);
-            imgUris = new ArrayList<String>();
-        }
         if (requestCode == PHOTO_REQUEST_GALLERY)
         {
             // 从相册返回的数据
@@ -360,46 +370,57 @@ public class SendMsgWindow extends Activity implements AdapterView.OnItemClickLi
         {
             String imgPath = cameraImageTempFile.getAbsolutePath();
 
-            System.out.println(imgPath);
+            if(cameraImageTempFile.exists() && cameraImageTempFile.canRead()) {
 
-            if(!imgUris.contains(imgPath))
-            {
-                imgUris.add(imgPath);
-                imageAdapter.add(Uri.fromFile(cameraImageTempFile).toString());
-                imageList.setAdapter(imageAdapter);
+                System.out.println(imgPath);
+
+
+                if (!imgUris.contains(imgPath)) {
+                    imgUris.add(imgPath);
+                    imageAdapter.add(Uri.fromFile(cameraImageTempFile).toString());
+                    imageList.setAdapter(imageAdapter);
+                }
             }
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
 
     @Override
-    public void onItemClick(final AdapterView<?> parent, View view, final int position, long id)
-    {
-        final String imgUrl = (String)parent.getItemAtPosition(position);
+    public void onItemClick(final AdapterView<?> parent, View view, final int position, long id) {
+        if (position == 0) {
+            useCameraHandler(null);
+        }
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("请选择您要做的事");
-        builder.setCancelable(true);
-        String[] items = new String[] { "显示图片", "删除图片" };
-        builder.setItems(items, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                // TODO Auto-generated method stub
-                if(which == 0)
-                {
-                    ImageDialog imageDialog = new ImageDialog(SendMsgWindow.this, imgUrl);
-                    imageDialog.show();
-                }
-                if(which == 1)
-                {
-                    String imgPath = imgUris.get(position);
-                    imgUris.remove(imgPath);
-                    imageAdapter.remove(imgUrl);
-                    imageAdapter.notifyDataSetChanged();
-                }
-            }
-        });
-        builder.show();
+        if (position == 1) {
+            addImageSubmitHandler(null);
+        }
 
+
+        if (position >= 2) {
+            final String imgUrl = (String) parent.getItemAtPosition(position);
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("请选择您要做的事");
+            builder.setCancelable(true);
+            String[] items = new String[]{"显示图片", "删除图片"};
+            builder.setItems(items, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    // TODO Auto-generated method stub
+                    if (which == 0) {
+                        System.out.println(imgUrl);
+                        ImageDialog imageDialog = new ImageDialog(SendMsgWindow.this, imgUrl);
+                        imageDialog.show();
+                    }
+                    if (which == 1) {
+                        String imgPath = imgUris.get(position - 2);
+                        imgUris.remove(imgPath);
+                        imageAdapter.remove(imgUrl);
+                        imageAdapter.notifyDataSetChanged();
+                    }
+                }
+            });
+            builder.show();
+        }
     }
 }

@@ -39,7 +39,16 @@ public class ImageAdapter extends ArrayAdapter<String>
 
         ImageView imageView = (ImageView)view.findViewById(R.id.sendMsg_image);
 
-        Picasso.with(activity).load(imgUri).resize(200,200).into(imageView);
+        try
+        {
+            int resID = Integer.parseInt(imgUri);
+            Picasso.with(activity).load(resID).resize(200,200).into(imageView);
+
+        }catch (NumberFormatException e)
+        {
+            Picasso.with(activity).load(imgUri).resize(200,200).into(imageView);
+        }
+
 
         return view;
     }

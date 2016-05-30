@@ -64,8 +64,7 @@ public class SearchMsgWindow extends Activity
         submitButton = (Button)findViewById(R.id.advanceSearch_submitButton);
 
 
-        ArrayAdapter<String> adapter =  new ArrayAdapter<String>(this,
-                android.R.layout.simple_expandable_list_item_1);
+        ArrayAdapter<String> adapter =  new ArrayAdapter<String>(this, R.layout.place_spiner_row);
         for(String placename:MapWindow.places.keySet()) {
             adapter.add(placename);
         }
