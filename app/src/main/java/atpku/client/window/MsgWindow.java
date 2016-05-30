@@ -320,7 +320,7 @@ public class MsgWindow extends Activity implements AdapterView.OnItemClickListen
                             for(Comment comment:msg.comments) {
                                 adapter.add(comment);
                             }
-                            if (MapWindow.user.getIsAdmin() || MapWindow.user.getId()==msg.getOwner().getId())
+                            if (MapWindow.user.getIsAdmin())
                             {
                                 reportButton.setVisibility(View.GONE);
                                 reportNum.setText(msg.getReportUsers().size()+"举报");
