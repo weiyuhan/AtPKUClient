@@ -2,9 +2,12 @@ package atpku.client.window;
 
 import android.app.ActionBar;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -78,22 +81,37 @@ public class UserManagingWindow extends Activity
         banButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                StringRequestWithCookie stringRequest = new StringRequestWithCookie(Request.Method.POST,
-                        "http://139.129.22.145:5000/banUser/" + userID,
-                        new Response.Listener<String>() {
+                final EditText daysText = new EditText(UserManagingWindow.this);
+                daysText.setInputType(InputType.TYPE_CLASS_NUMBER);
+                new AlertDialog.Builder(UserManagingWindow.this).setTitle("请输入禁言天数").setView(
+                        daysText).setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        StringRequestWithCookie stringRequest = new StringRequestWithCookie(Request.Method.POST,
+                                "http://139.129.22.145:5000/banUser/" + userID
+                                        + "/" +daysText.getText().toString(),
+                                new Response.Listener<String>() {
+                                    @Override
+                                    public void onResponse(String response) {
+                                        PostResult result = JSON.parseObject(response, PostResult.class);
+                                        if (result.success) {
+                                            //likeNum.setText(msg.getLikeUsers().size()+1+"");
+                                            refreshUserInfo();
+                                        }
+                                        else {
+                                            Toast.makeText(UserManagingWindow.this, result.message, Toast.LENGTH_LONG).show();
+                                        }
+                                    }
+                                }, null);
+                        volleyQuque.add(stringRequest);
+                    }
+                })
+                        .setNegativeButton("取消", new DialogInterface.OnClickListener() {
                             @Override
-                            public void onResponse(String response) {
-                                PostResult result = JSON.parseObject(response, PostResult.class);
-                                if (result.success) {
-                                    //likeNum.setText(msg.getLikeUsers().size()+1+"");
-                                    refreshUserInfo();
-                                }
-                                else {
-                                    Toast.makeText(UserManagingWindow.this, result.message, Toast.LENGTH_LONG).show();
-                                }
+                            public void onClick(DialogInterface dialog, int which) {
+                                return;
                             }
-                        }, null);
-                volleyQuque.add(stringRequest);
+                        }).show();
             }
         });
     }

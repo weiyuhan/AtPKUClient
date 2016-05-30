@@ -25,6 +25,7 @@ import com.android.volley.toolbox.Volley;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -220,6 +221,7 @@ public class UserListWindow extends Activity implements SearchView.OnQueryTextLi
 
     protected void onResume() {
         super.onResume();
+        users = null;
         refreshUserList();
     }
 }
