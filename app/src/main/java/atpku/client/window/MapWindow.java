@@ -5,6 +5,9 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
@@ -29,13 +32,17 @@ import com.android.volley.Response;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import atpku.client.AtPKUApplication;
 import atpku.client.R;
+import atpku.client.util.BitMapTarget;
 import atpku.client.util.StringRequestWithCookie;
 import atpku.client.model.Message;
 import atpku.client.model.Place;
@@ -89,7 +96,6 @@ public class MapWindow extends Activity implements
     public static User user = new User();
 
 
-
     public static String getCookie()
     {
         if(cookie != null)
@@ -126,6 +132,8 @@ public class MapWindow extends Activity implements
 
         SharedPreferences prefs = getSharedPreferences("userInfo", 1);
         user = JSON.parseObject(prefs.getString("userInfoJson", "{}"), User.class);
+
+        //loadAvatarIcon();
     }
 
 
@@ -142,6 +150,15 @@ public class MapWindow extends Activity implements
 
 
         return ret;
+    }
+
+    public void loadAvatarIcon()
+    {
+        BitMapTarget target = new BitMapTarget();
+        String avatarUrl = MapWindow.user.avatarIntoCycle();
+        Picasso.with(this).load(avatarUrl).into(target);
+        Drawable drawable = new BitmapDrawable(target.bitmap);
+        actionBar.setIcon(drawable);
     }
 
     public void refreshSlideMenu()

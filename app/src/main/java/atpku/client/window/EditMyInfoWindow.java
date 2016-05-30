@@ -89,7 +89,7 @@ public class EditMyInfoWindow extends Activity implements View.OnClickListener
         volleyQuque = Volley.newRequestQueue(this);
 
         String userAvatarUrl = MapWindow.user.avatar;
-        Picasso.with(this).load(userAvatarUrl).placeholder(R.mipmap.image_loading).error(R.mipmap.image_error).resize(200,200).into(avatarView);
+        Picasso.with(this).load(userAvatarUrl).placeholder(R.mipmap.image_loading).error(R.mipmap.default_avatar_1).resize(200,200).into(avatarView);
         avatarView.setOnClickListener(this);
     }
 
@@ -201,7 +201,7 @@ public class EditMyInfoWindow extends Activity implements View.OnClickListener
                 Bitmap bitmap = data.getParcelableExtra("data");
                 saveBitmap(bitmap);
                 Uri uri = Uri.fromFile(avatarFile);
-                Picasso.with(this).load(uri).placeholder(R.mipmap.image_loading).error(R.mipmap.image_error).resize(200,200).into(avatarView);
+                Picasso.with(this).load(uri).placeholder(R.mipmap.image_loading).error(R.mipmap.default_avatar_1).resize(200,200).into(avatarView);
 
                 String avatarPath = uri.getEncodedPath();
                 modifyAvatar = true;

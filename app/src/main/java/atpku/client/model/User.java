@@ -29,6 +29,11 @@ public class User implements Serializable
 
     public String avatar;
 
+    public String avatarIntoCycle()
+    {
+        return avatar + "@100-1ci.png";
+    }
+
     public boolean isAdmin() {
         return isAdmin;
     }

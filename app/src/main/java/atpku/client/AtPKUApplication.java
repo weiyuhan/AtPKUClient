@@ -1,13 +1,19 @@
 package atpku.client;
 
 import android.app.Application;
+import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 
 import com.alibaba.sdk.android.oss.OSS;
 import com.alibaba.sdk.android.oss.OSSClient;
 import com.alibaba.sdk.android.oss.common.auth.OSSCredentialProvider;
 import com.alibaba.sdk.android.oss.common.auth.OSSPlainTextAKSKCredentialProvider;
+import com.squareup.picasso.Picasso;
 
+import java.text.Normalizer;
 import java.util.TimeZone;
+
+import atpku.client.window.MapWindow;
 
 /**
  * Created by wyh on 2016/5/29.
@@ -26,4 +32,5 @@ public class AtPKUApplication extends Application
         oss = new OSSClient(getApplicationContext(), endpoint, credentialProvider);
         TimeZone.setDefault(TimeZone.getTimeZone("GMT+8"));
     }
+
 }

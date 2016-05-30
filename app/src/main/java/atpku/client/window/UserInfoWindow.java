@@ -105,7 +105,7 @@ public class UserInfoWindow extends Activity
             dislikeReceived.setText(dislikeReceived.getText() + String.valueOf(user.dislikeReceived));
             reportReceived.setText(reportReceived.getText() + String.valueOf(user.reportReceived));
 
-            Picasso.with(this).load(user.avatar).placeholder(R.mipmap.image_loading).error(R.mipmap.image_error).resize(200,200).into(avatarView);
+            Picasso.with(this).load(user.avatar).placeholder(R.mipmap.image_loading).error(R.mipmap.default_avatar_1).resize(200,200).into(avatarView);
         }
     }
 
