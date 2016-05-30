@@ -85,17 +85,15 @@
                     android:onClick="useCameraHandler" />
             </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-
-                <ListView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/sendMsg_imageList"
-                    android:layout_weight="0.5">
-                </ListView>
-            </LinearLayout>
+            <GridView android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:numColumns="auto_fit"
+                android:columnWidth="90dp"
+                android:stretchMode="columnWidth"
+                android:verticalSpacing="10dp"
+                android:horizontalSpacing="10dp"
+                android:id="@+id/sendMsg_imageList">
+            </GridView>
 
             <Button
                 android:layout_width="wrap_content"

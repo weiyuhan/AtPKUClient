@@ -14,6 +14,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.GridView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -60,7 +61,7 @@ public class MsgWindow extends Activity implements AdapterView.OnItemClickListen
     private RequestQueue volleyQuque;
     private Message msg;
 
-    public ListView imageList;
+    public GridView imageList;
 
     private int messageID;
     public static String CUT_FILL_BLACK = "@200w_200h_4e_0-0-0bgc";
@@ -90,7 +91,7 @@ public class MsgWindow extends Activity implements AdapterView.OnItemClickListen
         commentText = (EditText)findViewById(R.id.msg_addComment);
         commentButton = (Button)findViewById(R.id.msg_commentButton);
         commentList = (ListView)findViewById(R.id.msg_commentList);
-        imageList = (ListView)findViewById(R.id.showMsg_imageList);
+        imageList = (GridView)findViewById(R.id.msg_imgList);
 
         CharSequence label = (CharSequence) "";
         setTitle(label);

@@ -2,8 +2,10 @@ package atpku.client.window;
 
 import android.app.ActionBar;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.database.Cursor;
@@ -17,10 +19,12 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Spinner;
@@ -54,6 +58,7 @@ import atpku.client.AtPKUApplication;
 import atpku.client.R;
 import atpku.client.model.Message;
 import atpku.client.util.ImageAdapter;
+import atpku.client.util.ImageDialog;
 import atpku.client.util.StringRequestWithCookie;
 import atpku.client.model.Place;
 import atpku.client.model.PostResult;
@@ -62,7 +67,7 @@ import atpku.client.util.Utillity;
 /**
  * Created by wyh on 2016/5/19.
  */
-public class SendMsgWindow extends Activity
+public class SendMsgWindow extends Activity implements AdapterView.OnItemClickListener
 {
     public EditText title;
     public EditText content;
@@ -73,7 +78,7 @@ public class SendMsgWindow extends Activity
     public ActionBar actionBar;
     private com.android.volley.RequestQueue volleyQuque;
 
-    public ListView imageList;
+    public GridView imageList;
     public ImageAdapter imageAdapter;
 
     public List<String> uploadedImgUris;
@@ -114,7 +119,8 @@ public class SendMsgWindow extends Activity
         endTime.setText(String.valueOf(year)+"-"+String.valueOf(month+1)+"-"+String.valueOf(day));
         place = (Spinner)findViewById(R.id.sendMsg_selectPlace);
         submitButton = (Button)findViewById(R.id.sendMsg_submitButton);
-        imageList = (ListView)findViewById(R.id.sendMsg_imageList);
+        imageList = (GridView)findViewById(R.id.sendMsg_imageList);
+        imageList.setOnItemClickListener(this);
 
         InputFilter[] filters = {new InputFilter.LengthFilter(18)};
         title.setFilters(filters);
@@ -366,5 +372,34 @@ public class SendMsgWindow extends Activity
         super.onActivityResult(requestCode, resultCode, data);
     }
 
+    @Override
+    public void onItemClick(final AdapterView<?> parent, View view, final int position, long id)
+    {
+        final String imgUrl = (String)parent.getItemAtPosition(position);
 
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("请选择您要做的事");
+        builder.setCancelable(true);
+        String[] items = new String[] { "显示图片", "删除图片" };
+        builder.setItems(items, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // TODO Auto-generated method stub
+                if(which == 0)
+                {
+                    ImageDialog imageDialog = new ImageDialog(SendMsgWindow.this, imgUrl);
+                    imageDialog.show();
+                }
+                if(which == 1)
+                {
+                    String imgPath = imgUris.get(position);
+                    imgUris.remove(imgPath);
+                    imageAdapter.remove(imgUrl);
+                    imageAdapter.notifyDataSetChanged();
+                }
+            }
+        });
+        builder.show();
+
+    }
 }
