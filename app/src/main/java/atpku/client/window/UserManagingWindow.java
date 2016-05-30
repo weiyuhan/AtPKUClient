@@ -114,7 +114,6 @@ public class UserManagingWindow extends Activity
                 break;
         }
         return true;
-
     }
 
     public void refreshUserInfo() {
