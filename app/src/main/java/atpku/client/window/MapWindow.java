@@ -39,6 +39,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import atpku.client.AtPKUApplication;
 import atpku.client.R;
@@ -134,8 +136,15 @@ public class MapWindow extends Activity implements
         user = JSON.parseObject(prefs.getString("userInfoJson", "{}"), User.class);
 
         //loadAvatarIcon();
-    }
 
+        Timer timer = new Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                refreshPlaces();
+            }
+        }, 120000, 120000); // for each 2 min, refresh all messages about places
+    }
 
     public boolean onCreateOptionsMenu(Menu menu)
     {

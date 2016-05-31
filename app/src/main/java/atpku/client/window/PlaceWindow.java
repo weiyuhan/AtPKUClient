@@ -4,7 +4,9 @@ import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -36,8 +38,9 @@ import atpku.client.model.PostResult;
 /**
  * Created by wyh on 2016/5/19.
  */
-public class PlaceWindow extends Activity implements SearchView.OnQueryTextListener
+public class PlaceWindow extends Activity implements SearchView.OnQueryTextListener, SwipeRefreshLayout.OnRefreshListener
 {
+    private SwipeRefreshLayout refreshLayout;
     public ListView msgList;
     private int placeID;
     public ActionBar actionBar;
@@ -53,7 +56,10 @@ public class PlaceWindow extends Activity implements SearchView.OnQueryTextListe
         actionBar.setHomeButtonEnabled(true);
         actionBar.setDisplayHomeAsUpEnabled(true);
 
-        msgList = (ListView) findViewById(R.id.place_msgList);
+        refreshLayout = (SwipeRefreshLayout)this.findViewById(R.id.refresh_layout);
+        refreshLayout.setColorScheme(R.color.lawngreen, R.color.yellow, R.color.blue, R.color.white);
+        refreshLayout.setOnRefreshListener(this);
+        msgList = (ListView)this.findViewById(R.id.place_msgList);
 
         Intent intent = this.getIntent();
         placeID = (int) intent.getSerializableExtra("id");
@@ -92,6 +98,7 @@ public class PlaceWindow extends Activity implements SearchView.OnQueryTextListe
                             Toast.makeText(PlaceWindow.this, result.message, Toast.LENGTH_LONG).show();
                         msgList.setAdapter(adapter);
                         adapter.notifyDataSetChanged();
+                        refreshLayout.setRefreshing(false);
                     }
                 }, null);
         volleyQuque.add(stringRequest);
@@ -186,6 +193,10 @@ public class PlaceWindow extends Activity implements SearchView.OnQueryTextListe
 
     protected void onResume() {
         super.onResume();
+        refreshMessageList();
+    }
+
+    public void onRefresh() {
         refreshMessageList();
     }
 }

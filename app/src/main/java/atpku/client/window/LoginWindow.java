@@ -110,6 +110,7 @@ public class LoginWindow extends Activity
                 Map<String, String> params = new HashMap<String, String>();
                 params.put("email", email.getText().toString());
                 params.put("password", password.getText().toString());
+                params.put("deviceid", "");
                 return params;
             }
 
