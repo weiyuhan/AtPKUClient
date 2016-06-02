@@ -3,7 +3,6 @@ package atpku.client.window;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -16,7 +15,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
-import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.toolbox.StringRequest;
@@ -25,7 +23,6 @@ import com.squareup.picasso.Picasso;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import atpku.client.R;
 import atpku.client.util.StringRequestWithCookie;

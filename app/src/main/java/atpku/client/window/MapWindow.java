@@ -5,7 +5,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -17,7 +16,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.Toast;
@@ -31,10 +29,10 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.baidu.android.pushservice.PushConstants;
+import com.baidu.android.pushservice.PushManager;
 import com.squareup.picasso.Picasso;
-import com.squareup.picasso.Target;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -42,7 +40,6 @@ import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import atpku.client.AtPKUApplication;
 import atpku.client.R;
 import atpku.client.util.BitMapTarget;
 import atpku.client.util.StringRequestWithCookie;
@@ -97,6 +94,9 @@ public class MapWindow extends Activity implements
 
     public static User user = new User();
 
+    public static String deviceid;
+
+
 
     public static String getCookie()
     {
@@ -114,6 +114,11 @@ public class MapWindow extends Activity implements
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.map);
+
+        //PushSettings.enableDebugMode(getApplicationContext(), true);
+
+        PushManager.startWork(getApplicationContext(), PushConstants.LOGIN_TYPE_API_KEY, "ZEug10Z4X0y5ek5ll0wpITIV");
+
 
         currPos = pkuPos;
 

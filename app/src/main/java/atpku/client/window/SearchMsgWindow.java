@@ -5,7 +5,6 @@ import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -14,21 +13,12 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Switch;
-import android.widget.Toast;
-
-import com.alibaba.fastjson.JSON;
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.toolbox.Volley;
 
 import java.util.Calendar;
 import java.util.HashMap;
-import java.util.Map;
 
 import atpku.client.R;
 import atpku.client.model.Place;
-import atpku.client.model.PostResult;
-import atpku.client.util.StringRequestWithCookie;
 
 /**
  * Created by wyh on 2016/5/19.
@@ -65,7 +55,7 @@ public class SearchMsgWindow extends Activity
 
 
         ArrayAdapter<String> adapter =  new ArrayAdapter<String>(this, R.layout.place_spiner_row);
-        for(String placename:MapWindow.places.keySet()) {
+        for(String placename: MapWindow.places.keySet()) {
             adapter.add(placename);
         }
         place.setAdapter(adapter);

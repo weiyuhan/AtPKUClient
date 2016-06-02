@@ -33,14 +33,11 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
-import java.util.List;
 
 import atpku.client.AtPKUApplication;
 import atpku.client.R;
-import atpku.client.model.Message;
 import atpku.client.model.PostResult;
 import atpku.client.model.User;
 import atpku.client.util.StringRequestWithCookie;

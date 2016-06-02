@@ -4,31 +4,24 @@ import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.text.InputFilter;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.GridView;
-import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
@@ -41,22 +34,16 @@ import com.alibaba.sdk.android.oss.model.PutObjectResult;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.toolbox.Volley;
-import com.squareup.picasso.Picasso;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collection;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
 import java.util.Map;
-import java.util.TimeZone;
 
 import atpku.client.AtPKUApplication;
 import atpku.client.R;
-import atpku.client.model.Message;
 import atpku.client.util.ImageAdapter;
 import atpku.client.util.ImageDialog;
 import atpku.client.util.StringRequestWithCookie;
@@ -139,7 +126,7 @@ public class SendMsgWindow extends Activity implements AdapterView.OnItemClickLi
         ArrayAdapter<String> adapter =  new ArrayAdapter<String>(this, R.layout.place_spiner_row);
         int position = -1;
         int index = 0;
-        for(String placename:MapWindow.places.keySet())
+        for(String placename: MapWindow.places.keySet())
         {
             Place place = MapWindow.places.get(placename);
             if(place.getId() == placeId)
