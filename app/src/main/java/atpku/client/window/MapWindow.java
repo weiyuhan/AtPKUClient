@@ -223,6 +223,11 @@ public class MapWindow extends Activity implements
             }
                 break;
             case 4:{   //发信息
+                if(!MapWindow.isLogin)
+                {
+                    Toast.makeText(this, "请登录", Toast.LENGTH_LONG).show();
+                    return;
+                }
                 Place nearPlace = null;
                 double minDistance = 50000;
                 for(String placename:MapWindow.places.keySet())

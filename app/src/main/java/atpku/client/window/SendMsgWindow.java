@@ -170,7 +170,7 @@ public class SendMsgWindow extends Activity implements AdapterView.OnItemClickLi
     {
         if(!MapWindow.isLogin)
         {
-            Toast.makeText(this, "请登录", Toast.LENGTH_LONG);
+            Toast.makeText(this, "请登录", Toast.LENGTH_LONG).show();
             return;
         }
         final Map<String, String> params = new HashMap<String, String>();

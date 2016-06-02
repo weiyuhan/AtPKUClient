@@ -86,6 +86,7 @@
     </content>
     <orderEntry type="jdk" jdkName="Android API 22 Platform" jdkType="Android SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" exported="" name="junit-4.9" level="project" />
     <orderEntry type="library" exported="" name="aliyun-oss-sdk-android-2.2.0" level="project" />
     <orderEntry type="library" exported="" name="AMap_3DMap_v2.6.0_20150914" level="project" />
     <orderEntry type="library" exported="" name="Volley" level="project" />

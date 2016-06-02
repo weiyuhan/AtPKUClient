@@ -103,6 +103,11 @@ public class MsgWindow extends Activity implements AdapterView.OnItemClickListen
         likeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(!MapWindow.isLogin)
+                {
+                    Toast.makeText(MsgWindow.this, "请登录", Toast.LENGTH_LONG).show();
+                    return;
+                }
                 StringRequestWithCookie stringRequest = new StringRequestWithCookie(Request.Method.POST,
                         "http://139.129.22.145:5000/message/" + messageID + "/like",
                         new Response.Listener<String>() {
@@ -124,6 +129,11 @@ public class MsgWindow extends Activity implements AdapterView.OnItemClickListen
         dislikeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(!MapWindow.isLogin)
+                {
+                    Toast.makeText(MsgWindow.this, "请登录", Toast.LENGTH_LONG).show();
+                    return;
+                }
                 StringRequestWithCookie stringRequest = new StringRequestWithCookie(Request.Method.POST,
                         "http://139.129.22.145:5000/message/"+messageID+"/dislike",
                         new Response.Listener<String>() {
@@ -145,6 +155,11 @@ public class MsgWindow extends Activity implements AdapterView.OnItemClickListen
         reportButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(!MapWindow.isLogin)
+                {
+                    Toast.makeText(MsgWindow.this, "请登录", Toast.LENGTH_LONG).show();
+                    return;
+                }
                 StringRequestWithCookie stringRequest = new StringRequestWithCookie(Request.Method.POST,
                         "http://139.129.22.145:5000/message/"+messageID+"/report",
                         new Response.Listener<String>() {
@@ -214,6 +229,11 @@ public class MsgWindow extends Activity implements AdapterView.OnItemClickListen
         commentButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(!MapWindow.isLogin)
+                {
+                    Toast.makeText(MsgWindow.this, "请登录", Toast.LENGTH_LONG).show();
+                    return;
+                }
                 if (commentText.getText().toString().equals(""))
                 {
                     Toast.makeText(MsgWindow.this, "评论不能为空", Toast.LENGTH_LONG).show();

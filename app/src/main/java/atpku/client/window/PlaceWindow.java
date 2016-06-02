@@ -31,6 +31,7 @@ import java.util.Map;
 
 import atpku.client.R;
 import atpku.client.model.Place;
+import atpku.client.util.MessageAdapter;
 import atpku.client.util.StringRequestWithCookie;
 import atpku.client.model.Message;
 import atpku.client.model.PostResult;
@@ -115,6 +116,11 @@ public class PlaceWindow extends Activity implements SearchView.OnQueryTextListe
                 break;
             case R.id.action_sendmsg:
             {
+                if(!MapWindow.isLogin)
+                {
+                    Toast.makeText(this, "请登录", Toast.LENGTH_LONG).show();
+                    return true;
+                }
                 Intent intent = new Intent(this, SendMsgWindow.class);
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("placeId", placeID);
@@ -134,42 +140,6 @@ public class PlaceWindow extends Activity implements SearchView.OnQueryTextListe
 
     }
 
-    class MessageAdapter extends ArrayAdapter<Message> {
-        private int mResourceId;
-
-        public MessageAdapter(Context context, int textViewResourceId) {
-            super(context, textViewResourceId);
-            this.mResourceId = textViewResourceId;
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            Message msg = getItem(position);
-            LayoutInflater inflater = getLayoutInflater();
-            View view = inflater.inflate(mResourceId, null);
-            view.setClickable(true);
-            final int msgid = msg.getId();
-            view.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent intent = new Intent(PlaceWindow.this, MsgWindow.class);
-                        Bundle bundle = new Bundle();
-                        bundle.putSerializable("messageID", msgid);
-                        intent.putExtras(bundle);
-                        startActivity(intent);
-                    }
-            });
-
-            TextView titleText = (TextView) view.findViewById(R.id.title);
-            TextView timeText = (TextView) view.findViewById(R.id.time);
-            TextView nicknameText = (TextView) view.findViewById(R.id.nickname);
-
-            titleText.setText(msg.getTitle());
-            timeText.setText(msg.getPostTime());
-            nicknameText.setText(msg.owner.getNickname());
-            return view;
-        }
-    }
 
     public boolean onQueryTextChange(String newText)
     {
