@@ -1,6 +1,7 @@
 package atpku.client.window;
 
 import android.content.Context;
+import android.content.Intent;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -162,6 +163,13 @@ public class PushTestReceiver extends PushMessageReceiver
                 // TODO Auto-generated catch block
                 e.printStackTrace();
             }
+        }
+
+        if(!MapWindow.mapShow)
+        {
+            Intent launchIntent = context.getPackageManager().getLaunchIntentForPackage("atpku.client");
+            launchIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
+            context.startActivity(launchIntent);
         }
 
         // Demo更新界面展示代码，应用请在这里加入自己的处理逻辑

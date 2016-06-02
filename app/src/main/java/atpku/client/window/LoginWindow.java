@@ -76,6 +76,8 @@ public class LoginWindow extends Activity
                         if(result.success)
                         {
                             User user = JSON.parseObject(result.data, User.class);
+                            if(user.avatar == null)
+                                user.avatar = "http://public-image-source.img-cn-shanghai.aliyuncs.com/avatar33201652203559.jpg";
                             MapWindow.user = user;
                             SharedPreferences prefs = getSharedPreferences("userInfo", 1);
                             SharedPreferences.Editor mEditor = prefs.edit();

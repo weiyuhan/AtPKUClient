@@ -37,6 +37,8 @@ public class LoadingWindow extends Activity
         getActionBar().hide(); // 隐藏actionBar
         setContentView(R.layout.loading);
 
+        MapWindow.mapShow = true;
+
         SharedPreferences prefs = getSharedPreferences("login", Context.MODE_PRIVATE);
         String cookie = prefs.getString("Cookie", "");
         System.out.println("mycookie : " + cookie);

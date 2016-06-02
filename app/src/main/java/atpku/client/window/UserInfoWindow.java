@@ -80,6 +80,8 @@ public class UserInfoWindow extends Activity
     public void refreshUserInfo()
     {
         user = MapWindow.user;
+        if(user.avatar == null)
+            user.avatar = "http://public-image-source.img-cn-shanghai.aliyuncs.com/avatar33201652203559.jpg";
         System.out.println(user);
         if(user != null)
         {
@@ -100,7 +102,7 @@ public class UserInfoWindow extends Activity
             dislikeReceived.setText("收到过的踩：" + String.valueOf(user.dislikeReceived));
             reportReceived.setText("被举报次数：" + String.valueOf(user.reportReceived));
 
-            Picasso.with(this).load(user.avatar).placeholder(R.mipmap.image_loading).error(R.mipmap.default_avatar_1).resize(72,72).into(avatarView);
+            Picasso.with(this).load(user.avatar).placeholder(R.mipmap.image_loading).error(R.mipmap.default_avatar_1).resize(200,200).into(avatarView);
         }
     }
 

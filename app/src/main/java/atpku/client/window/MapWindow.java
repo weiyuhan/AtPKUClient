@@ -58,6 +58,8 @@ public class MapWindow extends Activity implements
         SearchView.OnQueryTextListener, AMap.OnMarkerClickListener, AMap.OnCameraChangeListener,
         AMap.OnMapClickListener
 {
+    public static boolean mapShow;
+
     private MapView mapView;
     public static AMap aMap;
 
@@ -140,6 +142,8 @@ public class MapWindow extends Activity implements
 
         SharedPreferences prefs = getSharedPreferences("userInfo", 1);
         user = JSON.parseObject(prefs.getString("userInfoJson", "{}"), User.class);
+        if(user.avatar == null)
+            user.avatar = "http://public-image-source.img-cn-shanghai.aliyuncs.com/avatar33201652203559.jpg";
 
         //loadAvatarIcon();
 
@@ -611,5 +615,13 @@ public class MapWindow extends Activity implements
             shownMarker.hideInfoWindow();
             shownMarker = null;
         }
+    }
+
+    @Override
+    public void onBackPressed()
+    {
+        mapShow = false;
+        android.os.Process.killProcess(android.os.Process.myPid());    //获取PID
+        System.exit(0);
     }
 }

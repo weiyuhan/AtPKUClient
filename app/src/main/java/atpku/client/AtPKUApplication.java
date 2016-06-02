@@ -15,6 +15,7 @@ import java.util.TimeZone;
 public class AtPKUApplication extends Application
 {
     public OSS oss;
+
     @Override
     public void onCreate() {
         super.onCreate();
