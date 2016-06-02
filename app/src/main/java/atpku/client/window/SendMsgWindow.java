@@ -168,6 +168,11 @@ public class SendMsgWindow extends Activity implements AdapterView.OnItemClickLi
 
     public void sendMsgSubmitHandler(View source)
     {
+        if(!MapWindow.isLogin)
+        {
+            Toast.makeText(this, "请登录", Toast.LENGTH_LONG);
+            return;
+        }
         final Map<String, String> params = new HashMap<String, String>();
 
         // 需要在本地检查title和content的合法性，比如不能为空，长度不能过长（可能需要与后端交流
