@@ -31,6 +31,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.baidu.android.pushservice.PushConstants;
 import com.baidu.android.pushservice.PushManager;
+import com.baidu.android.pushservice.PushSettings;
 import com.squareup.picasso.Picasso;
 
 import java.util.HashMap;
@@ -115,9 +116,9 @@ public class MapWindow extends Activity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.map);
 
-        //PushSettings.enableDebugMode(getApplicationContext(), true);
+        PushSettings.enableDebugMode(getApplicationContext(), true);
 
-        PushManager.startWork(getApplicationContext(), PushConstants.LOGIN_TYPE_API_KEY, "ZEug10Z4X0y5ek5ll0wpITIV");
+        PushManager.startWork(getApplicationContext(), PushConstants.LOGIN_TYPE_API_KEY, "ZEug10Z4X0y5ek5ll0wplTIV");
 
 
         currPos = pkuPos;
@@ -272,6 +273,8 @@ public class MapWindow extends Activity implements
     {
         if(isLogin) //登出
         {
+            Map<String, String> params = new HashMap<String, String>();
+            params.put("deviceid", MapWindow.deviceid);
             StringRequestWithCookie stringRequest = new StringRequestWithCookie(StringRequest.Method.POST,"http://139.129.22.145:5000/logout",
                     new Response.Listener<String>()
                     {
@@ -295,7 +298,7 @@ public class MapWindow extends Activity implements
                             }
                             Log.d("TAG", response);
                         }
-                    }, null);
+                    }, params);
             volleyQuque.add(stringRequest);
         }
         else //登录
@@ -391,7 +394,6 @@ public class MapWindow extends Activity implements
                 break;
         }
         return true;
-
     }
 
     public void refreshPlaces()
