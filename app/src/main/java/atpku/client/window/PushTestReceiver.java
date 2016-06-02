@@ -44,7 +44,7 @@ public class PushTestReceiver extends PushMessageReceiver
                 + " requestId=" + requestId;
         Log.d(TAG, responseString);
 
-        MapWindow.deviceid = channelId;
+        MapWindow.deviceid = channelId; //把channelId放到MapWindow.deviceid中
 
         if (errorCode == 0) {
             // 绑定成功

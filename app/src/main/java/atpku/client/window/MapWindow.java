@@ -121,6 +121,7 @@ public class MapWindow extends Activity implements
         PushSettings.enableDebugMode(getApplicationContext(), true);
 
         PushManager.startWork(getApplicationContext(), PushConstants.LOGIN_TYPE_API_KEY, "ZEug10Z4X0y5ek5ll0wplTIV");
+        //启动百度推送服务，等待PushTestReceiver的回调函数Onbind给MapWindow.deviceid赋初值，异步的
 
 
         currPos = pkuPos;

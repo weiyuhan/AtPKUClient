@@ -42,7 +42,7 @@ public class LoadingWindow extends Activity
         String cookie = prefs.getString("Cookie", "");
         System.out.println("mycookie : " + cookie);
         MapWindow.setCookie(cookie);
-        if(!cookie.equals(""))
+        if(!cookie.equals("")) // 设置用户是否登录
         {
             MapWindow.isLogin = true;
         }
@@ -120,9 +120,9 @@ public class LoadingWindow extends Activity
                                                 if(loadingPlaceIndex >= count)
                                                 {
                                                     if(!MapWindow.isLogin) {
-                                                        while (MapWindow.deviceid == null)
+                                                        while (MapWindow.deviceid == null) //等待devideid不为空
                                                             System.out.println("fuck");
-                                                        System.out.println(MapWindow.deviceid);
+                                                        System.out.println(MapWindow.deviceid); // 发送deviceid给服务器
                                                         StringRequestWithCookie stringRequest = new StringRequestWithCookie(Request.Method.GET, "http://139.129.22.145:5000/deviceid/" + MapWindow.deviceid + "/delete",
                                                                 new Response.Listener<String>() {
                                                                     @Override
