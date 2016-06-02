@@ -34,7 +34,6 @@ public class LoadingWindow extends Activity
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        getActionBar().hide(); // 隐藏actionBar
         setContentView(R.layout.loading);
 
         MapWindow.mapShow = true;

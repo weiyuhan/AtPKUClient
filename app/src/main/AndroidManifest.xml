@@ -132,7 +132,8 @@
             android:name=".window.MapWindow">
         </activity>
         <activity
-            android:name=".window.LoadingWindow" >
+            android:name=".window.LoadingWindow"
+            android:theme="@android:style/Theme.Holo.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
