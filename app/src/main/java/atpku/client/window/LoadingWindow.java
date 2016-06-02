@@ -42,6 +42,10 @@ public class LoadingWindow extends Activity
         String cookie = prefs.getString("Cookie", "");
         System.out.println("mycookie : " + cookie);
         MapWindow.setCookie(cookie);
+        if(!cookie.equals(""))
+        {
+            MapWindow.isLogin = true;
+        }
         volleyQuque = Volley.newRequestQueue(this);
         initPlaces();
         /*
@@ -115,7 +119,24 @@ public class LoadingWindow extends Activity
                                                 loadingPlaceIndex++;
                                                 if(loadingPlaceIndex >= count)
                                                 {
-                                                    LoadingWindow.this.finish();
+                                                    if(!MapWindow.isLogin) {
+                                                        while (MapWindow.deviceid == null)
+                                                            System.out.println("fuck");
+                                                        System.out.println(MapWindow.deviceid);
+                                                        StringRequestWithCookie stringRequest = new StringRequestWithCookie(Request.Method.GET, "http://139.129.22.145:5000/deviceid/" + MapWindow.deviceid + "/delete",
+                                                                new Response.Listener<String>() {
+                                                                    @Override
+                                                                    public void onResponse(String response) {
+                                                                        PostResult result = JSON.parseObject(response, PostResult.class);
+                                                                        System.out.println("send deviceid" + result);
+                                                                        Log.d("TAG", response);
+                                                                    }
+                                                                }, null);
+                                                        volleyQuque.add(stringRequest);
+                                                    }
+                                                    else {
+                                                        LoadingWindow.this.finish();
+                                                    }
                                                 }
                                             }
                                         }, null);
@@ -123,11 +144,6 @@ public class LoadingWindow extends Activity
                             }
                             Intent mainIntent = new Intent(LoadingWindow.this, MapWindow.class);
                             startActivity(mainIntent);
-                            String cookie = MapWindow.getCookie();
-                            if(!cookie.equals(""))
-                            {
-                                MapWindow.isLogin = true;
-                            }
                         }
                         else
                         {

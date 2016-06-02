@@ -154,6 +154,8 @@ public class MapWindow extends Activity implements
                 refreshPlaces();
             }
         }, 120000, 120000); // for each 2 min, refresh all messages about places
+
+
     }
 
     public boolean onCreateOptionsMenu(Menu menu)
