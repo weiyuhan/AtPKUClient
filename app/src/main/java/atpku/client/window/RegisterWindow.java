@@ -76,30 +76,30 @@ public class RegisterWindow extends Activity
         final String stuNumStr = studentNum.getText().toString();
         if (stuNumStr.length() < 1)
         {
-            Toast.makeText(this, "请输入学号", Toast.LENGTH_SHORT);
+            Toast.makeText(this, "请输入学号", Toast.LENGTH_SHORT).show();
             return;
         }
         final String userNameStr = username.getText().toString();
         if (userNameStr.length() < 1)
         {
-            Toast.makeText(this, "请输入用户名", Toast.LENGTH_SHORT);
+            Toast.makeText(this, "请输入用户名", Toast.LENGTH_SHORT).show();
             return;
         }
         final String passwordStr = password.getText().toString();
         if (passwordStr.length() < 1)
         {
-            Toast.makeText(this, "请输入密码", Toast.LENGTH_SHORT);
+            Toast.makeText(this, "请输入密码", Toast.LENGTH_SHORT).show();
             return;
         }
         String confirmpwStr = confirmPasswd.getText().toString();
         if (passwordStr.length() < 1)
         {
-            Toast.makeText(this, "请确认密码", Toast.LENGTH_SHORT);
+            Toast.makeText(this, "请确认密码", Toast.LENGTH_SHORT).show();
             return;
         }
         else if(!confirmpwStr.equals(passwordStr))
         {
-            Toast.makeText(this, "两次输入密码不一致", Toast.LENGTH_LONG);
+            Toast.makeText(this, "两次输入密码不一致", Toast.LENGTH_LONG).show();
             return;
         }
         String genderStrTmp = null;

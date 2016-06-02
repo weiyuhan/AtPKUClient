@@ -563,6 +563,7 @@ public class MapWindow extends Activity implements
         Place place = MapWindow.places.get(placename);
         int placeid = place.getId();
         if(marker.isInfoWindowShown()) {
+            System.out.println("Double click on marker.");
             Intent intent = new Intent(this, PlaceWindow.class);
             Bundle bundle = new Bundle();
             bundle.putSerializable("id", placeid);
@@ -574,6 +575,7 @@ public class MapWindow extends Activity implements
         }
         else {
             shownMarker = marker;
+            marker.showInfoWindow();
             return false;
         }
     }
