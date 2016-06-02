@@ -617,9 +617,16 @@ public class MapWindow extends Activity implements
         }
     }
 
+    public long mExitTime = 0;
     @Override
     public void onBackPressed()
     {
+        if ((System.currentTimeMillis() - mExitTime) > 2000) {
+            Object mHelperUtils;
+            Toast.makeText(this, "再按一次退出程序", Toast.LENGTH_SHORT).show();
+            mExitTime = System.currentTimeMillis();
+            return;
+        }
         mapShow = false;
         android.os.Process.killProcess(android.os.Process.myPid());    //获取PID
         System.exit(0);
