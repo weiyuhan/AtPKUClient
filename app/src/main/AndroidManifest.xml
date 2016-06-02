@@ -89,7 +89,7 @@
 
         <meta-data
             android:name="com.amap.api.v2.apikey"
-            android:value="89427d1df2286874f57348cb8e2f4123"/>
+            android:value="134016dc0a8ee4636d18d3cab6b68b9c"/>
 
         <activity
             android:name="atpku.client.window.LoginWindow"

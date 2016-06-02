@@ -445,7 +445,6 @@ public class MapWindow extends Activity implements
                                         }, null);
                                 volleyQuque.add(globalMsgRequest);
                             }
-                            refreshMarkers();
                         }
                         else
                         {
@@ -471,10 +470,12 @@ public class MapWindow extends Activity implements
         for(String placename: keys) {
             Place place = MapWindow.places.get(placename);
             pos = new LatLng(place.getLat(), place.getLng());
-            markerOptions.position(pos);
-            markerOptions.title(placename);
-            Marker marker = aMap.addMarker(markerOptions);
-            MapWindow.markers.put(placename, marker);
+            Marker marker;
+            if((marker = MapWindow.markers.get(placename)) == null) {
+                markerOptions.position(pos);
+                markerOptions.title(placename);
+                marker = aMap.addMarker(markerOptions);
+            }
             marker.setSnippet(place.snippetString());
         }
     }
@@ -562,7 +563,7 @@ public class MapWindow extends Activity implements
         String placename = marker.getTitle();
         Place place = MapWindow.places.get(placename);
         int placeid = place.getId();
-        if(marker.isInfoWindowShown()) {
+        if(marker.isInfoWindowShown() || shownMarker == marker) {
             System.out.println("Double click on marker.");
             Intent intent = new Intent(this, PlaceWindow.class);
             Bundle bundle = new Bundle();
@@ -571,13 +572,14 @@ public class MapWindow extends Activity implements
             intent.putExtras(bundle);
             startActivity(intent);
             marker.hideInfoWindow();
-            return true;
+            shownMarker = null;
         }
         else {
-            shownMarker = marker;
+            System.out.println("Single click on marker.");
             marker.showInfoWindow();
-            return false;
+            shownMarker = marker;
         }
+        return true;
     }
 
     //对正在移动地图事件回调
