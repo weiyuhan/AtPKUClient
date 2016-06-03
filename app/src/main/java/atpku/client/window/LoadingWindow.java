@@ -73,6 +73,7 @@ public class LoadingWindow extends Activity
         params.put("lngend", "180");
         params.put("latbeg", "-90");
         params.put("latend", "90");
+        // get places
         StringRequestWithCookie stringRequest = new StringRequestWithCookie(Request.Method.GET,"http://139.129.22.145:5000/places?lngbeg=-180&lngend=180&latbeg=-90&latend=90",
                 new Response.Listener<String>()
                 {
@@ -92,10 +93,11 @@ public class LoadingWindow extends Activity
                             {
                                 MapWindow.markers = new HashMap<String, Marker>();
                             }
-                            final int count = MapWindow.places.keySet().size();
+                            final int count = places.size();
                             for(final Place place: places)
                             {
                                 MapWindow.places.put(place.getName(), place);
+                                // get hotmessages
                                 StringRequestWithCookie globalMsgRequest = new StringRequestWithCookie(Request.Method.GET,
                                         "http://139.129.22.145:5000/hotmessages/" + String.valueOf(place.getId()),
                                         new Response.Listener<String>() {
@@ -119,10 +121,17 @@ public class LoadingWindow extends Activity
                                                 loadingPlaceIndex++;
                                                 if(loadingPlaceIndex >= count)
                                                 {
+                                                    if(loadingPlaceIndex > count) {
+                                                        while(true) {
+                                                            System.out.println("LoadingWindow severe error! Please check codes around this!");
+                                                        }
+                                                    }
                                                     if(!MapWindow.isLogin) {
-                                                        while (MapWindow.deviceid == null) //等待devideid不为空
-                                                            System.out.println("fuck");
-                                                        System.out.println(MapWindow.deviceid); // 发送deviceid给服务器
+                                                        while (MapWindow.deviceid == null) { //等待devideid不为空
+                                                            //System.out.println("fuck");
+                                                        }
+                                                        System.out.println(MapWindow.deviceid);
+                                                        // 发送deviceid给服务器
                                                         StringRequestWithCookie stringRequest = new StringRequestWithCookie(Request.Method.GET, "http://139.129.22.145:5000/deviceid/" + MapWindow.deviceid + "/delete",
                                                                 new Response.Listener<String>() {
                                                                     @Override
@@ -142,6 +151,7 @@ public class LoadingWindow extends Activity
                                         }, null);
                                 volleyQuque.add(globalMsgRequest);
                             }
+                            System.out.println("Start Intent to MapWindow.");
                             Intent mainIntent = new Intent(LoadingWindow.this, MapWindow.class);
                             startActivity(mainIntent);
                         }
