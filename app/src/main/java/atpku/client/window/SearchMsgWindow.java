@@ -1,10 +1,10 @@
 package atpku.client.window;
 
-import android.app.ActionBar;
-import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -23,7 +23,7 @@ import atpku.client.model.Place;
 /**
  * Created by wyh on 2016/5/19.
  */
-public class SearchMsgWindow extends Activity
+public class SearchMsgWindow extends AppCompatActivity
 {
     public EditText title;
     public EditText author;
@@ -40,9 +40,9 @@ public class SearchMsgWindow extends Activity
         super.onCreate(icicle);
         setContentView(R.layout.advancesearch);
 
-        actionBar = getActionBar();
-        //actionBar.setDisplayShowHomeEnabled(true);
-        actionBar.setHomeButtonEnabled(true);
+        actionBar = getSupportActionBar();
+        actionBar.setDisplayUseLogoEnabled(true);
+        actionBar.setLogo(R.mipmap.ic_launcher);
         actionBar.setDisplayHomeAsUpEnabled(true);
 
         title = (EditText)findViewById(R.id.advanceSearch_title);

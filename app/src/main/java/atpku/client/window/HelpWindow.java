@@ -1,10 +1,9 @@
 package atpku.client.window;
 
-import android.app.ActionBar;
-import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.widget.TextView;
 
@@ -13,7 +12,7 @@ import atpku.client.R;
 /**
  * Created by wyh on 2016/5/20.
  */
-public class HelpWindow extends Activity
+public class HelpWindow extends AppCompatActivity
 {
     private ActionBar actionBar = null;
     private TextView helpcontent;
@@ -22,10 +21,10 @@ public class HelpWindow extends Activity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.usehelp);
 
-        actionBar = getActionBar();
-        actionBar.setHomeButtonEnabled(true);
+        actionBar = getSupportActionBar();
+        actionBar.setDisplayUseLogoEnabled(true);
+        actionBar.setLogo(R.mipmap.ic_launcher);
         actionBar.setDisplayHomeAsUpEnabled(true);
-        actionBar.setTitle("使用说明");
 
         helpcontent = (TextView)findViewById(R.id.helpcontent);
         helpcontent.setText("欢迎使用AtPKU。\n"

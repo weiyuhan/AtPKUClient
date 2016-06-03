@@ -1,10 +1,10 @@
 package atpku.client.window;
 
-import android.app.ActionBar;
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -36,7 +36,7 @@ import atpku.client.model.PostResult;
 /**
  * Created by wyh on 2016/5/19.
  */
-public class ReportHandlingWindow extends Activity
+public class ReportHandlingWindow extends AppCompatActivity
 {
     public ListView msgList;
     public ActionBar actionBar;
@@ -46,9 +46,9 @@ public class ReportHandlingWindow extends Activity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.reportlist);
 
-        actionBar = getActionBar();
-        //actionBar.setDisplayShowHomeEnabled(true);
-        actionBar.setHomeButtonEnabled(true);
+        actionBar = getSupportActionBar();
+        actionBar.setDisplayUseLogoEnabled(true);
+        actionBar.setLogo(R.mipmap.ic_launcher);
         actionBar.setDisplayHomeAsUpEnabled(true);
 
         msgList = (ListView) findViewById(R.id.reportList);

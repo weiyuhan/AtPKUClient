@@ -11,6 +11,9 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
+            <option value="$PROJECT_DIR$/appcompat-v7-22.2.1" />
+            <option value="$PROJECT_DIR$/design-22.2.1" />
+            <option value="$PROJECT_DIR$/support-v4-22.2.1" />
           </set>
         </option>
       </GradleProjectSettings>

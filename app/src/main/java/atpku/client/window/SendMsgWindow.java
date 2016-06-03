@@ -1,7 +1,5 @@
 package atpku.client.window;
 
-import android.app.ActionBar;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.DialogInterface;
@@ -11,6 +9,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
 import android.text.InputFilter;
 import android.util.Log;
 import android.view.MenuItem;
@@ -54,7 +54,7 @@ import atpku.client.util.Utillity;
 /**
  * Created by wyh on 2016/5/19.
  */
-public class SendMsgWindow extends Activity implements AdapterView.OnItemClickListener
+public class SendMsgWindow extends AppCompatActivity implements AdapterView.OnItemClickListener
 {
     public EditText title;
     public EditText content;
@@ -88,9 +88,9 @@ public class SendMsgWindow extends Activity implements AdapterView.OnItemClickLi
         Intent intent = this.getIntent();
         int placeId = (Integer)intent.getSerializableExtra("placeId");
 
-        actionBar = getActionBar();
-        //actionBar.setDisplayShowHomeEnabled(true);
-        actionBar.setHomeButtonEnabled(true);
+        actionBar = getSupportActionBar();
+        actionBar.setDisplayUseLogoEnabled(true);
+        actionBar.setLogo(R.mipmap.ic_launcher);
         actionBar.setDisplayHomeAsUpEnabled(true);
 
 

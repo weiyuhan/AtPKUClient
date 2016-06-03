@@ -1,12 +1,12 @@
 package atpku.client.window;
 
-import android.app.ActionBar;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
 import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -43,7 +43,7 @@ import atpku.client.util.StringRequestWithCookie;
 /**
  * Created by wyh on 2016/5/19.
  */
-public class UserManagingWindow extends Activity
+public class UserManagingWindow extends AppCompatActivity
 {
     public TextView nicknameText;
     public TextView emailText;
@@ -61,9 +61,9 @@ public class UserManagingWindow extends Activity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.usermanaging);
 
-        actionBar = getActionBar();
-        //actionBar.setDisplayShowHomeEnabled(true);
-        actionBar.setHomeButtonEnabled(true);
+        actionBar = getSupportActionBar();
+        actionBar.setDisplayUseLogoEnabled(true);
+        actionBar.setLogo(R.mipmap.ic_launcher);
         actionBar.setDisplayHomeAsUpEnabled(true);
 
         nicknameText = (TextView)findViewById(R.id.nickname);

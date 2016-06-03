@@ -1,12 +1,12 @@
 package atpku.client.window;
 
-import android.app.ActionBar;
-import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -39,22 +39,22 @@ import atpku.client.model.PostResult;
 /**
  * Created by wyh on 2016/5/19.
  */
-public class PlaceWindow extends Activity implements SearchView.OnQueryTextListener, SwipeRefreshLayout.OnRefreshListener
+public class PlaceWindow extends AppCompatActivity implements SearchView.OnQueryTextListener, SwipeRefreshLayout.OnRefreshListener
 {
     private SwipeRefreshLayout refreshLayout;
     public ListView msgList;
     private int placeID;
     public ActionBar actionBar;
     private RequestQueue volleyQuque;
-    public SearchView search;
+    public SearchView searchView;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.place);
 
-        actionBar = getActionBar();
-        //actionBar.setDisplayShowHomeEnabled(true);
-        actionBar.setHomeButtonEnabled(true);
+        actionBar = getSupportActionBar();
+        actionBar.setDisplayUseLogoEnabled(true);
+        actionBar.setLogo(R.mipmap.ic_launcher);
         actionBar.setDisplayHomeAsUpEnabled(true);
 
         refreshLayout = (SwipeRefreshLayout)this.findViewById(R.id.refresh_layout);
@@ -71,13 +71,7 @@ public class PlaceWindow extends Activity implements SearchView.OnQueryTextListe
     }
 
     public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_place, menu);
-
-        MenuItem searchItem = menu.findItem(R.id.action_place_search);
-        search = (SearchView)searchItem.getActionView();
-        search.setOnQueryTextListener(this);
-
+        new MenuInflater(getApplication()).inflate(R.menu.menu_map, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -129,8 +123,9 @@ public class PlaceWindow extends Activity implements SearchView.OnQueryTextListe
             }
             break;
             case R.id.action_place_search:{
-                if (search != null)
-                    search.setOnQueryTextListener(this);
+                searchView = (SearchView) MenuItemCompat.getActionView(mi);
+                if (searchView != null)
+                    searchView.setOnQueryTextListener(this);
             }
             break;
             default:

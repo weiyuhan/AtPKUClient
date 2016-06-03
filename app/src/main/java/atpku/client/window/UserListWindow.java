@@ -1,10 +1,10 @@
 package atpku.client.window;
 
-import android.app.ActionBar;
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -42,7 +42,7 @@ import atpku.client.model.PostResult;
 /**
  * Created by wyh on 2016/5/19.
  */
-public class UserListWindow extends Activity implements SearchView.OnQueryTextListener
+public class UserListWindow extends AppCompatActivity implements SearchView.OnQueryTextListener
 {
     public ListView userList;
     public ActionBar actionBar;
@@ -57,9 +57,9 @@ public class UserListWindow extends Activity implements SearchView.OnQueryTextLi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.userlist);
 
-        actionBar = getActionBar();
-        //actionBar.setDisplayShowHomeEnabled(true);
-        actionBar.setHomeButtonEnabled(true);
+        actionBar = getSupportActionBar();
+        actionBar.setDisplayUseLogoEnabled(true);
+        actionBar.setLogo(R.mipmap.ic_launcher);
         actionBar.setDisplayHomeAsUpEnabled(true);
 
         userList = (ListView) findViewById(R.id.userList);
@@ -69,8 +69,7 @@ public class UserListWindow extends Activity implements SearchView.OnQueryTextLi
     }
 
     public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_userlist, menu);
+        new MenuInflater(getApplication()).inflate(R.menu.menu_map, menu);
 
         MenuItem searchItem = menu.findItem(R.id.action_user_search);
         search = (SearchView)searchItem.getActionView();

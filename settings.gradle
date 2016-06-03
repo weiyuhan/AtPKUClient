@@ -1,1 +1,1 @@
-include ':app'
+include ':app', ':design-22.2.1', ':appcompat-v7-22.2.1', ':support-v4-22.2.1'

@@ -1,10 +1,10 @@
 package atpku.client.window;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -27,7 +27,7 @@ import atpku.client.model.PostResult;
 /**
  * Created by wyh on 2016/5/19.
  */
-public class LoadingWindow extends Activity
+public class LoadingWindow extends AppCompatActivity
 {
     private com.android.volley.RequestQueue volleyQuque;
     public static int loadingPlaceIndex = 0;

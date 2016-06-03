@@ -1,11 +1,11 @@
 package atpku.client.window;
 
-import android.app.ActionBar;
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.util.Log;
 import android.view.MenuItem;
@@ -33,7 +33,7 @@ import atpku.client.model.PostResult;
 import atpku.client.model.User;
 
 
-public class LoginWindow extends Activity
+public class LoginWindow extends AppCompatActivity
 {
     public EditText email;
     public EditText password;
@@ -48,8 +48,9 @@ public class LoginWindow extends Activity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login);
 
-        actionBar = getActionBar();
-        actionBar.setHomeButtonEnabled(true);
+        actionBar = getSupportActionBar();
+        actionBar.setDisplayUseLogoEnabled(true);
+        actionBar.setLogo(R.mipmap.ic_launcher);
         actionBar.setDisplayHomeAsUpEnabled(true);
 
         email = (EditText)findViewById(R.id.login_email);

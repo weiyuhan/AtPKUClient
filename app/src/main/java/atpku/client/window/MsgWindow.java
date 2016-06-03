@@ -1,11 +1,11 @@
 package atpku.client.window;
 
-import android.app.ActionBar;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
 import android.text.InputType;
 import android.view.MenuItem;
 import android.view.View;
@@ -41,7 +41,7 @@ import atpku.client.util.StringRequestWithCookie;
 /**
  * Created by wyh on 2016/5/19.
  */
-public class MsgWindow extends Activity implements AdapterView.OnItemClickListener
+public class MsgWindow extends AppCompatActivity implements AdapterView.OnItemClickListener
 {
     public TextView title;
     public TextView time;
@@ -72,9 +72,9 @@ public class MsgWindow extends Activity implements AdapterView.OnItemClickListen
         super.onCreate(savedInstanceState);
         setContentView(R.layout.showmsg);
 
-        actionBar = getActionBar();
-        //actionBar.setDisplayShowHomeEnabled(true);
-        actionBar.setHomeButtonEnabled(true);
+        actionBar = getSupportActionBar();
+        actionBar.setDisplayUseLogoEnabled(true);
+        actionBar.setLogo(R.mipmap.ic_launcher);
         actionBar.setDisplayHomeAsUpEnabled(true);
 
         title = (TextView)findViewById(R.id.msg_title);

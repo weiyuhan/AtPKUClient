@@ -1,14 +1,16 @@
 package atpku.client.window;
 
-import android.app.ActionBar;
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
+import android.widget.SearchView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -17,7 +19,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.SearchView;
 import android.widget.Toast;
 
 
@@ -34,6 +35,7 @@ import com.baidu.android.pushservice.PushManager;
 import com.baidu.android.pushservice.PushSettings;
 import com.squareup.picasso.Picasso;
 
+import java.io.SyncFailedException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -53,7 +55,7 @@ import atpku.client.model.User;
  * Created by JIANG YUMENG on 2016/5/14.
  * Main map class.
  */
-public class MapWindow extends Activity implements
+public class MapWindow extends AppCompatActivity implements
         ListView.OnItemClickListener, AMapLocationListener, LocationSource,
         SearchView.OnQueryTextListener, AMap.OnMarkerClickListener, AMap.OnCameraChangeListener,
         AMap.OnMapClickListener
@@ -69,7 +71,7 @@ public class MapWindow extends Activity implements
 
     public DrawerLayout drawerLayout;
 
-    public SearchView search;
+    public SearchView searchView;
 
     public static boolean isLogin = false;
 
@@ -117,13 +119,10 @@ public class MapWindow extends Activity implements
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.map);
-        System.out.println("MapWindow onCreate!!!!!!!!!!!!!!!!!!!!!!!!!!");
-
         PushSettings.enableDebugMode(getApplicationContext(), true);
 
         PushManager.startWork(getApplicationContext(), PushConstants.LOGIN_TYPE_API_KEY, "ZEug10Z4X0y5ek5ll0wplTIV");
         //启动百度推送服务，等待PushTestReceiver的回调函数Onbind给MapWindow.deviceid赋初值，异步的
-        System.out.println("PushManager startWork!!!!!!!!!!!!!!!!!!!!!!!!!!");
 
         currPos = pkuPos;
 
@@ -133,8 +132,10 @@ public class MapWindow extends Activity implements
         slideMenu.setOnItemClickListener(this);
         refreshSlideMenu();
 
-        actionBar = getActionBar();
-        actionBar.setDisplayShowHomeEnabled(true);;
+        actionBar = getSupportActionBar();
+        //actionBar.setDisplayShowHomeEnabled(true);;
+        actionBar.setDisplayUseLogoEnabled(true);
+        actionBar.setLogo(R.mipmap.ic_launcher);
 
         mapView = (MapView) findViewById(R.id.map);
         mapView.onCreate(savedInstanceState);
@@ -162,11 +163,8 @@ public class MapWindow extends Activity implements
 
     public boolean onCreateOptionsMenu(Menu menu)
     {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_map, menu);
+        new MenuInflater(getApplication()).inflate(R.menu.menu_map, menu);
         MenuItem searchItem = menu.findItem(R.id.action_search);
-        search = (SearchView)searchItem.getActionView();
-        search.setOnQueryTextListener(this);
 
 
         boolean ret =  super.onCreateOptionsMenu(menu);
@@ -231,32 +229,7 @@ public class MapWindow extends Activity implements
             }
                 break;
             case 4:{   //发信息
-                if(!MapWindow.isLogin)
-                {
-                    Toast.makeText(this, "请登录", Toast.LENGTH_LONG).show();
-                    return;
-                }
-                Place nearPlace = null;
-                double minDistance = 50000;
-                for(String placename:MapWindow.places.keySet())
-                {
-                    Place place = places.get(placename);
-                    LatLng placePos = new LatLng(place.getLat(), place.getLng());
-                    double distance = AMapUtils.calculateLineDistance(currPos, placePos);
-                    if(distance < minDistance)
-                    {
-                        minDistance = distance;
-                        nearPlace = place;
-                    }
-                }
-                Intent intent = new Intent(this, SendMsgWindow.class);
-                Bundle bundle = new Bundle();
-                if(nearPlace != null)
-                    bundle.putSerializable("placeId", nearPlace.getId());
-                else
-                    bundle.putSerializable("placeId", -1);
-                intent.putExtras(bundle);
-                startActivity(intent);
+                startSendMsgWindow();
             }
                 break;
             case 5:{
@@ -273,6 +246,41 @@ public class MapWindow extends Activity implements
                 break;
 
         }
+    }
+
+    public void sendMsgHandler(View view)
+    {
+        startSendMsgWindow();
+    }
+
+    public void startSendMsgWindow()
+    {
+        if(!MapWindow.isLogin)
+        {
+            Toast.makeText(this, "请登录", Toast.LENGTH_LONG).show();
+            return;
+        }
+        Place nearPlace = null;
+        double minDistance = 50000;
+        for(String placename:MapWindow.places.keySet())
+        {
+            Place place = places.get(placename);
+            LatLng placePos = new LatLng(place.getLat(), place.getLng());
+            double distance = AMapUtils.calculateLineDistance(currPos, placePos);
+            if(distance < minDistance)
+            {
+                minDistance = distance;
+                nearPlace = place;
+            }
+        }
+        Intent intent = new Intent(this, SendMsgWindow.class);
+        Bundle bundle = new Bundle();
+        if(nearPlace != null)
+            bundle.putSerializable("placeId", nearPlace.getId());
+        else
+            bundle.putSerializable("placeId", -1);
+        intent.putExtras(bundle);
+        startActivity(intent);
     }
 
     public void startUserInfoWindow()
@@ -399,8 +407,10 @@ public class MapWindow extends Activity implements
             }
                 break;
             case R.id.action_search:{
-                if (search != null)
-                    search.setOnQueryTextListener(this);
+                //mi.expandActionView();
+                searchView = (SearchView) MenuItemCompat.getActionView(mi);
+                if (searchView != null)
+                    searchView.setOnQueryTextListener(this);
                 }
                 break;
             default:

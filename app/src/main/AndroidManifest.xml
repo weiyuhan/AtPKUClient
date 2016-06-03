@@ -129,11 +129,12 @@
             android:label="处理举报">
         </activity>
         <activity
-            android:name=".window.MapWindow">
+            android:name=".window.MapWindow"
+            android:label="AtPKU">
         </activity>
         <activity
             android:name=".window.LoadingWindow"
-            android:theme="@android:style/Theme.Holo.NoActionBar">
+            android:theme="@style/Theme.AppCompat.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />

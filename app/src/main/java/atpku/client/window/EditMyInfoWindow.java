@@ -1,12 +1,13 @@
 package atpku.client.window;
 
-import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -45,7 +46,7 @@ import atpku.client.util.StringRequestWithCookie;
 /**
  * Created by JIANG YUMENG on 2016/5/28.
  */
-public class EditMyInfoWindow extends Activity implements View.OnClickListener
+public class EditMyInfoWindow extends AppCompatActivity implements View.OnClickListener
 {
     public EditText username;
     public RadioButton male;
@@ -69,10 +70,10 @@ public class EditMyInfoWindow extends Activity implements View.OnClickListener
         super.onCreate(savedInstanceState);
         setContentView(R.layout.editmyinfo);
 
-        actionBar = getActionBar();
-        //actionBar.setDisplayShowHomeEnabled(true);
-        actionBar.setHomeButtonEnabled(true);
-        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar = getSupportActionBar();
+        actionBar.setDisplayUseLogoEnabled(true);
+        actionBar.setLogo(R.mipmap.ic_launcher);
+        actionBar.setDisplayHomeAsUpEnabled(true);;
 
         username = (EditText)findViewById(R.id.editmyinfo_username);
         male = (RadioButton)findViewById(R.id.editmyinfo_male);

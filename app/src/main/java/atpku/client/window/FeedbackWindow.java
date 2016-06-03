@@ -1,8 +1,8 @@
 package atpku.client.window;
 
-import android.app.ActionBar;
-import android.app.Activity;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -25,7 +25,7 @@ import atpku.client.model.PostResult;
  * Created by JIANG YUMENG on 2016/5/14.
  * Allow user to submit feedback.
  */
-public class FeedbackWindow extends Activity
+public class FeedbackWindow extends AppCompatActivity
 {
     public ActionBar actionBar;
     private com.android.volley.RequestQueue volleyQuque;
@@ -34,8 +34,9 @@ public class FeedbackWindow extends Activity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.feedback);
 
-        actionBar = getActionBar();
-        actionBar.setHomeButtonEnabled(true);
+        actionBar = getSupportActionBar();
+        actionBar.setDisplayUseLogoEnabled(true);
+        actionBar.setLogo(R.mipmap.ic_launcher);
         actionBar.setDisplayHomeAsUpEnabled(true);
 
         volleyQuque = Volley.newRequestQueue(this);

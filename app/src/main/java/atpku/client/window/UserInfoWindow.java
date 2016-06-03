@@ -1,9 +1,9 @@
 package atpku.client.window;
 
-import android.app.ActionBar;
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -34,7 +34,7 @@ import atpku.client.model.User;
  * Created by JIANG YUMENG on 2016/5/14.
  * Show user info.
  */
-public class UserInfoWindow extends Activity
+public class UserInfoWindow extends AppCompatActivity
 {
     public TextView studentNum;
     public TextView username;
@@ -58,9 +58,9 @@ public class UserInfoWindow extends Activity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.userinfo);
 
-        actionBar = getActionBar();
-        //actionBar.setDisplayShowHomeEnabled(true);
-        actionBar.setHomeButtonEnabled(true);
+        actionBar = getSupportActionBar();
+        actionBar.setDisplayUseLogoEnabled(true);
+        actionBar.setLogo(R.mipmap.ic_launcher);
         actionBar.setDisplayHomeAsUpEnabled(true);
 
         studentNum = (TextView)findViewById(R.id.userInfo_studentNum);
@@ -133,8 +133,7 @@ public class UserInfoWindow extends Activity
 
     public boolean onCreateOptionsMenu(Menu menu)
     {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_userinfo, menu);
+        new MenuInflater(getApplication()).inflate(R.menu.menu_map, menu);
         return super.onCreateOptionsMenu(menu);
     }
 

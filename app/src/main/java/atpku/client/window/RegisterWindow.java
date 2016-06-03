@@ -1,11 +1,10 @@
 package atpku.client.window;
 
-import android.app.ActionBar;
-import android.app.Activity;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -32,7 +31,7 @@ import atpku.client.R;
 import atpku.client.model.PostResult;
 import atpku.client.util.StringRequestWithCookie;
 
-public class RegisterWindow extends Activity
+public class RegisterWindow extends AppCompatActivity
 {
     public EditText studentNum;
     public EditText username;
@@ -53,9 +52,9 @@ public class RegisterWindow extends Activity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.register);
 
-        actionBar = getActionBar();
-        //actionBar.setDisplayShowHomeEnabled(true);
-        actionBar.setHomeButtonEnabled(true);
+        actionBar = getSupportActionBar();
+        actionBar.setDisplayUseLogoEnabled(true);
+        actionBar.setLogo(R.mipmap.ic_launcher);
         actionBar.setDisplayHomeAsUpEnabled(true);
 
         studentNum = (EditText)findViewById(R.id.regist_studentNum);
