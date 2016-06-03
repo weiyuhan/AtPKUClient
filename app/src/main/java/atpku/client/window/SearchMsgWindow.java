@@ -34,6 +34,7 @@ public class SearchMsgWindow extends Activity
     public Switch isGlobal;
     public Button submitButton;
     private ActionBar actionBar = null;
+    public String noPlace = "不限";
 
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
@@ -55,7 +56,7 @@ public class SearchMsgWindow extends Activity
 
 
         ArrayAdapter<String> adapter =  new ArrayAdapter<String>(this, R.layout.place_spiner_row);
-        adapter.add("任意地点");
+        adapter.add(noPlace);
         for(String placename: MapWindow.places.keySet()) {
             adapter.add(placename);
         }
@@ -107,7 +108,7 @@ public class SearchMsgWindow extends Activity
         params.put("title", title.getText().toString());
 
         String placename = (String)place.getSelectedItem();
-        if(!placename.equals("任意地点")) {
+        if(!placename.equals(noPlace)) {
             Place chosen = MapWindow.places.get(placename);
             params.put("placeid", String.valueOf(chosen.getId()));
         }

@@ -16,8 +16,15 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.List;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 
 /**
@@ -61,28 +68,29 @@ public class PushTestReceiver extends PushMessageReceiver
         // Demo更新界面展示代码，应用请在这里加入自己的处理逻辑
         updateContent(context, responseString);
 
-        new Thread() {
-            HttpClient httpClient;
-
-            public void run() {
-                httpClient = new DefaultHttpClient();
-                HttpGet get = new HttpGet("http://139.129.22.145:5000/deviceid/" + channelId + "/delete");
-                try {
-                    HttpResponse httpResponse = httpClient.execute(get);
-                    HttpEntity entity = httpResponse.getEntity();
-                    if (entity != null) {
-                        System.out.print("Delete deviceid. Server returns: ");
-                        BufferedReader br = new BufferedReader(new InputStreamReader(entity.getContent()));
-                        String line = null;
-                        while((line = br.readLine()) != null) {
-                            System.out.println(line);
-                        }
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
+        if(!MapWindow.isLogin) {
+            System.out.println("send deviceid");
+            OkHttpClient mOkHttpClient = new OkHttpClient();
+//创建一个Request
+            final Request request = new Request.Builder()
+                    .url("http://139.129.22.145:5000/deviceid/" + channelId + "/delete")
+                    .build();
+//new call
+            Call call = mOkHttpClient.newCall(request);
+//请求加入调度
+            call.enqueue(new Callback() {
+                @Override
+                public void onResponse(Call call, Response response) throws IOException {
+                    String resultJson = response.body().string();
+                    System.out.println("success : " + resultJson);
                 }
-            }
-        }.start();
+
+                @Override
+                public void onFailure(Call call, IOException e) {
+                    System.out.println("failure");
+                }
+            });
+        }
     }
 
 
