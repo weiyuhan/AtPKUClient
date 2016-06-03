@@ -55,6 +55,7 @@ public class SearchMsgWindow extends Activity
 
 
         ArrayAdapter<String> adapter =  new ArrayAdapter<String>(this, R.layout.place_spiner_row);
+        adapter.add("任意地点");
         for(String placename: MapWindow.places.keySet()) {
             adapter.add(placename);
         }
@@ -106,8 +107,10 @@ public class SearchMsgWindow extends Activity
         params.put("title", title.getText().toString());
 
         String placename = (String)place.getSelectedItem();
-        Place chosen = MapWindow.places.get(placename);
-        params.put("placeid", String.valueOf(chosen.getId()));
+        if(!placename.equals("任意地点")) {
+            Place chosen = MapWindow.places.get(placename);
+            params.put("placeid", String.valueOf(chosen.getId()));
+        }
 
         String temp = startTime.getText().toString();
         if(!temp.equals(""))
