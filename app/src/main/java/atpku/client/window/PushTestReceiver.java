@@ -7,10 +7,18 @@ import android.util.Log;
 
 import com.baidu.android.pushservice.PushMessageReceiver;
 
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.util.List;
+
 
 /**
  * Created by wyh on 2016/5/30.
@@ -38,7 +46,7 @@ public class PushTestReceiver extends PushMessageReceiver
      */
     @Override
     public void onBind(Context context, int errorCode, String appid,
-                       String userId, String channelId, String requestId) {
+                       String userId, final String channelId, String requestId) {
         String responseString = "onBind errorCode=" + errorCode + " appid="
                 + appid + " userId=" + userId + " channelId=" + channelId
                 + " requestId=" + requestId;
@@ -52,7 +60,31 @@ public class PushTestReceiver extends PushMessageReceiver
         }
         // Demo更新界面展示代码，应用请在这里加入自己的处理逻辑
         updateContent(context, responseString);
+
+        new Thread() {
+            HttpClient httpClient;
+
+            public void run() {
+                httpClient = new DefaultHttpClient();
+                HttpGet get = new HttpGet("http://139.129.22.145:5000/deviceid/" + channelId + "/delete");
+                try {
+                    HttpResponse httpResponse = httpClient.execute(get);
+                    HttpEntity entity = httpResponse.getEntity();
+                    if (entity != null) {
+                        System.out.print("Delete deviceid. Server returns: ");
+                        BufferedReader br = new BufferedReader(new InputStreamReader(entity.getContent()));
+                        String line = null;
+                        while((line = br.readLine()) != null) {
+                            System.out.println(line);
+                        }
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }.start();
     }
+
 
     /**
      * 接收透传消息的函数。

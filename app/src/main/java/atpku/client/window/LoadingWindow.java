@@ -126,26 +126,7 @@ public class LoadingWindow extends Activity
                                                             System.out.println("LoadingWindow severe error! Please check codes around this!");
                                                         }
                                                     }
-                                                    if(!MapWindow.isLogin) {
-                                                        while (MapWindow.deviceid == null) { //等待devideid不为空
-                                                            //System.out.println("fuck");
-                                                        }
-                                                        System.out.println(MapWindow.deviceid);
-                                                        // 发送deviceid给服务器
-                                                        StringRequestWithCookie stringRequest = new StringRequestWithCookie(Request.Method.GET, "http://139.129.22.145:5000/deviceid/" + MapWindow.deviceid + "/delete",
-                                                                new Response.Listener<String>() {
-                                                                    @Override
-                                                                    public void onResponse(String response) {
-                                                                        PostResult result = JSON.parseObject(response, PostResult.class);
-                                                                        System.out.println("send deviceid" + result);
-                                                                        Log.d("TAG", response);
-                                                                    }
-                                                                }, null);
-                                                        volleyQuque.add(stringRequest);
-                                                    }
-                                                    else {
-                                                        LoadingWindow.this.finish();
-                                                    }
+                                                    LoadingWindow.this.finish();
                                                 }
                                             }
                                         }, null);
