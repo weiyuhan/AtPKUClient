@@ -6,10 +6,12 @@ import android.content.SharedPreferences;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.design.widget.NavigationView;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.ImageView;
 import android.widget.SearchView;
 import android.util.Log;
 import android.view.Menu;
@@ -19,6 +21,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 
@@ -56,9 +59,9 @@ import atpku.client.model.User;
  * Main map class.
  */
 public class MapWindow extends AppCompatActivity implements
-        ListView.OnItemClickListener, AMapLocationListener, LocationSource,
+        AMapLocationListener, LocationSource,
         SearchView.OnQueryTextListener, AMap.OnMarkerClickListener, AMap.OnCameraChangeListener,
-        AMap.OnMapClickListener
+        AMap.OnMapClickListener, NavigationView.OnNavigationItemSelectedListener
 {
     public static boolean mapShow;
 
@@ -67,7 +70,7 @@ public class MapWindow extends AppCompatActivity implements
 
     public ActionBar actionBar;
 
-    public ListView slideMenu;
+    public NavigationView slideMenu;
 
     public DrawerLayout drawerLayout;
 
@@ -100,6 +103,9 @@ public class MapWindow extends AppCompatActivity implements
     public static User user = new User();
 
     public static String deviceid;
+    private ImageView drawerAvatar;
+    private TextView drawerUsername;
+    private TextView drawerEmail;
 
 
 
@@ -128,9 +134,8 @@ public class MapWindow extends AppCompatActivity implements
 
         drawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
 
-        slideMenu = (ListView)findViewById(R.id.left_drawer);
-        slideMenu.setOnItemClickListener(this);
-        refreshSlideMenu();
+        slideMenu = (NavigationView)findViewById(R.id.navigation);
+        slideMenu.setNavigationItemSelectedListener(this);
 
         actionBar = getSupportActionBar();
         //actionBar.setDisplayShowHomeEnabled(true);;
@@ -140,6 +145,10 @@ public class MapWindow extends AppCompatActivity implements
         mapView = (MapView) findViewById(R.id.map);
         mapView.onCreate(savedInstanceState);
 
+        drawerAvatar = (ImageView)findViewById(R.id.drawer_avatar);
+        drawerUsername = (TextView)findViewById(R.id.drawer_username);
+        drawerEmail = (TextView)findViewById(R.id.drawer_email);
+
         volleyQuque = Volley.newRequestQueue(this);
         init(); // 初始化地图
 
@@ -148,7 +157,7 @@ public class MapWindow extends AppCompatActivity implements
         if(user.avatar == null)
             user.avatar = "http://public-image-source.img-cn-shanghai.aliyuncs.com/avatar33201652203559.jpg";
 
-        //loadAvatarIcon();
+        refreshSlideMenu();
 
         Timer timer = new Timer();
         timer.schedule(new TimerTask() {
@@ -165,86 +174,56 @@ public class MapWindow extends AppCompatActivity implements
     {
         new MenuInflater(getApplication()).inflate(R.menu.menu_map, menu);
         MenuItem searchItem = menu.findItem(R.id.action_search);
-
-
         boolean ret =  super.onCreateOptionsMenu(menu);
-
-
         return ret;
     }
 
-    public void loadAvatarIcon()
+    public void loadDrawer()
     {
-        BitMapTarget target = new BitMapTarget();
-        String avatarUrl = MapWindow.user.avatarIntoCycle();
-        Picasso.with(this).load(avatarUrl).into(target);
-        Drawable drawable = new BitmapDrawable(target.bitmap);
-        actionBar.setIcon(drawable);
+        if(MapWindow.isLogin && MapWindow.user != null)
+        {
+            drawerAvatar.setVisibility(View.VISIBLE);
+            Picasso.with(this).load(MapWindow.user.avatarIntoCycle()).resize(144,144).into(drawerAvatar);
+            drawerUsername.setText(MapWindow.user.nickname);
+            drawerEmail.setText(MapWindow.user.email);
+        }
+        else {
+            drawerAvatar.setVisibility(View.INVISIBLE);
+            drawerEmail.setText("");
+            drawerUsername.setText("请登录");
+        }
     }
 
     public void refreshSlideMenu()
     {
-        ArrayAdapter<String> adapter =  new ArrayAdapter<String>(this, R.layout.drawer_list_item1);
-        if(!isLogin)
+        loadDrawer();
+        slideMenu.getMenu().clear(); //clear old inflated items.
+        slideMenu.inflateMenu(R.menu.menu_drawer);
+        slideMenu.setNavigationItemSelectedListener(this);
+        Menu menu = slideMenu.getMenu();
+        if (user != null && !user.isAdmin)
         {
-            adapter.add("登录");
-            adapter.add("使用说明");
+            MenuItem menuItem = menu.findItem(R.id.drawer_manager);
+            menuItem.setVisible(false);
         }
         else
         {
-            adapter.add("登出");
-            adapter.add("使用说明");
-            adapter.add("用户信息");
-            adapter.add("高级搜索");
-            adapter.add("发送信息");
-            if (user.getIsAdmin())
-            {
-                adapter.add("管理用户");
-                adapter.add("处理举报");
-            }
+            MenuItem menuItem = menu.findItem(R.id.drawer_manager);
+            menuItem.setVisible(true);
         }
-
-        slideMenu.setAdapter(adapter);
-        adapter.notifyDataSetChanged();
-    }
-
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id)   //  侧滑菜单
-    {
-        switch (position)
+        if(!MapWindow.isLogin) //未登录时
         {
-            case 0:
-                logOutOrLogIn();
-                break;
-            case 1: {  //使用说明
-                Intent intent = new Intent(this, HelpWindow.class);
-                startActivity(intent);
-            }
-                break;
-            case 2:
-                startUserInfoWindow();
-                break;
-            case 3: {  //高级搜索
-                Intent intent = new Intent(this, SearchMsgWindow.class);
-                startActivity(intent);
-            }
-                break;
-            case 4:{   //发信息
-                startSendMsgWindow();
-            }
-                break;
-            case 5:{
-                Intent intent = new Intent(this, UserListWindow.class);
-                startActivity(intent);
-            }
-            break;
-            case 6:{
-                Intent intent = new Intent(this, ReportHandlingWindow.class);
-                startActivity(intent);
-            }
-            break;
-            default:
-                break;
-
+            MenuItem menuItem = menu.findItem(R.id.drawer_logout);
+            menuItem.setVisible(false);
+            menuItem = menu.findItem(R.id.drawer_userinfo);
+            menuItem.setVisible(false);
+            menuItem = menu.findItem(R.id.drawer_mail);
+            menuItem.setVisible(false);
+        }
+        else
+        {
+            MenuItem menuItem = menu.findItem(R.id.drawer_login);
+            menuItem.setVisible(false);
         }
     }
 
@@ -388,6 +367,56 @@ public class MapWindow extends AppCompatActivity implements
         if(null != mlocationClient){
             mlocationClient.onDestroy();
         }
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(MenuItem menuItem)
+    {
+        if(menuItem.isCheckable()) {
+            menuItem.setChecked(true);
+        }
+        switch (menuItem.getItemId()) {
+            case R.id.drawer_help:
+            {  //使用说明
+                Intent intent = new Intent(this, HelpWindow.class);
+                startActivity(intent);
+            }
+                break;
+            case R.id.drawer_mail: {   //发信息
+                startSendMsgWindow();
+            }
+                break;
+            case R.id.drawer_search:{  //高级搜索
+                Intent intent = new Intent(this, SearchMsgWindow.class);
+                startActivity(intent);
+            }
+                break;
+            case R.id.drawer_userinfo:{  //用户信息
+                startUserInfoWindow();
+            }
+                break;
+            case R.id.drawer_login:{  //登录
+                logOutOrLogIn();
+            }
+                break;
+            case R.id.drawer_logout:{  //登录
+                logOutOrLogIn();
+            }
+                break;
+            case R.id.drawer_manageUser:{
+                Intent intent = new Intent(this, UserListWindow.class);
+                startActivity(intent);
+            }
+                break;
+            case R.id.drawer_manageReport:{
+                Intent intent = new Intent(this, ReportHandlingWindow.class);
+                startActivity(intent);
+            }
+                break;
+            default:
+                break;
+        }
+        return true;
     }
 
 

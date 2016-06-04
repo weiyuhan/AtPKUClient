@@ -1,0 +1,53 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single"
+        android:id="@+id/drawer_group">
+
+        <item
+            android:id="@+id/drawer_help"
+            android:icon="@drawable/help"
+            android:title="使用说明"/>
+
+        <item
+            android:id="@+id/drawer_mail"
+            android:icon="@drawable/mail"
+            android:title="发送信息"/>
+
+        <item
+            android:id="@+id/drawer_search"
+            android:icon="@drawable/search"
+            android:title="高级搜索"/>
+
+    <item android:title="用户操作">
+        <menu>
+
+            <item
+                android:id="@+id/drawer_userinfo"
+                android:title="用户信息"
+                android:icon="@drawable/aboutme"/>
+
+            <item
+                android:id="@+id/drawer_login"
+                android:title="登录"
+                android:icon="@drawable/login"/>
+
+            <item
+                android:id="@+id/drawer_logout"
+                android:title="登出"
+                android:icon="@drawable/logout"/>
+
+        </menu>
+    </item>
+
+    <item android:title="管理员"
+        android:id="@+id/drawer_manager">
+        <menu>
+            <item
+                android:title="管理用户"
+                android:id="@+id/drawer_manageUser"/>
+            <item
+                android:id="@+id/drawer_manageReport"
+                android:title="处理举报"/>
+        </menu>
+    </item>
+    </group>
+</menu>
