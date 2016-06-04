@@ -133,7 +133,7 @@ public class UserInfoWindow extends AppCompatActivity
 
     public boolean onCreateOptionsMenu(Menu menu)
     {
-        new MenuInflater(getApplication()).inflate(R.menu.menu_map, menu);
+        new MenuInflater(getApplication()).inflate(R.menu.menu_userinfo, menu);
         return super.onCreateOptionsMenu(menu);
     }
 

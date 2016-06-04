@@ -181,6 +181,11 @@ public class SendMsgWindow extends AppCompatActivity implements AdapterView.OnIt
             Toast.makeText(SendMsgWindow.this, "请填写标题", Toast.LENGTH_LONG).show();
             return;
         }
+        if (content.getText().toString().equals(""))
+        {
+            Toast.makeText(SendMsgWindow.this, "内容不能为空", Toast.LENGTH_LONG).show();
+            return;
+        }
         if (startTime.getText().toString().equals(""))
         {
             Toast.makeText(SendMsgWindow.this, "请选择起始时间", Toast.LENGTH_LONG).show();
@@ -191,6 +196,8 @@ public class SendMsgWindow extends AppCompatActivity implements AdapterView.OnIt
             Toast.makeText(SendMsgWindow.this, "请选择截止时间", Toast.LENGTH_LONG).show();
             return;
         }
+        submitButton.setEnabled(false);
+        submitButton.setText("发送中");
         params.put("title", title.getText().toString());
         params.put("content", content.getText().toString());
 
@@ -267,13 +274,14 @@ public class SendMsgWindow extends AppCompatActivity implements AdapterView.OnIt
             String urisJson = JSON.toJSONString(uploadedImgUris);
             params.put("images", urisJson);
         }
-        System.out.println("fuck1");
         StringRequestWithCookie stringRequest = new StringRequestWithCookie(Request.Method.POST,"http://139.129.22.145:5000/message",
                 new Response.Listener<String>()
                 {
                     @Override
                     public void onResponse(String response)
                     {
+                        submitButton.setEnabled(true);
+                        submitButton.setText("发送");
                         PostResult result = JSON.parseObject(response, PostResult.class);
                         if(result.success)
                         {

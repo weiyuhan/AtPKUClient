@@ -36,6 +36,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.Map;
 
 import atpku.client.AtPKUApplication;
 import atpku.client.R;
@@ -76,9 +77,16 @@ public class EditMyInfoWindow extends AppCompatActivity implements View.OnClickL
         actionBar.setDisplayHomeAsUpEnabled(true);;
 
         username = (EditText)findViewById(R.id.editmyinfo_username);
+        username.setText(MapWindow.user.getNickname());
         male = (RadioButton)findViewById(R.id.editmyinfo_male);
         female = (RadioButton)findViewById(R.id.editmyinfo_female);
         secret_sex = (RadioButton)findViewById(R.id.editmyinfo_secret);
+        if(MapWindow.user.gender.equals("m"))
+            male.setChecked(true);
+        else if(MapWindow.user.gender.equals("f"))
+            female.setChecked(true);
+        else
+            secret_sex.setChecked(true);
 
         avatarView = (ImageView)findViewById(R.id.editmyinfo_avatar);
 
@@ -95,18 +103,22 @@ public class EditMyInfoWindow extends AppCompatActivity implements View.OnClickL
         needSubmit = false;
 
         HashMap<String, String> params = new HashMap<String, String>();
-        if (!username.getText().toString().equals("")) {
+        if (username.getText().toString().equals("")) {
+            Toast.makeText(EditMyInfoWindow.this, "用户名不能为空!", Toast.LENGTH_LONG).show();
+            return;
+        }
+        if(!username.getText().toString().equals(MapWindow.user.getNickname())) {   //用户名与当前值不同
             needSubmit = true;
             params.put("nickname", username.getText().toString());
         }
         String genderStr = null;
-        if(male.isChecked()) {
+        if(male.isChecked() && !MapWindow.user.gender.equals("m")) {
             System.out.println("male");
             needSubmit = true;
             genderStr = "m";
             params.put("gender", genderStr);
         }
-        else if(female.isChecked()) {
+        else if(female.isChecked() && !MapWindow.user.gender.equals("f")) {
             System.out.println("female");
             needSubmit = true;
             genderStr = "f";

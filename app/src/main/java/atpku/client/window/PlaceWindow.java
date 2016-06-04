@@ -71,7 +71,7 @@ public class PlaceWindow extends AppCompatActivity implements SearchView.OnQuery
     }
 
     public boolean onCreateOptionsMenu(Menu menu) {
-        new MenuInflater(getApplication()).inflate(R.menu.menu_map, menu);
+        new MenuInflater(getApplication()).inflate(R.menu.menu_place, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
