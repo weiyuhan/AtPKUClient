@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorPrimary">#673ab7</item>
+        <!-- 状态栏颜色 -->
+        <item name="colorPrimaryDark">#512da8</item>
+        <!-- 窗口的背景颜色 -->
+        <item name="android:windowBackground">@android:color/white</item>
     </style>
     <style name="customDialog" parent="android:Theme.Dialog">
         <item name="android:windowFrame">@null</item>
