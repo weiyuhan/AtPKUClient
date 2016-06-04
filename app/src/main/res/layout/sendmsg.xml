@@ -5,9 +5,7 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingLeft="20dp"
-        android:paddingRight="20dp">
+        android:layout_height="wrap_content">
 
         <LinearLayout
             android:orientation="vertical"
@@ -117,8 +115,15 @@
                 android:textSize="14sp"
                 android:onClick="sendMsgSubmitHandler" />
 
+            <ProgressBar
+                android:id="@+id/sendMsg_progressBar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:max="100"
+                style="@android:style/Widget.ProgressBar.Horizontal"/>
 
         </LinearLayout>
+
     </ScrollView>
 
 </LinearLayout>

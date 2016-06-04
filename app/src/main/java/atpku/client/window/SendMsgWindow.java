@@ -22,6 +22,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.GridView;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -29,6 +30,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.sdk.android.oss.ClientException;
 import com.alibaba.sdk.android.oss.ServiceException;
 import com.alibaba.sdk.android.oss.callback.OSSCompletedCallback;
+import com.alibaba.sdk.android.oss.callback.OSSProgressCallback;
 import com.alibaba.sdk.android.oss.internal.OSSAsyncTask;
 import com.alibaba.sdk.android.oss.model.PutObjectRequest;
 import com.alibaba.sdk.android.oss.model.PutObjectResult;
@@ -64,6 +66,7 @@ public class SendMsgWindow extends AppCompatActivity implements AdapterView.OnIt
     public Spinner place;
     public Button submitButton;
     public ActionBar actionBar;
+    public ProgressBar progressBar;
     private com.android.volley.RequestQueue volleyQuque;
 
     public GridView imageList;
@@ -109,6 +112,9 @@ public class SendMsgWindow extends AppCompatActivity implements AdapterView.OnIt
         submitButton = (Button)findViewById(R.id.sendMsg_submitButton);
         imageList = (GridView)findViewById(R.id.sendMsg_imageList);
         imageList.setOnItemClickListener(this);
+
+        progressBar = (ProgressBar)findViewById(R.id.sendMsg_progressBar);
+        progressBar.setVisibility(View.INVISIBLE);
 
         imageAdapter = new ImageAdapter(this, R.layout.image_row);
         imageAdapter.add(String.valueOf(R.mipmap.camera));
@@ -195,6 +201,8 @@ public class SendMsgWindow extends AppCompatActivity implements AdapterView.OnIt
             content.setErrorEnabled(false);
         submitButton.setEnabled(false);
         submitButton.setText("发送中");
+        progressBar.setVisibility(View.VISIBLE);
+        progressBar.setProgress(0);
         params.put("title", title.getEditText().getText().toString());
         params.put("content", content.getEditText().getText().toString());
 
@@ -221,6 +229,20 @@ public class SendMsgWindow extends AppCompatActivity implements AdapterView.OnIt
                     calendar.get(Calendar.HOUR_OF_DAY) + calendar.get(Calendar.MINUTE) + calendar.get(Calendar.SECOND);
             String types = imgUri.substring(imgUri.lastIndexOf(".") - 1);
             PutObjectRequest put = new PutObjectRequest("public-image-source", objectKey + types, imgUri);
+
+            if(imgUris.size() == 1) {
+                put.setProgressCallback(new OSSProgressCallback<PutObjectRequest>() {
+                    @Override
+                    public void onProgress(PutObjectRequest request, long currentSize, long totalSize) {
+                        Log.d("PutObject", "currentSize: " + currentSize + " totalSize: " + totalSize);
+                        double percent = (double) currentSize / (double) totalSize;
+                        int progress = (int) percent * 100;
+                        if (progress > progressBar.getProgress())
+                            progressBar.setProgress(progress);
+                    }
+                });
+            }
+
             OSSAsyncTask task = ((AtPKUApplication)getApplication()).oss.asyncPutObject(put, new OSSCompletedCallback<PutObjectRequest, PutObjectResult>() {
                 @Override
                 public void onSuccess(PutObjectRequest request, PutObjectResult result) {
@@ -229,6 +251,12 @@ public class SendMsgWindow extends AppCompatActivity implements AdapterView.OnIt
                         uploadedImgUris = new ArrayList<String>();
                     }
                     uploadedImgs++;
+                    if(imgUris.size() > 1)
+                    {
+                        double percent = uploadedImgs/imgUris.size();
+                        int progress = (int)percent*100;
+                        progressBar.setProgress(progress);
+                    }
                     Log.d("PutObject", "UploadSuccess");
                     Log.d("ETag", result.getETag());
                     Log.d("RequestId", result.getRequestId());
@@ -267,6 +295,7 @@ public class SendMsgWindow extends AppCompatActivity implements AdapterView.OnIt
 
     public void sendMsgRequest(Map<String, String> params)
     {
+        progressBar.setProgress(100);
         if(uploadedImgUris != null && uploadedImgUris.size() != 0) {
             String urisJson = JSON.toJSONString(uploadedImgUris);
             params.put("images", urisJson);
@@ -277,7 +306,6 @@ public class SendMsgWindow extends AppCompatActivity implements AdapterView.OnIt
                     @Override
                     public void onResponse(String response)
                     {
-                        submitButton.setEnabled(true);
                         submitButton.setText("发送");
                         PostResult result = JSON.parseObject(response, PostResult.class);
                         if(result.success)
@@ -287,6 +315,8 @@ public class SendMsgWindow extends AppCompatActivity implements AdapterView.OnIt
                         }
                         else
                         {
+                            submitButton.setEnabled(true);
+                            progressBar.setVisibility(View.INVISIBLE);
                             Toast.makeText(SendMsgWindow.this, result.message, Toast.LENGTH_LONG).show();
                         }
                         Log.d("TAG", response);
