@@ -3,6 +3,7 @@ package atpku.client.window;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
@@ -25,9 +26,9 @@ import atpku.client.model.Place;
  */
 public class SearchMsgWindow extends AppCompatActivity
 {
-    public EditText title;
-    public EditText author;
-    public EditText content;
+    public TextInputLayout title;
+    public TextInputLayout author;
+    public TextInputLayout content;
     public EditText startTime;
     public EditText endTime;
     public Spinner place;
@@ -45,9 +46,9 @@ public class SearchMsgWindow extends AppCompatActivity
         actionBar.setLogo(R.mipmap.ic_launcher);
         actionBar.setDisplayHomeAsUpEnabled(true);
 
-        title = (EditText)findViewById(R.id.advanceSearch_title);
-        author = (EditText)findViewById(R.id.advanceSearch_author);
-        content = (EditText)findViewById(R.id.advanceSearch_content);
+        title = (TextInputLayout)findViewById(R.id.advanceSearch_title);
+        author = (TextInputLayout)findViewById(R.id.advanceSearch_author);
+        content = (TextInputLayout)findViewById(R.id.advanceSearch_content);
         startTime = (EditText)findViewById(R.id.advanceSearch_startTime);
         endTime = (EditText)findViewById(R.id.advanceSearch_endTime);
         place = (Spinner)findViewById(R.id.advanceSearch_place);
@@ -103,9 +104,9 @@ public class SearchMsgWindow extends AppCompatActivity
     public void searchMsgSubmitHandler(View source)
     {
         HashMap<String, String> params = new HashMap<String, String>();
-        params.put("keyword", content.getText().toString());
-        params.put("nickname", author.getText().toString());
-        params.put("title", title.getText().toString());
+        params.put("keyword", content.getEditText().getText().toString());
+        params.put("nickname", author.getEditText().getText().toString());
+        params.put("title", title.getEditText().getText().toString());
 
         String placename = (String)place.getSelectedItem();
         if(!placename.equals(noPlace)) {

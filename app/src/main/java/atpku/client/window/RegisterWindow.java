@@ -3,6 +3,7 @@ package atpku.client.window;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -33,13 +34,12 @@ import atpku.client.util.StringRequestWithCookie;
 
 public class RegisterWindow extends AppCompatActivity
 {
-    public EditText studentNum;
-    public EditText username;
-    public EditText password;
-    public EditText confirmPasswd;
+    public TextInputLayout studentNum;
+    public TextInputLayout username;
+    public TextInputLayout password;
+    public TextInputLayout confirmPasswd;
     public RadioButton male;
     public RadioButton female;
-    public RadioButton secret_sex;
     public Button submitButton;
 
     public ActionBar actionBar;
@@ -57,13 +57,12 @@ public class RegisterWindow extends AppCompatActivity
         actionBar.setLogo(R.mipmap.ic_launcher);
         actionBar.setDisplayHomeAsUpEnabled(true);
 
-        studentNum = (EditText)findViewById(R.id.regist_studentNum);
-        username = (EditText)findViewById(R.id.register_username);
-        password = (EditText)findViewById(R.id.register_password);
-        confirmPasswd = (EditText)findViewById(R.id.regist_confirmpasswd);
+        studentNum = (TextInputLayout)findViewById(R.id.regist_studentNum);
+        username = (TextInputLayout)findViewById(R.id.register_username);
+        password = (TextInputLayout)findViewById(R.id.register_password);
+        confirmPasswd = (TextInputLayout)findViewById(R.id.regist_confirmpasswd);
         male = (RadioButton)findViewById(R.id.register_male);
         female = (RadioButton)findViewById(R.id.register_female);
-        secret_sex = (RadioButton)findViewById(R.id.register_secret);
         submitButton = (Button)findViewById(R.id.regist_submitButton);
 
         volleyQuque = Volley.newRequestQueue(this);
@@ -72,35 +71,57 @@ public class RegisterWindow extends AppCompatActivity
 
     public void registSubmitHandler(View source)
     {
-        final String stuNumStr = studentNum.getText().toString();
+        final String stuNumStr = studentNum.getEditText().getText().toString();
         if (stuNumStr.length() < 1)
         {
-            Toast.makeText(this, "请输入学号", Toast.LENGTH_SHORT).show();
+            studentNum.setErrorEnabled(true);
+            studentNum.setError("请输入学号");
             return;
         }
-        final String userNameStr = username.getText().toString();
+        else {
+            try
+            {
+                int num = Integer.parseInt(stuNumStr);
+            }catch (NumberFormatException e)
+            {
+                studentNum.setError("请输入正确的学号");
+                return;
+            }
+            studentNum.setErrorEnabled(false);
+        }
+        final String userNameStr = username.getEditText().getText().toString();
         if (userNameStr.length() < 1)
         {
-            Toast.makeText(this, "请输入用户名", Toast.LENGTH_SHORT).show();
+            username.setErrorEnabled(true);
+            username.setError("请输入用户名");
             return;
         }
-        final String passwordStr = password.getText().toString();
+        else
+            username.setErrorEnabled(false);
+        final String passwordStr = password.getEditText().getText().toString();
         if (passwordStr.length() < 1)
         {
-            Toast.makeText(this, "请输入密码", Toast.LENGTH_SHORT).show();
+            password.setErrorEnabled(true);
+            password.setError("请输入密码");
             return;
         }
-        String confirmpwStr = confirmPasswd.getText().toString();
+        else
+            password.setErrorEnabled(false);
+        String confirmpwStr = confirmPasswd.getEditText().getText().toString();
         if (passwordStr.length() < 1)
         {
-            Toast.makeText(this, "请确认密码", Toast.LENGTH_SHORT).show();
+            confirmPasswd.setErrorEnabled(true);
+            confirmPasswd.setError("请确认密码");
             return;
         }
         else if(!confirmpwStr.equals(passwordStr))
         {
-            Toast.makeText(this, "两次输入密码不一致", Toast.LENGTH_LONG).show();
+            confirmPasswd.setErrorEnabled(true);
+            confirmPasswd.setError("两次输入的密码不一致");
             return;
         }
+        else
+            confirmPasswd.setErrorEnabled(false);
         String genderStrTmp = null;
         if(male.isChecked())
             genderStrTmp = "m";

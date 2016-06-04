@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="drawer_header_color">#7e57c2</color><!--滑动菜单头部 -->
-    <color name="color_primary">#4876FF</color><!--app主题颜色 -->
-    <color name="color_primary_dark">#3A5FCD</color><!--状态栏颜色颜色 -->
+    <color name="drawer_header_color">#ab47bc</color><!--滑动菜单头部 -->
+    <color name="color_primary">#9c27b0</color><!--app主题颜色 -->
+    <color name="color_primary_dark">#7b1fa2</color><!--状态栏颜色颜色 -->
     <color name="white">#FFFFFF</color><!--白色 -->
     <color name="ivory">#FFFFF0</color><!--象牙色 -->
     <color name="lightyellow">#FFFFE0</color><!--亮黄色-->

@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.design.widget.TextInputLayout;
 import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
@@ -56,8 +57,8 @@ import atpku.client.util.Utillity;
  */
 public class SendMsgWindow extends AppCompatActivity implements AdapterView.OnItemClickListener
 {
-    public EditText title;
-    public EditText content;
+    public TextInputLayout title;
+    public TextInputLayout content;
     public EditText startTime;
     public EditText endTime;
     public Spinner place;
@@ -94,8 +95,8 @@ public class SendMsgWindow extends AppCompatActivity implements AdapterView.OnIt
         actionBar.setDisplayHomeAsUpEnabled(true);
 
 
-        title = (EditText)findViewById(R.id.sendMsg_title);
-        content = (EditText)findViewById(R.id.sendMsg_content);
+        title = (TextInputLayout)findViewById(R.id.sendMsg_title);
+        content = (TextInputLayout)findViewById(R.id.sendMsg_content);
         startTime = (EditText)findViewById(R.id.sendMsg_startTime);
         Calendar c = Calendar.getInstance();
         int year = c.get(Calendar.YEAR);
@@ -119,7 +120,7 @@ public class SendMsgWindow extends AppCompatActivity implements AdapterView.OnIt
         imgUris = new ArrayList<String>();
 
         InputFilter[] filters = {new InputFilter.LengthFilter(18)};
-        title.setFilters(filters);
+        title.getEditText().setFilters(filters);
 
         volleyQuque = Volley.newRequestQueue(this);
 
@@ -176,30 +177,26 @@ public class SendMsgWindow extends AppCompatActivity implements AdapterView.OnIt
         final Map<String, String> params = new HashMap<String, String>();
 
         // 需要在本地检查title和content的合法性，比如不能为空，长度不能过长（可能需要与后端交流
-        if (title.getText().toString().equals(""))
+        if (title.getEditText().getText().toString().length() == 0)
         {
-            Toast.makeText(SendMsgWindow.this, "请填写标题", Toast.LENGTH_LONG).show();
+            title.setErrorEnabled(true);
+            title.setError("请填写标题");
             return;
         }
-        if (content.getText().toString().equals(""))
+        else
+            title.setErrorEnabled(false);
+        if (content.getEditText().toString().length() == 0)
         {
-            Toast.makeText(SendMsgWindow.this, "内容不能为空", Toast.LENGTH_LONG).show();
+            content.setErrorEnabled(true);
+            content.setError("请填写内容");
             return;
         }
-        if (startTime.getText().toString().equals(""))
-        {
-            Toast.makeText(SendMsgWindow.this, "请选择起始时间", Toast.LENGTH_LONG).show();
-            return;
-        }
-        if (endTime.getText().toString().equals(""))
-        {
-            Toast.makeText(SendMsgWindow.this, "请选择截止时间", Toast.LENGTH_LONG).show();
-            return;
-        }
+        else
+            content.setErrorEnabled(false);
         submitButton.setEnabled(false);
         submitButton.setText("发送中");
-        params.put("title", title.getText().toString());
-        params.put("content", content.getText().toString());
+        params.put("title", title.getEditText().getText().toString());
+        params.put("content", content.getEditText().getText().toString());
 
         String placename = (String)place.getSelectedItem();
         Place chosen = MapWindow.places.get(placename);

@@ -6,12 +6,14 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.design.widget.TextInputLayout;
 import android.text.Editable;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
@@ -33,12 +35,12 @@ import atpku.client.model.PostResult;
 import atpku.client.model.User;
 
 
+
 public class LoginWindow extends AppCompatActivity
 {
-    public EditText email;
-    public EditText password;
+    public TextInputLayout email;
+    public TextInputLayout password;
     public Button loginButton;
-    public Button registButton;
     public ActionBar actionBar;
 
     private RequestQueue volleyQuque;
@@ -53,17 +55,32 @@ public class LoginWindow extends AppCompatActivity
         actionBar.setLogo(R.mipmap.ic_launcher);
         actionBar.setDisplayHomeAsUpEnabled(true);
 
-        email = (EditText)findViewById(R.id.login_email);
-        password = (EditText)findViewById(R.id.login_password);
+        email = (TextInputLayout)findViewById(R.id.login_email);
+        password = (TextInputLayout)findViewById(R.id.login_password);
         loginButton = (Button)findViewById(R.id.loginButton);
-        registButton = (Button)findViewById(R.id.registButton);
 
         volleyQuque = Volley.newRequestQueue(this);
     }
 
     public void loginHandler(View source) //登录请求
     {
-        Editable editEmail = email.getText();
+        Editable editEmail = email.getEditText().getText();
+        if(editEmail.length() < 1)
+        {
+            email.setErrorEnabled(true);
+            email.setError("请输入用户名");
+            return;
+        }
+        else
+            email.setErrorEnabled(false);
+        if(password.getEditText().getText().length() < 1)
+        {
+            password.setErrorEnabled(true);
+            password.setError("请输入密码");
+            return;
+        }
+        else
+            password.setErrorEnabled(false);
         if(!editEmail.toString().contains("@"))
             editEmail.append("@pku.edu.cn");
         StringRequest stringRequest = new StringRequest(StringRequest.Method.POST,"http://139.129.22.145:5000/login",
@@ -108,8 +125,8 @@ public class LoginWindow extends AppCompatActivity
             protected Map<String, String> getParams() {
                 //在这里设置需要post的参数
                 Map<String, String> params = new HashMap<String, String>();
-                params.put("email", email.getText().toString());
-                params.put("password", password.getText().toString());
+                params.put("email", email.getEditText().getText().toString());
+                params.put("password", password.getEditText().getText().toString());
                 params.put("deviceid", MapWindow.deviceid);
                 System.out.println(params);
                 return params;
@@ -152,6 +169,12 @@ public class LoginWindow extends AppCompatActivity
         startActivity(intent);
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        new MenuInflater(getApplication()).inflate(R.menu.menu_login, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
     public boolean onOptionsItemSelected(MenuItem mi)
     {
         if(mi.isCheckable())
@@ -163,6 +186,9 @@ public class LoginWindow extends AppCompatActivity
         {
             case android.R.id.home:
                 super.onBackPressed();
+                break;
+            case R.id.action_register:
+                regisHandler(null);
                 break;
             default:
                 break;
