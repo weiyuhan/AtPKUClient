@@ -138,7 +138,7 @@ public class MapWindow extends AppCompatActivity implements
         slideMenu.setNavigationItemSelectedListener(this);
 
         actionBar = getSupportActionBar();
-        //actionBar.setDisplayShowHomeEnabled(true);;
+        actionBar.setDisplayShowHomeEnabled(true);;
         actionBar.setDisplayUseLogoEnabled(true);
         actionBar.setLogo(R.mipmap.ic_launcher);
 
@@ -173,7 +173,6 @@ public class MapWindow extends AppCompatActivity implements
     public boolean onCreateOptionsMenu(Menu menu)
     {
         new MenuInflater(getApplication()).inflate(R.menu.menu_map, menu);
-        MenuItem searchItem = menu.findItem(R.id.action_search);
         boolean ret =  super.onCreateOptionsMenu(menu);
         return ret;
     }

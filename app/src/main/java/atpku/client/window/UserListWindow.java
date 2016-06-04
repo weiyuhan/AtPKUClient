@@ -3,6 +3,7 @@ package atpku.client.window;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
@@ -47,7 +48,7 @@ public class UserListWindow extends AppCompatActivity implements SearchView.OnQu
     public ListView userList;
     public ActionBar actionBar;
     private RequestQueue volleyQuque;
-    public SearchView search;
+    public SearchView searchView;
     private String nickname = "";
     private List<User> users = null;
 
@@ -69,12 +70,7 @@ public class UserListWindow extends AppCompatActivity implements SearchView.OnQu
     }
 
     public boolean onCreateOptionsMenu(Menu menu) {
-        new MenuInflater(getApplication()).inflate(R.menu.menu_map, menu);
-
-        MenuItem searchItem = menu.findItem(R.id.action_user_search);
-        search = (SearchView)searchItem.getActionView();
-        search.setOnQueryTextListener(this);
-
+        new MenuInflater(getApplication()).inflate(R.menu.menu_userlist, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -133,8 +129,10 @@ public class UserListWindow extends AppCompatActivity implements SearchView.OnQu
                 super.onBackPressed();
                 break;
             case R.id.action_user_search:{
-                if (search != null)
-                    search.setOnQueryTextListener(this);
+                //mi.expandActionView();
+                searchView = (SearchView) MenuItemCompat.getActionView(mi);
+                if (searchView != null)
+                    searchView.setOnQueryTextListener(this);
             }
             break;
             case R.id.action_mode_change:{
