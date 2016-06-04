@@ -66,8 +66,10 @@ public class Feedback implements Serializable
 
     public String toShowString()
     {
+        return content;
+        /*
         if(isRead)
             return "已读 ： " + content;
-        return "未读 ： " + content;
+        return "未读 ： " + content;*/
     }
 }

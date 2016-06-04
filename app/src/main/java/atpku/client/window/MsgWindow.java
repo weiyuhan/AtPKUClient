@@ -239,6 +239,8 @@ public class MsgWindow extends AppCompatActivity implements AdapterView.OnItemCl
                     Toast.makeText(MsgWindow.this, "评论不能为空", Toast.LENGTH_LONG).show();
                     return;
                 }
+                commentButton.setEnabled(false);
+                commentButton.setText("发送中");
                 Map<String, String> params = new HashMap<String, String>();
                 params.put("content", commentText.getText().toString());
                 StringRequestWithCookie stringRequest = new StringRequestWithCookie(Request.Method.POST,
@@ -246,10 +248,17 @@ public class MsgWindow extends AppCompatActivity implements AdapterView.OnItemCl
                         new Response.Listener<String>() {
                             @Override
                             public void onResponse(String response) {
+                                commentButton.setEnabled(true);
+                                commentButton.setText("评论");
                                 PostResult result = JSON.parseObject(response, PostResult.class);
                                 if(result.success) {
+                                    commentText.setText("");
+                                    commentText.clearFocus();
                                     Toast.makeText(MsgWindow.this, "评论成功！", Toast.LENGTH_LONG).show();
                                     refreshMessageInfo(false);
+                                }
+                                else {
+                                    Toast.makeText(MsgWindow.this, result.message, Toast.LENGTH_LONG).show();
                                 }
                             }
                         }, params);
@@ -330,8 +339,6 @@ public class MsgWindow extends AppCompatActivity implements AdapterView.OnItemCl
                             likeNum.setText(msg.getLikeUsers().size()+"");
                             dislikeNum.setText(msg.getDislikeUsers().size()+"");
                             reportNum.setText(msg.getReportUsers().size()+"");
-                            commentText.setText("");
-                            commentText.clearFocus();
                             for(Comment comment:msg.comments) {
                                 adapter.add(comment);
                             }
