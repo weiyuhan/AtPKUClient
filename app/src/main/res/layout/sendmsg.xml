@@ -90,11 +90,16 @@
                 android:spinnerMode="dropdown" />
 
 
-
+            <ImageView
+                android:layout_marginTop="10dp"
+                android:layout_width="fill_parent"
+                android:layout_height="1dp"
+                android:background="#000000" />
 
             <GridView android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:numColumns="auto_fit"
+                android:layout_marginTop="10dp"
                 android:columnWidth="90dp"
                 android:stretchMode="columnWidth"
                 android:verticalSpacing="10dp"

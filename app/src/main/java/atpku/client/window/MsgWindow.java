@@ -14,6 +14,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -24,6 +25,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.squareup.picasso.Picasso;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -59,6 +61,7 @@ public class MsgWindow extends AppCompatActivity implements AdapterView.OnItemCl
     public ListView commentList;
     private RequestQueue volleyQuque;
     private Message msg;
+    private ImageView avatarView;
 
     public GridView imageList;
 
@@ -92,6 +95,7 @@ public class MsgWindow extends AppCompatActivity implements AdapterView.OnItemCl
         commentButton = (Button)findViewById(R.id.msg_commentButton);
         commentList = (ListView)findViewById(R.id.msg_commentList);
         imageList = (GridView)findViewById(R.id.msg_imgList);
+        avatarView = (ImageView)findViewById(R.id.showmsg_avatar);
 
         CharSequence label = (CharSequence) "";
         setTitle(label);
@@ -309,6 +313,10 @@ public class MsgWindow extends AppCompatActivity implements AdapterView.OnItemCl
 
     public void refreshMessageList()
     {
+        if(msg != null && msg.owner.avatar != null)
+        {
+            Picasso.with(this).load(msg.owner.avatarIntoCycle()).resize(144, 144).into(avatarView);
+        }
         if(msg != null && msg.images != null)
         {
             ImageAdapter adapter = new ImageAdapter(this, R.layout.image_row);
