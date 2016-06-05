@@ -86,6 +86,7 @@ public class PlaceWindow extends AppCompatActivity implements SearchView.OnQuery
                         if(result.success) {
                             List<Message> messages = JSON.parseArray(result.data, Message.class);
                             for(Message message:messages) {
+                                System.out.println("Get message: " + message.getTitle().toString());
                                 adapter.add(message);
                             }
                         }
