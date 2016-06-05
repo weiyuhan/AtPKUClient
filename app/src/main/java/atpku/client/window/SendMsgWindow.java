@@ -125,7 +125,7 @@ public class SendMsgWindow extends AppCompatActivity implements AdapterView.OnIt
 
         imgUris = new ArrayList<String>();
 
-        InputFilter[] filters = {new InputFilter.LengthFilter(18)};
+        InputFilter[] filters = {new InputFilter.LengthFilter(30)};
         title.getEditText().setFilters(filters);
 
         volleyQuque = Volley.newRequestQueue(this);
