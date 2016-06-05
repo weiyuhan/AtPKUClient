@@ -146,7 +146,11 @@
         </activity>
         <activity
             android:name="atpku.client.window.FeedbackWindow"
-            android:label="用户反馈">
+            android:label="进行反馈">
+        </activity>
+        <activity
+            android:name="atpku.client.window.MyFeedbackWindow"
+            android:label="我的反馈">
         </activity>
         <activity
             android:name="atpku.client.window.UserInfoWindow"

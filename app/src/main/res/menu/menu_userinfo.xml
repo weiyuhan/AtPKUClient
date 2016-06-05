@@ -3,14 +3,9 @@
     <item
         android:id="@+id/action_feedback"
         android:showAsAction="always"
-        android:title="反馈" />
+        android:title="查看我的反馈" />
     <item
         android:id="@+id/action_mymsg"
         android:showAsAction="always"
-        android:title="我的信息" />
-    <item
-        android:id="@+id/action_editmyinfo"
-        android:showAsAction="always"
-        android:title="修改个人资料" />
-
+        android:title="查看我的信息" />
 </menu>

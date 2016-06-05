@@ -10,6 +10,19 @@ import android.provider.MediaStore;
  */
 public class Utillity
 {
+    public static String parseTimeString(String str)
+    {
+        String date = str.substring(0, str.indexOf("T"));
+        String time = str.substring(str.indexOf("T")+1);
+        String[] dates = date.split("-");
+        StringBuffer ret = new StringBuffer();
+        ret.append(dates[0] + "年");
+        ret.append(dates[1] + "月");
+        ret.append(dates[2] + "日  ");
+        ret.append(time);
+        return ret.toString();
+    }
+
     public static String getRealPathFromUri(Context context, Uri contentUri)
     {
         Cursor cursor = null;
