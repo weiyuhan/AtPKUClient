@@ -20,6 +20,7 @@ import java.util.HashMap;
 
 import atpku.client.R;
 import atpku.client.model.Place;
+import atpku.client.util.ThemeUtil;
 
 /**
  * Created by wyh on 2016/5/19.
@@ -38,6 +39,7 @@ public class SearchMsgWindow extends AppCompatActivity
     public String noPlace = "不限";
 
     public void onCreate(Bundle icicle) {
+        ThemeUtil.setTheme(this);
         super.onCreate(icicle);
         setContentView(R.layout.advancesearch);
 

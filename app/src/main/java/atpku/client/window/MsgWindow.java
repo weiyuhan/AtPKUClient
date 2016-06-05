@@ -39,6 +39,7 @@ import atpku.client.util.CommentAdapter;
 import atpku.client.util.ImageAdapter;
 import atpku.client.util.ImageDialog;
 import atpku.client.util.StringRequestWithCookie;
+import atpku.client.util.ThemeUtil;
 
 /**
  * Created by wyh on 2016/5/19.
@@ -72,6 +73,7 @@ public class MsgWindow extends AppCompatActivity implements AdapterView.OnItemCl
 
     public ActionBar actionBar;
     protected void onCreate(Bundle savedInstanceState) {
+        ThemeUtil.setTheme(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.showmsg);
 

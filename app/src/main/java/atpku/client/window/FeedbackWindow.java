@@ -21,6 +21,7 @@ import java.util.Map;
 import atpku.client.R;
 import atpku.client.util.StringRequestWithCookie;
 import atpku.client.model.PostResult;
+import atpku.client.util.ThemeUtil;
 
 /**
  * Created by JIANG YUMENG on 2016/5/14.
@@ -33,6 +34,7 @@ public class FeedbackWindow extends AppCompatActivity
     private Button bt;
     protected void onCreate(Bundle savedInstanceState)
     {
+        ThemeUtil.setTheme(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.feedback);
 

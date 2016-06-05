@@ -31,6 +31,7 @@ import java.util.Map;
 import atpku.client.R;
 import atpku.client.model.PostResult;
 import atpku.client.util.StringRequestWithCookie;
+import atpku.client.util.ThemeUtil;
 
 public class RegisterWindow extends AppCompatActivity
 {
@@ -49,6 +50,7 @@ public class RegisterWindow extends AppCompatActivity
 
     protected void onCreate(Bundle savedInstanceState)
     {
+        ThemeUtil.setTheme(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.register);
 

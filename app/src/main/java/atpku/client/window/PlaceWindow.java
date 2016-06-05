@@ -35,6 +35,7 @@ import atpku.client.util.MessageAdapter;
 import atpku.client.util.StringRequestWithCookie;
 import atpku.client.model.Message;
 import atpku.client.model.PostResult;
+import atpku.client.util.ThemeUtil;
 
 /**
  * Created by wyh on 2016/5/19.
@@ -49,6 +50,7 @@ public class PlaceWindow extends AppCompatActivity implements SearchView.OnQuery
     public SearchView searchView;
 
     protected void onCreate(Bundle savedInstanceState) {
+        ThemeUtil.setTheme(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.place);
 

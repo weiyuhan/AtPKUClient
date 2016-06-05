@@ -32,6 +32,7 @@ import atpku.client.model.Place;
 import atpku.client.util.StringRequestWithCookie;
 import atpku.client.model.Message;
 import atpku.client.model.PostResult;
+import atpku.client.util.ThemeUtil;
 
 /**
  * Created by wyh on 2016/5/19.
@@ -43,6 +44,7 @@ public class ReportHandlingWindow extends AppCompatActivity
     private RequestQueue volleyQuque;
 
     protected void onCreate(Bundle savedInstanceState) {
+        ThemeUtil.setTheme(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.reportlist);
 

@@ -39,6 +39,7 @@ import atpku.client.model.User;
 import atpku.client.util.StringRequestWithCookie;
 import atpku.client.model.Message;
 import atpku.client.model.PostResult;
+import atpku.client.util.ThemeUtil;
 
 /**
  * Created by wyh on 2016/5/19.
@@ -55,6 +56,7 @@ public class UserListWindow extends AppCompatActivity implements SearchView.OnQu
     private boolean hideBanned = false;
 
     protected void onCreate(Bundle savedInstanceState) {
+        ThemeUtil.setTheme(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.userlist);
 

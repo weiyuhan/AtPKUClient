@@ -23,6 +23,7 @@ import atpku.client.util.StringRequestWithCookie;
 import atpku.client.model.Message;
 import atpku.client.model.Place;
 import atpku.client.model.PostResult;
+import atpku.client.util.ThemeUtil;
 
 /**
  * Created by wyh on 2016/5/19.
@@ -46,6 +47,11 @@ public class LoadingWindow extends AppCompatActivity
         {
             MapWindow.isLogin = true;
         }
+
+        prefs = getSharedPreferences("theme", Context.MODE_PRIVATE);
+        int themeid = prefs.getInt("Theme", R.style.AppTheme_Grey);
+        ThemeUtil.themeid = themeid;
+
         volleyQuque = Volley.newRequestQueue(this);
         initPlaces();
         /*

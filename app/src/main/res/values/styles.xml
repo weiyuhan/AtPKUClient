@@ -1,14 +1,60 @@
 <resources>
 
-    <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <item name="colorPrimary">@color/color_primary</item>
+    <style name="AppTheme.Purple" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorAccent">#9c27b0</item>
         <!-- 状态栏颜色 -->
-        <item name="colorPrimaryDark">@color/color_primary_dark</item>
+        <item name="colorPrimary">#7b1fa2</item>
+        <!-- 滑动菜单头的背景颜色 -->
+        <item name="colorPrimaryDark">#4a184c</item>
         <!-- 窗口的背景颜色 -->
-        <item name="android:windowBackground">@android:color/white</item>
+        <item name="android:windowBackground">@color/light_purple</item>
         <!-- Customize your theme here. -->
     </style>
+
+    <style name="AppTheme.Red" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorAccent">#e51c23</item>
+        <!-- 状态栏颜色 -->
+        <item name="colorPrimary">#d01716</item>
+        <!-- 滑动菜单头的背景颜色 -->
+        <item name="colorPrimaryDark">#b0120a</item>
+        <!-- 窗口的背景颜色 -->
+        <item name="android:windowBackground">@color/light_red</item>
+        <!-- Customize your theme here. -->
+    </style>
+
+    <style name="AppTheme.Pink" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorAccent">#f06292</item>
+        <!-- 状态栏颜色 -->
+        <item name="colorPrimary">#e91e63</item>
+        <!-- 滑动菜单头的背景颜色 -->
+        <item name="colorPrimaryDark">#880e4f</item>
+        <!-- 窗口的背景颜色 -->
+        <item name="android:windowBackground">@color/light_pink</item>
+        <!-- Customize your theme here. -->
+    </style>
+
+    <style name="AppTheme.Green" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorAccent">#259b24</item>
+        <!-- 状态栏颜色 -->
+        <item name="colorPrimary">#0a7e07</item>
+        <!-- 滑动菜单头的背景颜色 -->
+        <item name="colorPrimaryDark">#0d5302</item>
+        <!-- 窗口的背景颜色 -->
+        <item name="android:windowBackground">@color/light_green</item>
+        <!-- Customize your theme here. -->
+    </style>
+
+    <style name="AppTheme.Grey" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorAccent">#9e9e9e</item>
+        <!-- 状态栏颜色 -->
+        <item name="colorPrimary">#616161</item>
+        <!-- 滑动菜单头的背景颜色 -->
+        <item name="colorPrimaryDark">#212121</item>
+        <!-- 窗口的背景颜色 -->
+        <item name="android:windowBackground">@color/light_grey</item>
+        <!-- Customize your theme here. -->
+    </style>
+
     <style name="customDialog" parent="android:Theme.Dialog">
         <item name="android:windowFrame">@null</item>
         <item name="android:windowNoTitle">true</item>

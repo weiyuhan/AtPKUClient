@@ -43,6 +43,7 @@ import atpku.client.R;
 import atpku.client.model.PostResult;
 import atpku.client.model.User;
 import atpku.client.util.StringRequestWithCookie;
+import atpku.client.util.ThemeUtil;
 
 /**
  * Created by JIANG YUMENG on 2016/5/28.
@@ -68,6 +69,7 @@ public class EditMyInfoWindow extends AppCompatActivity implements View.OnClickL
     public File avatarFile;
 
     protected void onCreate(Bundle savedInstanceState) {
+        ThemeUtil.setTheme(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.editmyinfo);
 

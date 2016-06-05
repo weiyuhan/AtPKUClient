@@ -52,6 +52,7 @@ import atpku.client.util.ImageDialog;
 import atpku.client.util.StringRequestWithCookie;
 import atpku.client.model.Place;
 import atpku.client.model.PostResult;
+import atpku.client.util.ThemeUtil;
 import atpku.client.util.Utillity;
 
 /**
@@ -86,6 +87,7 @@ public class SendMsgWindow extends AppCompatActivity implements AdapterView.OnIt
 
     public void onCreate(Bundle savedInstanceState)
     {
+        ThemeUtil.setTheme(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.sendmsg);
 

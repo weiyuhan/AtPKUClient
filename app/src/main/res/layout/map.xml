@@ -27,7 +27,7 @@
             android:src="@mipmap/send_mail_big"
             android:layout_marginRight="16dp"
             android:layout_marginBottom="16dp"
-            app:backgroundTint= '#6200EA'
+            app:backgroundTint= "?attr/colorPrimaryDark"
             android:onClick="sendMsgHandler"
             />
     </FrameLayout>

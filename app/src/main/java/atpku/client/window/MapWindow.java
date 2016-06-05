@@ -53,6 +53,7 @@ import atpku.client.model.Message;
 import atpku.client.model.Place;
 import atpku.client.model.PostResult;
 import atpku.client.model.User;
+import atpku.client.util.ThemeUtil;
 
 /**
  * Created by JIANG YUMENG on 2016/5/14.
@@ -123,6 +124,7 @@ public class MapWindow extends AppCompatActivity implements
 
     public void onCreate(Bundle savedInstanceState)
     {
+        ThemeUtil.setTheme(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.map);
         PushSettings.enableDebugMode(getApplicationContext(), true);

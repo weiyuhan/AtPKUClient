@@ -8,6 +8,7 @@ import android.view.MenuItem;
 import android.widget.TextView;
 
 import atpku.client.R;
+import atpku.client.util.ThemeUtil;
 
 /**
  * Created by wyh on 2016/5/20.
@@ -18,6 +19,7 @@ public class HelpWindow extends AppCompatActivity
     private TextView helpcontent;
     public void onCreate(Bundle savedInstanceState)
     {
+        ThemeUtil.setTheme(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.usehelp);
 

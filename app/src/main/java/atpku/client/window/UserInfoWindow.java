@@ -29,6 +29,7 @@ import atpku.client.util.StringRequestWithCookie;
 import atpku.client.model.Feedback;
 import atpku.client.model.PostResult;
 import atpku.client.model.User;
+import atpku.client.util.ThemeUtil;
 
 /**
  * Created by JIANG YUMENG on 2016/5/14.
@@ -55,6 +56,7 @@ public class UserInfoWindow extends AppCompatActivity
 
     protected void onCreate(Bundle savedInstanceState)
     {
+        ThemeUtil.setTheme(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.userinfo);
 

@@ -33,7 +33,7 @@ import java.util.Map;
 import atpku.client.R;
 import atpku.client.model.PostResult;
 import atpku.client.model.User;
-
+import atpku.client.util.ThemeUtil;
 
 
 public class LoginWindow extends AppCompatActivity
@@ -47,6 +47,7 @@ public class LoginWindow extends AppCompatActivity
 
     protected void onCreate(Bundle savedInstanceState)
     {
+        ThemeUtil.setTheme(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login);
 
