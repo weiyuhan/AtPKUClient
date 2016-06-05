@@ -3,6 +3,7 @@ package atpku.client.window;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -16,7 +17,6 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
 import com.android.volley.Request;
@@ -107,7 +107,7 @@ public class UserListWindow extends AppCompatActivity implements SearchView.OnQu
                                     adapter.add(user);
                                 }
                             } else
-                                Toast.makeText(UserListWindow.this, result.message, Toast.LENGTH_LONG).show();
+                                Snackbar.make(findViewById(R.id.userList_layout), result.message, Snackbar.LENGTH_LONG).show();
                             userList.setAdapter(adapter);
                             adapter.notifyDataSetChanged();
                         }

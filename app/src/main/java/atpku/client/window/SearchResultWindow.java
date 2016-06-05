@@ -3,6 +3,7 @@ package atpku.client.window;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -13,7 +14,6 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
 import com.android.volley.Request;
@@ -76,7 +76,7 @@ public class SearchResultWindow extends AppCompatActivity {
                             resultList.setAdapter(adapter);
                             adapter.notifyDataSetChanged();
                         } else {
-                            Toast.makeText(SearchResultWindow.this, result.message, Toast.LENGTH_LONG).show();
+                            Snackbar.make(findViewById(R.id.searchResult_layout), result.message, Snackbar.LENGTH_LONG).show();
                         }
                         Log.d("TAG", response);
                     }

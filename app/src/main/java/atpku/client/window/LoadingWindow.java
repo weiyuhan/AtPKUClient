@@ -4,9 +4,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
 import com.amap.api.maps.model.Marker;
@@ -134,7 +134,7 @@ public class LoadingWindow extends AppCompatActivity {
                             Intent mainIntent = new Intent(LoadingWindow.this, MapWindow.class);
                             startActivity(mainIntent);
                         } else {
-                            Toast.makeText(LoadingWindow.this, result.message, Toast.LENGTH_LONG).show();
+                            Snackbar.make(findViewById(R.id.loading_layout), result.message, Snackbar.LENGTH_LONG).show();
                             finish();
                         }
                         Log.d("TAG", response);

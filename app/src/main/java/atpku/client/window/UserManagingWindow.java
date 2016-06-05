@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.text.InputType;
@@ -18,7 +19,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
 import com.android.volley.Request;
@@ -96,12 +96,10 @@ public class UserManagingWindow extends AppCompatActivity {
                                     @Override
                                     public void onResponse(String response) {
                                         PostResult result = JSON.parseObject(response, PostResult.class);
+                                        Snackbar.make(findViewById(R.id.userManaging_layout), result.message, Snackbar.LENGTH_LONG).show();
                                         if (result.success) {
                                             //likeNum.setText(msg.getLikeUsers().size()+1+"");
                                             refreshUserInfo();
-                                            Toast.makeText(UserManagingWindow.this, "禁言成功", Toast.LENGTH_LONG).show();
-                                        } else {
-                                            Toast.makeText(UserManagingWindow.this, result.message, Toast.LENGTH_LONG).show();
                                         }
                                     }
                                 }, null);
@@ -154,7 +152,7 @@ public class UserManagingWindow extends AppCompatActivity {
                             }
                             reportedText.setText("被举报次数：" + managedUser.getReportReceived());
                         } else
-                            Toast.makeText(UserManagingWindow.this, result.message, Toast.LENGTH_LONG).show();
+                            Snackbar.make(findViewById(R.id.userManaging_layout), result.message, Snackbar.LENGTH_LONG).show();
                     }
                 }, null);
         volleyQuque.add(stringRequest);
@@ -174,7 +172,7 @@ public class UserManagingWindow extends AppCompatActivity {
                                 adapter.add(message);
                             }
                         } else
-                            Toast.makeText(UserManagingWindow.this, result.message, Toast.LENGTH_LONG).show();
+                            Snackbar.make(findViewById(R.id.userManaging_layout), result.message, Snackbar.LENGTH_LONG).show();
                         msgList.setAdapter(adapter);
                         adapter.notifyDataSetChanged();
                     }

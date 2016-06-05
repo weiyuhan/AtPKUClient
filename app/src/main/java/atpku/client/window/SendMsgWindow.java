@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
 import android.content.res.Configuration;
 import android.net.Uri;
@@ -24,7 +25,6 @@ import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.sdk.android.oss.ClientException;
@@ -172,10 +172,6 @@ public class SendMsgWindow extends AppCompatActivity implements AdapterView.OnIt
     }
 
     public void sendMsgSubmitHandler(View source) {
-        if (!MapWindow.isLogin) {
-            Toast.makeText(this, "请登录", Toast.LENGTH_LONG).show();
-            return;
-        }
         final Map<String, String> params = new HashMap<String, String>();
 
         // 需要在本地检查title和content的合法性，比如不能为空，长度不能过长（可能需要与后端交流
@@ -291,13 +287,12 @@ public class SendMsgWindow extends AppCompatActivity implements AdapterView.OnIt
                     public void onResponse(String response) {
                         submitButton.setText("发送");
                         PostResult result = JSON.parseObject(response, PostResult.class);
+                        Snackbar.make(findViewById(R.id.sendMsg_layout), result.message, Snackbar.LENGTH_LONG).show();
                         if (result.success) {
-                            Toast.makeText(SendMsgWindow.this, "发送成功", Toast.LENGTH_LONG).show();
                             finish();
                         } else {
                             submitButton.setEnabled(true);
                             progressBar.setVisibility(View.INVISIBLE);
-                            Toast.makeText(SendMsgWindow.this, result.message, Toast.LENGTH_LONG).show();
                         }
                         Log.d("TAG", response);
                     }

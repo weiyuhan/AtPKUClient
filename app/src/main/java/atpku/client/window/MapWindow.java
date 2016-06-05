@@ -19,11 +19,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 
 import com.alibaba.fastjson.JSON;
@@ -272,16 +268,14 @@ public class MapWindow extends AppCompatActivity implements
                         @Override
                         public void onResponse(String response) {
                             PostResult result = JSON.parseObject(response, PostResult.class);
+                            Snackbar.make(findViewById(R.id.map_layout), result.message, Snackbar.LENGTH_LONG).show();
                             if (result.success) {
-                                Toast.makeText(MapWindow.this, result.message, Toast.LENGTH_LONG).show();
                                 MapWindow.isLogin = false;
                                 refreshSlideMenu();
                                 SharedPreferences prefs = getSharedPreferences("login", Context.MODE_PRIVATE);
                                 SharedPreferences.Editor editPrefs = prefs.edit();
                                 editPrefs.remove("Cookie");
                                 editPrefs.apply();
-                            } else {
-                                Toast.makeText(MapWindow.this, result.message, Toast.LENGTH_LONG).show();
                             }
                             Log.d("TAG", response);
                         }
@@ -479,7 +473,7 @@ public class MapWindow extends AppCompatActivity implements
                                 volleyQuque.add(globalMsgRequest);
                             }
                         } else {
-                            Toast.makeText(MapWindow.this, result.message, Toast.LENGTH_LONG).show();
+                            Snackbar.make(findViewById(R.id.map_layout), result.message, Snackbar.LENGTH_LONG).show();
                         }
                         Log.d("TAG", response);
                     }
@@ -504,6 +498,7 @@ public class MapWindow extends AppCompatActivity implements
             if (marker == null) {
                 markerOptions.position(pos);
                 markerOptions.title(placename);
+                markerOptions.icon(BitmapDescriptorFactory.fromResource(R.mipmap.building_school));
                 System.out.println("addMarker " + placename);
                 marker = aMap.addMarker(markerOptions);
                 markers.put(placename, marker);
@@ -640,7 +635,6 @@ public class MapWindow extends AppCompatActivity implements
     public void onBackPressed() {
         if ((System.currentTimeMillis() - mExitTime) > 2000) {
             Snackbar.make(findViewById(R.id.map_layout), "再按一次退出程序", Snackbar.LENGTH_LONG).show();
-            //Toast.makeText(this, "再按一次退出程序", Toast.LENGTH_SHORT).show();
             mExitTime = System.currentTimeMillis();
             return;
         }

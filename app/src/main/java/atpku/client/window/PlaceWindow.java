@@ -3,6 +3,7 @@ package atpku.client.window;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
@@ -17,7 +18,6 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
 import com.android.volley.Request;
@@ -91,7 +91,7 @@ public class PlaceWindow extends AppCompatActivity implements SearchView.OnQuery
                                 adapter.add(message);
                             }
                         } else
-                            Toast.makeText(PlaceWindow.this, result.message, Toast.LENGTH_LONG).show();
+                            Snackbar.make(findViewById(R.id.place_layout), result.message, Snackbar.LENGTH_LONG).show();
                         msgList.setAdapter(adapter);
                         adapter.notifyDataSetChanged();
                         refreshLayout.setRefreshing(false);
@@ -111,7 +111,7 @@ public class PlaceWindow extends AppCompatActivity implements SearchView.OnQuery
                 break;
             case R.id.action_sendmsg: {
                 if (!MapWindow.isLogin) {
-                    Toast.makeText(this, "请登录", Toast.LENGTH_LONG).show();
+                    Snackbar.make(findViewById(R.id.place_layout), "请登录", Snackbar.LENGTH_LONG).show();
                     return true;
                 }
                 Intent intent = new Intent(this, SendMsgWindow.class);

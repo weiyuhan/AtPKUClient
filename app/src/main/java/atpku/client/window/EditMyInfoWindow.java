@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -14,7 +15,6 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioButton;
-import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.sdk.android.oss.ClientException;
@@ -102,7 +102,7 @@ public class EditMyInfoWindow extends AppCompatActivity implements View.OnClickL
 
         HashMap<String, String> params = new HashMap<String, String>();
         if (username.getText().toString().equals("")) {
-            Toast.makeText(EditMyInfoWindow.this, "用户名不能为空!", Toast.LENGTH_LONG).show();
+            Snackbar.make(findViewById(R.id.editmyinfo_layout), "用户名不能为空", Snackbar.LENGTH_LONG).show();
             return;
         }
         if (!username.getText().toString().equals(MapWindow.user.getNickname())) {   //用户名与当前值不同
@@ -135,18 +135,16 @@ public class EditMyInfoWindow extends AppCompatActivity implements View.OnClickL
                         @Override
                         public void onResponse(String response) {
                             PostResult result = JSON.parseObject(response, PostResult.class);
+                            Snackbar.make(findViewById(R.id.editmyinfo_layout), result.message, Snackbar.LENGTH_LONG).show();
                             if (result.success) {
-                                Toast.makeText(EditMyInfoWindow.this, result.message, Toast.LENGTH_LONG).show();
                                 finish();
-                            } else {
-                                Toast.makeText(EditMyInfoWindow.this, result.message, Toast.LENGTH_LONG).show();
                             }
                             Log.d("TAG", response);
                         }
                     }, params);
             volleyQuque.add(stringRequest);
         } else {
-            Toast.makeText(EditMyInfoWindow.this, "没有可以提交的东西！", Toast.LENGTH_LONG).show();
+            Snackbar.make(findViewById(R.id.editmyinfo_layout), "没有可以修改的东西！", Snackbar.LENGTH_LONG).show();
         }
     }
 
@@ -300,7 +298,7 @@ public class EditMyInfoWindow extends AppCompatActivity implements View.OnClickL
                             MapWindow.user = JSON.parseObject(result.data, User.class);
                             System.out.println(MapWindow.user);
                         } else {
-                            Toast.makeText(EditMyInfoWindow.this, result.message, Toast.LENGTH_LONG).show();
+                            Snackbar.make(findViewById(R.id.editmyinfo_layout), result.message, Snackbar.LENGTH_LONG).show();
                         }
                         Log.d("TAG", response);
                     }

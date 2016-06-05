@@ -1,6 +1,7 @@
 package atpku.client.window;
 
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -8,7 +9,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
 import com.android.volley.Response;
@@ -53,7 +53,7 @@ public class FeedbackWindow extends AppCompatActivity {
         Map<String, String> params = new HashMap<String, String>();
         EditText et = (EditText) findViewById(R.id.feedbackContent);
         if (et.getText().toString().equals("")) {
-            Toast.makeText(FeedbackWindow.this, "请填写内容再发送", Toast.LENGTH_LONG).show();
+            Snackbar.make(findViewById(R.id.feedback_layout), "请填写内容再发送", Snackbar.LENGTH_LONG).show();
             return;
         }
         bt.setEnabled(false);
@@ -66,11 +66,9 @@ public class FeedbackWindow extends AppCompatActivity {
                         bt.setEnabled(true);
                         bt.setText("提交反馈");
                         PostResult result = JSON.parseObject(response, PostResult.class);
+                        Snackbar.make(findViewById(R.id.feedback_layout), result.message, Snackbar.LENGTH_LONG).show();
                         if (result.success) {
-                            Toast.makeText(FeedbackWindow.this, "发送成功", Toast.LENGTH_LONG).show();
                             finish();
-                        } else {
-                            Toast.makeText(FeedbackWindow.this, result.message, Toast.LENGTH_LONG).show();
                         }
                         Log.d("TAG", response);
                     }

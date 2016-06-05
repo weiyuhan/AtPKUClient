@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.design.widget.TextInputLayout;
@@ -14,7 +15,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
 import com.android.volley.NetworkResponse;
@@ -84,6 +84,7 @@ public class LoginWindow extends AppCompatActivity {
                     public void onResponse(String response) {
                         PostResult result = JSON.parseObject(response, PostResult.class);
                         System.out.println(result.toString());
+                        Snackbar.make(findViewById(R.id.login_layout), result.message, Snackbar.LENGTH_LONG).show();
                         if (result.success) {
                             User user = JSON.parseObject(result.data, User.class);
                             if (user.avatar == null)
@@ -93,11 +94,9 @@ public class LoginWindow extends AppCompatActivity {
                             SharedPreferences.Editor mEditor = prefs.edit();
                             mEditor.putString("userInfoJson", result.data);
                             mEditor.apply();
-                            Toast.makeText(LoginWindow.this, result.message, Toast.LENGTH_LONG).show();
                             LoginWindow.this.finish();
                             MapWindow.isLogin = true;
                         } else {
-                            Toast.makeText(LoginWindow.this, result.message, Toast.LENGTH_LONG).show();
                             MapWindow.isLogin = false;
                         }
                         Log.d("TAG", response);

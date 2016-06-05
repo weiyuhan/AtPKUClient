@@ -3,6 +3,7 @@ package atpku.client.window;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -12,7 +13,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
-import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
 import com.android.volley.Request;
@@ -129,8 +129,8 @@ public class RegisterWindow extends AppCompatActivity {
                     public void onResponse(String response) {
                         PostResult result = JSON.parseObject(response, PostResult.class);
                         System.out.println(result.toString());
+                        Snackbar.make(findViewById(R.id.registLayout), result.message, Snackbar.LENGTH_LONG).show();
                         if (result.success) {
-                            Toast.makeText(RegisterWindow.this, result.message, Toast.LENGTH_LONG).show();
                             SharedPreferences prefs = getSharedPreferences("userinfo", 1);
                             SharedPreferences.Editor mEditor = prefs.edit();
                             mEditor.putString("stunum", stuNumStr);
@@ -138,8 +138,6 @@ public class RegisterWindow extends AppCompatActivity {
                             mEditor.putString("gender", genderStr);
                             mEditor.apply();
                             RegisterWindow.this.finish();
-                        } else {
-                            Toast.makeText(RegisterWindow.this, result.message, Toast.LENGTH_LONG).show();
                         }
                         Log.d("TAG", response);
                     }

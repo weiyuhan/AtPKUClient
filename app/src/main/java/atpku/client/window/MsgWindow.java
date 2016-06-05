@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.text.InputType;
@@ -17,7 +18,6 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
 import com.android.volley.Request;
@@ -108,7 +108,7 @@ public class MsgWindow extends AppCompatActivity implements AdapterView.OnItemCl
             @Override
             public void onClick(View v) {
                 if (!MapWindow.isLogin) {
-                    Toast.makeText(MsgWindow.this, "请登录", Toast.LENGTH_LONG).show();
+                    Snackbar.make(findViewById(R.id.msg_layout), "请登录", Snackbar.LENGTH_LONG).show();
                     return;
                 }
                 StringRequestWithCookie stringRequest = new StringRequestWithCookie(Request.Method.POST,
@@ -121,7 +121,7 @@ public class MsgWindow extends AppCompatActivity implements AdapterView.OnItemCl
                                     //likeNum.setText(msg.getLikeUsers().size()+1+"");
                                     refreshMessageInfo(false);
                                 } else {
-                                    Toast.makeText(MsgWindow.this, result.message, Toast.LENGTH_LONG).show();
+                                    Snackbar.make(findViewById(R.id.msg_layout), result.message, Snackbar.LENGTH_LONG).show();
                                 }
                             }
                         }, null);
@@ -132,7 +132,7 @@ public class MsgWindow extends AppCompatActivity implements AdapterView.OnItemCl
             @Override
             public void onClick(View v) {
                 if (!MapWindow.isLogin) {
-                    Toast.makeText(MsgWindow.this, "请登录", Toast.LENGTH_LONG).show();
+                    Snackbar.make(findViewById(R.id.msg_layout), "请登录", Snackbar.LENGTH_LONG).show();
                     return;
                 }
                 StringRequestWithCookie stringRequest = new StringRequestWithCookie(Request.Method.POST,
@@ -145,7 +145,7 @@ public class MsgWindow extends AppCompatActivity implements AdapterView.OnItemCl
                                     //dislikeNum.setText(msg.getDislikeUsers().size()+1+"");
                                     refreshMessageInfo(false);
                                 } else {
-                                    Toast.makeText(MsgWindow.this, result.message, Toast.LENGTH_LONG).show();
+                                    Snackbar.make(findViewById(R.id.msg_layout), result.message, Snackbar.LENGTH_LONG).show();
                                 }
                             }
                         }, null);
@@ -156,7 +156,7 @@ public class MsgWindow extends AppCompatActivity implements AdapterView.OnItemCl
             @Override
             public void onClick(View v) {
                 if (!MapWindow.isLogin) {
-                    Toast.makeText(MsgWindow.this, "请登录", Toast.LENGTH_LONG).show();
+                    Snackbar.make(findViewById(R.id.msg_layout), "请登录", Snackbar.LENGTH_LONG).show();
                     return;
                 }
                 StringRequestWithCookie stringRequest = new StringRequestWithCookie(Request.Method.POST,
@@ -169,7 +169,7 @@ public class MsgWindow extends AppCompatActivity implements AdapterView.OnItemCl
                                     //dislikeNum.setText(msg.getDislikeUsers().size()+1+"");
                                     refreshMessageInfo(false);
                                 } else {
-                                    Toast.makeText(MsgWindow.this, result.message, Toast.LENGTH_LONG).show();
+                                    Snackbar.make(findViewById(R.id.msg_layout), result.message, Snackbar.LENGTH_LONG).show();
                                 }
                             }
                         }, null);
@@ -200,7 +200,7 @@ public class MsgWindow extends AppCompatActivity implements AdapterView.OnItemCl
                                                             if (result.success) {
                                                                 return;
                                                             } else {
-                                                                Toast.makeText(MsgWindow.this, result.message, Toast.LENGTH_LONG).show();
+                                                                Snackbar.make(findViewById(R.id.msg_layout), result.message, Snackbar.LENGTH_LONG).show();
                                                             }
                                                         }
                                                     }, null);
@@ -228,11 +228,11 @@ public class MsgWindow extends AppCompatActivity implements AdapterView.OnItemCl
             @Override
             public void onClick(View v) {
                 if (!MapWindow.isLogin) {
-                    Toast.makeText(MsgWindow.this, "请登录", Toast.LENGTH_LONG).show();
+                    Snackbar.make(findViewById(R.id.msg_layout), "请登录", Snackbar.LENGTH_LONG).show();
                     return;
                 }
                 if (commentText.getText().toString().equals("")) {
-                    Toast.makeText(MsgWindow.this, "评论不能为空", Toast.LENGTH_LONG).show();
+                    Snackbar.make(findViewById(R.id.msg_layout), "评论不能为空", Snackbar.LENGTH_LONG).show();
                     return;
                 }
                 commentButton.setEnabled(false);
@@ -247,13 +247,11 @@ public class MsgWindow extends AppCompatActivity implements AdapterView.OnItemCl
                                 commentButton.setEnabled(true);
                                 commentButton.setText("评论");
                                 PostResult result = JSON.parseObject(response, PostResult.class);
+                                Snackbar.make(findViewById(R.id.msg_layout), result.message, Snackbar.LENGTH_LONG).show();
                                 if (result.success) {
                                     commentText.setText("");
                                     commentText.clearFocus();
-                                    Toast.makeText(MsgWindow.this, "评论成功！", Toast.LENGTH_LONG).show();
                                     refreshMessageInfo(false);
-                                } else {
-                                    Toast.makeText(MsgWindow.this, result.message, Toast.LENGTH_LONG).show();
                                 }
                             }
                         }, params);
@@ -269,12 +267,9 @@ public class MsgWindow extends AppCompatActivity implements AdapterView.OnItemCl
                     @Override
                     public void onResponse(String response) {
                         PostResult result = JSON.parseObject(response, PostResult.class);
+                        Snackbar.make(findViewById(R.id.msg_layout), result.message, Snackbar.LENGTH_LONG).show();
                         if (result.success) {
-                            //dislikeNum.setText(msg.getDislikeUsers().size()+1+"");
-                            Toast.makeText(MsgWindow.this, "删除成功！", Toast.LENGTH_LONG).show();
                             finish();
-                        } else {
-                            Toast.makeText(MsgWindow.this, result.message, Toast.LENGTH_LONG).show();
                         }
                     }
                 }, null);

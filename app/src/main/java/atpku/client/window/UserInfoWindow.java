@@ -2,6 +2,7 @@ package atpku.client.window;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -12,7 +13,6 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
 import com.android.volley.RequestQueue;
@@ -116,7 +116,7 @@ public class UserInfoWindow extends AppCompatActivity {
                             MapWindow.user = JSON.parseObject(result.data, User.class);
                             refreshUserInfo();
                         } else {
-                            Toast.makeText(UserInfoWindow.this, result.message, Toast.LENGTH_LONG).show();
+                            Snackbar.make(findViewById(R.id.userInfo_layout), result.message, Snackbar.LENGTH_LONG).show();
                         }
                         Log.d("TAG", response);
                     }
@@ -173,7 +173,6 @@ public class UserInfoWindow extends AppCompatActivity {
                     public void onResponse(String response) {
                         PostResult result = JSON.parseObject(response, PostResult.class);
                         if (result.success) {
-                            Toast.makeText(UserInfoWindow.this, "成功", Toast.LENGTH_LONG);
                             List<Feedback> feedbacks = JSON.parseArray(result.data, Feedback.class);
                             System.out.println(feedbacks);
                             ArrayAdapter<String> adapter = new ArrayAdapter<String>(UserInfoWindow.this,
