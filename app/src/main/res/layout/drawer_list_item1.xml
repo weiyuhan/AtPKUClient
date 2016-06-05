@@ -8,17 +8,16 @@
 
     android:layout_height="wrap_content"
 
+    android:gravity="center_vertical"
+
+    android:minHeight="?android:attr/listPreferredItemHeight"
+
+
+    android:paddingLeft="16dip"
+
+    android:paddingRight="16dip"
     android:textAppearance="?android:attr/textAppearanceLarge"
 
     android:textColor="#F1F8E9"
-
-
-
-    android:gravity="center_vertical"
-
-    android:paddingLeft="16dip"
-    android:paddingRight="16dip"
-
-    android:minHeight="?android:attr/listPreferredItemHeight"
 
     />

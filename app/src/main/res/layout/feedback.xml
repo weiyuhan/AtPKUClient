@@ -1,26 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     android:weightSum="1">
 
 
     <EditText
+        android:id="@+id/feedbackContent"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:inputType="textMultiLine"
-        android:ems="10"
-        android:id="@+id/feedbackContent"
         android:layout_weight="0.75"
-        android:hint="请在这里填写您的建议或意见" />
+        android:ems="10"
+        android:hint="请在这里填写您的建议或意见"
+        android:inputType="textMultiLine" />
 
     <Button
+        android:id="@+id/feedback_submit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="提交反馈"
-        android:id="@+id/feedback_submit"
         android:layout_gravity="center_horizontal"
-        android:textSize="20sp"
-        android:onClick="FeedbackSubmitHandler" />
+        android:onClick="FeedbackSubmitHandler"
+        android:text="提交反馈"
+        android:textSize="20sp" />
 
 </LinearLayout>

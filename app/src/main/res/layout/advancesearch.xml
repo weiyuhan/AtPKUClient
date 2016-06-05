@@ -1,83 +1,87 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     android:paddingLeft="20dp"
     android:paddingRight="20dp">
 
     <android.support.design.widget.TextInputLayout
+        android:id="@+id/advanceSearch_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:id="@+id/advanceSearch_title">
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="14sp"
-        android:hint="标题" />
+        android:layout_marginTop="20dp">
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="标题"
+            android:textSize="14sp" />
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
+        android:id="@+id/advanceSearch_author"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/advanceSearch_author">
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="14sp"
-        android:hint="作者" />
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="作者"
+            android:textSize="14sp" />
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
+        android:id="@+id/advanceSearch_content"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/advanceSearch_content">
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="14sp"
-        android:hint="内容" />
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="内容"
+            android:textSize="14sp" />
     </android.support.design.widget.TextInputLayout>
 
     <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         android:id="@+id/advanceSearch_startTime"
-        android:textSize="14sp"
-        android:hint="起始时间"
-        android:onClick="searchMsgSelectTimeHanlder" />
-
-    <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:hint="起始时间"
+        android:onClick="searchMsgSelectTimeHanlder"
+        android:textSize="14sp" />
+
+    <EditText
         android:id="@+id/advanceSearch_endTime"
-        android:textSize="14sp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:hint="终止时间"
-        android:onClick="searchMsgSelectTimeHanlder" />
+        android:onClick="searchMsgSelectTimeHanlder"
+        android:textSize="14sp" />
 
 
     <Spinner
+        android:id="@+id/advanceSearch_place"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/advanceSearch_place"
         android:layout_gravity="center_horizontal"
         android:spinnerMode="dropdown" />
 
     <Switch
+        android:id="@+id/advanceSearch_global"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="只在热门信息中搜索"
-        android:id="@+id/advanceSearch_global"
-        android:checked="false" />
+        android:checked="false"
+        android:text="只在热门信息中搜索" />
 
     <Button
+        android:id="@+id/advanceSearch_submitButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/white"
-        android:background="@drawable/flatbutton"
-        android:text="搜索"
-        android:id="@+id/advanceSearch_submitButton"
         android:layout_gravity="center_horizontal"
-        android:onClick="searchMsgSubmitHandler" />
+        android:background="@drawable/flatbutton"
+        android:onClick="searchMsgSubmitHandler"
+        android:text="搜索"
+        android:textColor="@color/white" />
 
 </LinearLayout>
