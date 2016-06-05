@@ -50,6 +50,7 @@ public class LoadingWindow extends AppCompatActivity {
         prefs = getSharedPreferences("theme", Context.MODE_PRIVATE);
         int themeid = prefs.getInt("Theme", R.style.AppTheme_Grey);
         ThemeUtil.themeid = themeid;
+        ThemeUtil.themeChanged = false;
 
         volleyQuque = Volley.newRequestQueue(this);
         initPlaces();
@@ -122,6 +123,7 @@ public class LoadingWindow extends AppCompatActivity {
                                                             System.out.println("LoadingWindow severe error! Please check codes around this!");
                                                         }
                                                     }
+                                                    loadingPlaceIndex = 0;
                                                     LoadingWindow.this.finish();
                                                 }
                                             }

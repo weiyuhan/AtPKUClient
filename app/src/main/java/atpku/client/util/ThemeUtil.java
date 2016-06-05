@@ -11,12 +11,17 @@ import atpku.client.window.MapWindow;
  */
 public class ThemeUtil
 {
-    public static boolean themeChanged;
+    public static boolean themeChanged = false;
     public static int themeid;
-    public static void init()
-    {
 
+    public static void changeTheme(int themeid)
+    {
+        if(ThemeUtil.themeid != themeid) {
+            ThemeUtil.themeid = themeid;
+            themeChanged = true;
+        }
     }
+
     public static void setTheme(Activity activity)
     {
         activity.setTheme(themeid);

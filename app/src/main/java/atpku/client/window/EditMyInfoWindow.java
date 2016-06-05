@@ -52,7 +52,6 @@ public class EditMyInfoWindow extends AppCompatActivity implements View.OnClickL
     public EditText username;
     public RadioButton male;
     public RadioButton female;
-    public RadioButton secret_sex;
     public ActionBar actionBar;
     private RequestQueue volleyQuque;
     public ImageView avatarView;
@@ -82,13 +81,10 @@ public class EditMyInfoWindow extends AppCompatActivity implements View.OnClickL
         username.setText(MapWindow.user.getNickname());
         male = (RadioButton) findViewById(R.id.editmyinfo_male);
         female = (RadioButton) findViewById(R.id.editmyinfo_female);
-        secret_sex = (RadioButton) findViewById(R.id.editmyinfo_secret);
         if (MapWindow.user.gender.equals("m"))
             male.setChecked(true);
         else if (MapWindow.user.gender.equals("f"))
             female.setChecked(true);
-        else
-            secret_sex.setChecked(true);
 
         avatarView = (ImageView) findViewById(R.id.editmyinfo_avatar);
 
@@ -124,9 +120,6 @@ public class EditMyInfoWindow extends AppCompatActivity implements View.OnClickL
             needSubmit = true;
             genderStr = "f";
             params.put("gender", genderStr);
-        } else if (secret_sex.isChecked()) {
-            Toast.makeText(EditMyInfoWindow.this, "服务器不支持私密性别！", Toast.LENGTH_LONG).show();
-            // 服务器不支持私密性别！
         }
 
         if (modifyAvatar && uploaded && avatarUrl != null) {

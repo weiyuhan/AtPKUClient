@@ -20,8 +20,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
+        android:background="@drawable/flatbutton"
         android:onClick="FeedbackSubmitHandler"
+        android:textColor="@color/white"
         android:text="提交反馈"
-        android:textSize="20sp" />
+        android:textSize="14sp" />
 
 </LinearLayout>

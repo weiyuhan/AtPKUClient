@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:id="@+id/setting_linear"
+    android:layout_height="match_parent"
+    android:paddingLeft="20dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="请选择你的主题色" />
+
+    <RadioGroup
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="20dp">
+
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="深空灰"
+            android:id="@+id/setting_theme_grey"
+            android:checked="true" />
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="清新绿"
+            android:id="@+id/setting_theme_green"
+            android:checked="false" />
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="基佬紫"
+            android:id="@+id/setting_theme_purple"
+            android:checked="false" />
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="活力红"
+            android:id="@+id/setting_theme_red"
+            android:checked="false" />
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="浪漫粉"
+            android:id="@+id/setting_theme_pink"
+            android:checked="false" />
+
+    </RadioGroup>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/flatbutton"
+        android:text="应用"
+        android:id="@+id/setting_submitButton"
+        android:textColor="@color/white"
+        android:onClick="settingSubmitHandler"
+        android:layout_gravity="center_horizontal" />
+
+</LinearLayout>

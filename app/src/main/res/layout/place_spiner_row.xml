@@ -5,4 +5,4 @@
     android:gravity="center_vertical"
     android:paddingLeft="6dip"
     android:paddingRight="6dip"
-    android:textSize="14sp" />
+    android:textSize="20sp" />

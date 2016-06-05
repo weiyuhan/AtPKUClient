@@ -78,6 +78,8 @@ public class MapWindow extends AppCompatActivity implements
 
     public static boolean isLogin = false;
 
+    public static boolean started = false;
+
 
     private static double pkuLng = 116.31059288978577;
     private static double pkuLat = 39.99183503192985;
@@ -123,10 +125,13 @@ public class MapWindow extends AppCompatActivity implements
         ThemeUtil.setTheme(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.map);
-        PushSettings.enableDebugMode(getApplicationContext(), true);
 
-        PushManager.startWork(getApplicationContext(), PushConstants.LOGIN_TYPE_API_KEY, "ZEug10Z4X0y5ek5ll0wplTIV");
-        //启动百度推送服务，等待PushTestReceiver的回调函数Onbind给MapWindow.deviceid赋初值，异步的
+        if(!started) {
+            started = true;
+            PushSettings.enableDebugMode(getApplicationContext(), true);
+            PushManager.startWork(getApplicationContext(), PushConstants.LOGIN_TYPE_API_KEY, "ZEug10Z4X0y5ek5ll0wplTIV");
+            //启动百度推送服务，等待PushTestReceiver的回调函数Onbind给MapWindow.deviceid赋初值，异步的
+        }
 
         currPos = pkuPos;
 
@@ -206,7 +211,7 @@ public class MapWindow extends AppCompatActivity implements
             menuItem.setVisible(false);
             menuItem = menu.findItem(R.id.drawer_userinfo);
             menuItem.setVisible(false);
-            menuItem = menu.findItem(R.id.drawer_mail);
+            menuItem = menu.findItem(R.id.drawer_setting);
             menuItem.setVisible(false);
         } else {
             MenuItem menuItem = menu.findItem(R.id.drawer_login);
@@ -316,9 +321,18 @@ public class MapWindow extends AppCompatActivity implements
 
     protected void onResume() {
         super.onResume();
+        mapView.onResume();
         drawerLayout.closeDrawers();
         refreshSlideMenu();
-        mapView.onResume();
+        if(ThemeUtil.themeChanged)
+        {
+            ThemeUtil.themeChanged = false;
+            mapShow = false;
+            finish();
+            Intent intent = new Intent(getApplicationContext(), MapWindow.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
+        }
     }
 
     protected void onPause() {
@@ -351,8 +365,9 @@ public class MapWindow extends AppCompatActivity implements
                 startActivity(intent);
             }
             break;
-            case R.id.drawer_mail: {   //发信息
-                startSendMsgWindow();
+            case R.id.drawer_setting: {   //发信息
+                Intent intent = new Intent(this, SettingWindow.class);
+                startActivity(intent);
             }
             break;
             case R.id.drawer_search: {  //高级搜索

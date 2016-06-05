@@ -33,11 +33,6 @@
             android:checked="false"
             android:text="女" />
 
-        <RadioButton
-            android:id="@+id/editmyinfo_secret"
-            android:layout_width="76dp"
-            android:layout_height="wrap_content"
-            android:text="私密" />
     </RadioGroup>
 
     <Button
@@ -46,6 +41,8 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:onClick="editMyInfoSubmitHandler"
-        android:text="提交"
-        android:textSize="25sp" />
+        android:background="@drawable/flatbutton"
+        android:textColor="@color/white"
+        android:text="修改"
+        android:textSize="14sp" />
 </LinearLayout>
