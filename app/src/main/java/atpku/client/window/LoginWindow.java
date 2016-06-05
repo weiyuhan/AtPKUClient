@@ -35,9 +35,7 @@ import atpku.client.model.PostResult;
 import atpku.client.model.User;
 import atpku.client.util.ThemeUtil;
 
-
-public class LoginWindow extends AppCompatActivity
-{
+public class LoginWindow extends AppCompatActivity {
     public TextInputLayout email;
     public TextInputLayout password;
     public Button loginButton;
@@ -56,9 +54,9 @@ public class LoginWindow extends AppCompatActivity
         actionBar.setLogo(R.mipmap.ic_launcher);
         actionBar.setDisplayHomeAsUpEnabled(true);
 
-        email = (TextInputLayout)findViewById(R.id.login_email);
-        password = (TextInputLayout)findViewById(R.id.login_password);
-        loginButton = (Button)findViewById(R.id.loginButton);
+        email = (TextInputLayout) findViewById(R.id.login_email);
+        password = (TextInputLayout) findViewById(R.id.login_password);
+        loginButton = (Button) findViewById(R.id.loginButton);
 
         volleyQuque = Volley.newRequestQueue(this);
     }
@@ -66,36 +64,29 @@ public class LoginWindow extends AppCompatActivity
     public void loginHandler(View source) //登录请求
     {
         Editable editEmail = email.getEditText().getText();
-        if(editEmail.length() < 1)
-        {
+        if (editEmail.length() < 1) {
             email.setErrorEnabled(true);
             email.setError("请输入用户名");
             return;
-        }
-        else
+        } else
             email.setErrorEnabled(false);
-        if(password.getEditText().getText().length() < 1)
-        {
+        if (password.getEditText().getText().length() < 1) {
             password.setErrorEnabled(true);
             password.setError("请输入密码");
             return;
-        }
-        else
+        } else
             password.setErrorEnabled(false);
-        if(!editEmail.toString().contains("@"))
+        if (!editEmail.toString().contains("@"))
             editEmail.append("@pku.edu.cn");
-        StringRequest stringRequest = new StringRequest(StringRequest.Method.POST,"http://139.129.22.145:5000/login",
-                new Response.Listener<String>()
-                {
+        StringRequest stringRequest = new StringRequest(StringRequest.Method.POST, "http://139.129.22.145:5000/login",
+                new Response.Listener<String>() {
                     @Override
-                    public void onResponse(String response)
-                    {
+                    public void onResponse(String response) {
                         PostResult result = JSON.parseObject(response, PostResult.class);
                         System.out.println(result.toString());
-                        if(result.success)
-                        {
+                        if (result.success) {
                             User user = JSON.parseObject(result.data, User.class);
-                            if(user.avatar == null)
+                            if (user.avatar == null)
                                 user.avatar = "http://public-image-source.img-cn-shanghai.aliyuncs.com/avatar33201652203559.jpg";
                             MapWindow.user = user;
                             SharedPreferences prefs = getSharedPreferences("userInfo", 1);
@@ -105,17 +96,14 @@ public class LoginWindow extends AppCompatActivity
                             Toast.makeText(LoginWindow.this, result.message, Toast.LENGTH_LONG).show();
                             LoginWindow.this.finish();
                             MapWindow.isLogin = true;
-                        }
-                        else
-                        {
+                        } else {
                             Toast.makeText(LoginWindow.this, result.message, Toast.LENGTH_LONG).show();
                             MapWindow.isLogin = false;
                         }
                         Log.d("TAG", response);
                     }
                 },
-                new Response.ErrorListener()
-                {
+                new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         //System.out.println("error : " + error.getMessage());
@@ -142,8 +130,7 @@ public class LoginWindow extends AppCompatActivity
                     Map<String, String> responseHeaders = response.headers;
                     String rawCookies = responseHeaders.get("Set-Cookie");
                     System.out.println("getcookie : " + rawCookies);
-                    if(rawCookies != null)
-                    {
+                    if (rawCookies != null) {
                         String[] splitedRaw = rawCookies.split(";");
                         String Cookie = splitedRaw[0];
 
@@ -164,6 +151,7 @@ public class LoginWindow extends AppCompatActivity
         };
         volleyQuque.add(stringRequest);
     }
+
     public void regisHandler(View source) //注册页面
     {
         Intent intent = new Intent(LoginWindow.this, RegisterWindow.class);
@@ -176,15 +164,12 @@ public class LoginWindow extends AppCompatActivity
         return super.onCreateOptionsMenu(menu);
     }
 
-    public boolean onOptionsItemSelected(MenuItem mi)
-    {
-        if(mi.isCheckable())
-        {
+    public boolean onOptionsItemSelected(MenuItem mi) {
+        if (mi.isCheckable()) {
             mi.setChecked(true);
         }
 
-        switch (mi.getItemId())
-        {
+        switch (mi.getItemId()) {
             case android.R.id.home:
                 super.onBackPressed();
                 break;

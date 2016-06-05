@@ -28,12 +28,11 @@ import atpku.client.util.ThemeUtil;
 /**
  * Created by wyh on 2016/5/19.
  */
-public class LoadingWindow extends AppCompatActivity
-{
+public class LoadingWindow extends AppCompatActivity {
     private com.android.volley.RequestQueue volleyQuque;
     public static int loadingPlaceIndex = 0;
-    public void onCreate(Bundle savedInstanceState)
-    {
+
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.loading);
 
@@ -43,7 +42,7 @@ public class LoadingWindow extends AppCompatActivity
         String cookie = prefs.getString("Cookie", "");
         System.out.println("mycookie : " + cookie);
         MapWindow.setCookie(cookie);
-        if(!cookie.equals("")) // 设置用户是否登录
+        if (!cookie.equals("")) // 设置用户是否登录
         {
             MapWindow.isLogin = true;
         }
@@ -72,63 +71,54 @@ public class LoadingWindow extends AppCompatActivity
         }, 3000); //3000 for release
         */
     }
-    public void initPlaces()
-    {
+
+    public void initPlaces() {
         Map<String, String> params = new HashMap<String, String>();
         params.put("lngbeg", "-180");
         params.put("lngend", "180");
         params.put("latbeg", "-90");
         params.put("latend", "90");
         // get places
-        StringRequestWithCookie stringRequest = new StringRequestWithCookie(Request.Method.GET,"http://139.129.22.145:5000/places?lngbeg=-180&lngend=180&latbeg=-90&latend=90",
-                new Response.Listener<String>()
-                {
+        StringRequestWithCookie stringRequest = new StringRequestWithCookie(Request.Method.GET, "http://139.129.22.145:5000/places?lngbeg=-180&lngend=180&latbeg=-90&latend=90",
+                new Response.Listener<String>() {
                     @Override
-                    public void onResponse(String response)
-                    {
+                    public void onResponse(String response) {
                         PostResult result = JSON.parseObject(response, PostResult.class);
-                        if(result.success)
-                        {
+                        if (result.success) {
                             String jsonPlaces = result.data;
                             List<Place> places = JSON.parseArray(jsonPlaces, Place.class);
                             System.out.println(places);
-                            if(MapWindow.places == null) {
+                            if (MapWindow.places == null) {
                                 MapWindow.places = new HashMap<String, Place>();
                             }
-                            if(MapWindow.markers == null)
-                            {
+                            if (MapWindow.markers == null) {
                                 MapWindow.markers = new HashMap<String, Marker>();
                             }
                             final int count = places.size();
-                            for(final Place place: places)
-                            {
+                            for (final Place place : places) {
                                 MapWindow.places.put(place.getName(), place);
                                 // get hotmessages
                                 StringRequestWithCookie globalMsgRequest = new StringRequestWithCookie(Request.Method.GET,
                                         "http://139.129.22.145:5000/hotmessages/" + String.valueOf(place.getId()),
                                         new Response.Listener<String>() {
                                             @Override
-                                            public void onResponse(String response)
-                                            {
+                                            public void onResponse(String response) {
                                                 String placename = place.getName();
                                                 PostResult result = JSON.parseObject(response, PostResult.class);
                                                 System.out.println(result);
-                                                if (result.success)
-                                                {
-                                                    List<Message> messages = JSON.parseArray(result.data, Message.class);;
+                                                if (result.success) {
+                                                    List<Message> messages = JSON.parseArray(result.data, Message.class);
                                                     place.setGlobalMessages(messages);
                                                     Marker marker = MapWindow.markers.get(placename);
-                                                    if(marker != null && messages != null)
-                                                    {
+                                                    if (marker != null && messages != null) {
                                                         marker.setSnippet(place.snippetString());
                                                     }
                                                 }
                                                 Log.d("TAG", response);
                                                 loadingPlaceIndex++;
-                                                if(loadingPlaceIndex >= count)
-                                                {
-                                                    if(loadingPlaceIndex > count) {
-                                                        while(true) {
+                                                if (loadingPlaceIndex >= count) {
+                                                    if (loadingPlaceIndex > count) {
+                                                        while (true) {
                                                             System.out.println("LoadingWindow severe error! Please check codes around this!");
                                                         }
                                                     }
@@ -141,9 +131,7 @@ public class LoadingWindow extends AppCompatActivity
                             System.out.println("Start Intent to MapWindow.");
                             Intent mainIntent = new Intent(LoadingWindow.this, MapWindow.class);
                             startActivity(mainIntent);
-                        }
-                        else
-                        {
+                        } else {
                             Toast.makeText(LoadingWindow.this, result.message, Toast.LENGTH_LONG).show();
                             finish();
                         }

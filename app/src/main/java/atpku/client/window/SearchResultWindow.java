@@ -33,12 +33,12 @@ import atpku.client.util.ThemeUtil;
 /**
  * Created by wyh on 2016/5/19.
  */
-public class SearchResultWindow extends AppCompatActivity
-{
+public class SearchResultWindow extends AppCompatActivity {
     public ListView resultList;
     private com.android.volley.RequestQueue volleyQuque;
 
     public ActionBar actionBar;
+
     protected void onCreate(Bundle savedInstanceState)
     {
         ThemeUtil.setTheme(this);
@@ -52,35 +52,30 @@ public class SearchResultWindow extends AppCompatActivity
 
         volleyQuque = Volley.newRequestQueue(this);
 
-        resultList = (ListView)findViewById(R.id.searchResult_list);
+        resultList = (ListView) findViewById(R.id.searchResult_list);
         setTitle("搜索结果");
         final MessageAdapter adapter = new MessageAdapter(this, R.layout.message_row);
 
         Intent intent = this.getIntent();
-        String caller = (String)intent.getSerializableExtra("caller");
-        if(caller.equals("UserInfoWindow"))
+        String caller = (String) intent.getSerializableExtra("caller");
+        if (caller.equals("UserInfoWindow"))
             setTitle("我发送过的信息");
 
-        HashMap<String, String> params = (HashMap<String, String>)intent.getSerializableExtra("params");
+        HashMap<String, String> params = (HashMap<String, String>) intent.getSerializableExtra("params");
         StringRequestWithCookie stringRequest = new StringRequestWithCookie(Request.Method.POST,
                 "http://139.129.22.145:5000/message/search",
-                new Response.Listener<String>()
-                {
+                new Response.Listener<String>() {
                     @Override
-                    public void onResponse(String response)
-                    {
+                    public void onResponse(String response) {
                         PostResult result = JSON.parseObject(response, PostResult.class);
-                        if(result.success)
-                        {
+                        if (result.success) {
                             List<Message> messages = JSON.parseArray(result.data, Message.class);
-                            for(Message message:messages) {
+                            for (Message message : messages) {
                                 adapter.add(message);
                             }
                             resultList.setAdapter(adapter);
                             adapter.notifyDataSetChanged();
-                        }
-                        else
-                        {
+                        } else {
                             Toast.makeText(SearchResultWindow.this, result.message, Toast.LENGTH_LONG).show();
                         }
                         Log.d("TAG", response);
@@ -89,15 +84,12 @@ public class SearchResultWindow extends AppCompatActivity
         volleyQuque.add(stringRequest);
     }
 
-    public boolean onOptionsItemSelected(MenuItem mi)
-    {
-        if(mi.isCheckable())
-        {
+    public boolean onOptionsItemSelected(MenuItem mi) {
+        if (mi.isCheckable()) {
             mi.setChecked(true);
         }
 
-        switch (mi.getItemId())
-        {
+        switch (mi.getItemId()) {
             case android.R.id.home:
                 super.onBackPressed();
                 break;
@@ -139,7 +131,7 @@ public class SearchResultWindow extends AppCompatActivity
             TextView nicknameText = (TextView) view.findViewById(R.id.nickname);
 
             titleText.setText(msg.getTitle());
-            timeText.setText(msg.getPostTime());
+            timeText.setText(msg.atPlace.getName() + " " + msg.getPostTime());
             nicknameText.setText(msg.owner.getNickname());
             return view;
         }

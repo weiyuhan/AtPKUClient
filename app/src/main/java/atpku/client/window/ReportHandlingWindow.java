@@ -37,8 +37,7 @@ import atpku.client.util.ThemeUtil;
 /**
  * Created by wyh on 2016/5/19.
  */
-public class ReportHandlingWindow extends AppCompatActivity
-{
+public class ReportHandlingWindow extends AppCompatActivity {
     public ListView msgList;
     public ActionBar actionBar;
     private RequestQueue volleyQuque;
@@ -67,16 +66,15 @@ public class ReportHandlingWindow extends AppCompatActivity
                     @Override
                     public void onResponse(String response) {
                         PostResult result = JSON.parseObject(response, PostResult.class);
-                        if(result.success) {
+                        if (result.success) {
                             List<Message> messages = JSON.parseArray(result.data, Message.class);
-                            for(Message message:messages) {
+                            for (Message message : messages) {
                                 adapter.add(message);
                             }
-                        }
-                        else
+                        } else
                             Toast.makeText(ReportHandlingWindow.this, result.message, Toast.LENGTH_LONG).show();
-                       msgList.setAdapter(adapter);
-                       adapter.notifyDataSetChanged();
+                        msgList.setAdapter(adapter);
+                        adapter.notifyDataSetChanged();
                     }
                 }, null);
         volleyQuque.add(stringRequest);
@@ -130,7 +128,7 @@ public class ReportHandlingWindow extends AppCompatActivity
             TextView timeText = (TextView) view.findViewById(R.id.time);
             TextView placeText = (TextView) view.findViewById(R.id.place);
 
-            msgReportedText.setText("被举报次数："+msg.getReportTimes());
+            msgReportedText.setText("被举报次数：" + msg.getReportTimes());
             titleText.setText(msg.getTitle());
             nicknameText.setText(msg.owner.getNickname());
             timeText.setText(msg.getPostTime());

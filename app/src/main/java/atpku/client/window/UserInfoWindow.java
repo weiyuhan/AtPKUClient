@@ -35,8 +35,7 @@ import atpku.client.util.ThemeUtil;
  * Created by JIANG YUMENG on 2016/5/14.
  * Show user info.
  */
-public class UserInfoWindow extends AppCompatActivity
-{
+public class UserInfoWindow extends AppCompatActivity {
     public TextView studentNum;
     public TextView username;
     public TextView status;
@@ -65,35 +64,33 @@ public class UserInfoWindow extends AppCompatActivity
         actionBar.setLogo(R.mipmap.ic_launcher);
         actionBar.setDisplayHomeAsUpEnabled(true);
 
-        studentNum = (TextView)findViewById(R.id.userInfo_studentNum);
-        username = (TextView)findViewById(R.id.userInfo_username);
-        status = (TextView)findViewById(R.id.userInfo_status);
-        joinTime = (TextView)findViewById(R.id.userInfo_joinTime);
-        commentReceived = (TextView)findViewById(R.id.userInfo_commentReceived);
-        likeReceived = (TextView)findViewById(R.id.userInfo_likeReceived);
-        dislikeReceived = (TextView)findViewById(R.id.userInfo_dislikeReceived);
-        reportReceived = (TextView)findViewById(R.id.userInfo_reportReceived);
-        feedbackList = (ListView)findViewById(R.id.userInfo_feedbackList);
-        avatarView = (ImageView)findViewById(R.id.userInfo_avatar);
+        studentNum = (TextView) findViewById(R.id.userInfo_studentNum);
+        username = (TextView) findViewById(R.id.userInfo_username);
+        status = (TextView) findViewById(R.id.userInfo_status);
+        joinTime = (TextView) findViewById(R.id.userInfo_joinTime);
+        commentReceived = (TextView) findViewById(R.id.userInfo_commentReceived);
+        likeReceived = (TextView) findViewById(R.id.userInfo_likeReceived);
+        dislikeReceived = (TextView) findViewById(R.id.userInfo_dislikeReceived);
+        reportReceived = (TextView) findViewById(R.id.userInfo_reportReceived);
+        feedbackList = (ListView) findViewById(R.id.userInfo_feedbackList);
+        avatarView = (ImageView) findViewById(R.id.userInfo_avatar);
 
         volleyQuque = Volley.newRequestQueue(this);
     }
 
-    public void refreshUserInfo()
-    {
+    public void refreshUserInfo() {
         user = MapWindow.user;
-        if(user.avatar == null)
+        if (user.avatar == null)
             user.avatar = "http://public-image-source.img-cn-shanghai.aliyuncs.com/avatar33201652203559.jpg";
         System.out.println(user);
-        if(user != null)
-        {
+        if (user != null) {
             studentNum.setText("邮箱：" + user.email);
             username.setText("用户名：" + user.nickname);
-            if(user.gender.equals("m"))
+            if (user.gender.equals("m"))
                 username.setText(username.getText() + " ♂");
-            else if(user.gender.equals("f"))
+            else if (user.gender.equals("f"))
                 username.setText(username.getText() + " ♀");
-            if(user.isBanned)
+            if (user.isBanned)
                 status.setText("状态：" + "禁言");
             else
                 status.setText("状态：" + "正常");
@@ -104,26 +101,21 @@ public class UserInfoWindow extends AppCompatActivity
             dislikeReceived.setText("收到过的踩：" + String.valueOf(user.dislikeReceived));
             reportReceived.setText("被举报次数：" + String.valueOf(user.reportReceived));
 
-            Picasso.with(this).load(user.avatar).placeholder(R.mipmap.image_loading).error(R.mipmap.default_avatar_1).resize(200,200).into(avatarView);
+            Picasso.with(this).load(user.avatar).placeholder(R.mipmap.image_loading).error(R.mipmap.default_avatar_1).resize(200, 200).into(avatarView);
         }
     }
 
     protected void onResume() {
         super.onResume();
-        StringRequestWithCookie stringRequest = new StringRequestWithCookie(StringRequest.Method.GET,"http://139.129.22.145:5000/profile",
-                new Response.Listener<String>()
-                {
+        StringRequestWithCookie stringRequest = new StringRequestWithCookie(StringRequest.Method.GET, "http://139.129.22.145:5000/profile",
+                new Response.Listener<String>() {
                     @Override
-                    public void onResponse(String response)
-                    {
+                    public void onResponse(String response) {
                         PostResult result = JSON.parseObject(response, PostResult.class);
-                        if(result.success)
-                        {
+                        if (result.success) {
                             MapWindow.user = JSON.parseObject(result.data, User.class);
                             refreshUserInfo();
-                        }
-                        else
-                        {
+                        } else {
                             Toast.makeText(UserInfoWindow.this, result.message, Toast.LENGTH_LONG).show();
                         }
                         Log.d("TAG", response);
@@ -133,21 +125,17 @@ public class UserInfoWindow extends AppCompatActivity
         getFeedback();
     }
 
-    public boolean onCreateOptionsMenu(Menu menu)
-    {
+    public boolean onCreateOptionsMenu(Menu menu) {
         new MenuInflater(getApplication()).inflate(R.menu.menu_userinfo, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
-    public boolean onOptionsItemSelected(MenuItem mi)
-    {
-        if(mi.isCheckable())
-        {
+    public boolean onOptionsItemSelected(MenuItem mi) {
+        if (mi.isCheckable()) {
             mi.setChecked(true);
         }
 
-        switch (mi.getItemId())
-        {
+        switch (mi.getItemId()) {
             case android.R.id.home:
                 super.onBackPressed();
                 break;
@@ -155,8 +143,8 @@ public class UserInfoWindow extends AppCompatActivity
                 Intent intent = new Intent(UserInfoWindow.this, FeedbackWindow.class);
                 startActivity(intent);
             }
-                break;
-            case R.id.action_mymsg:{
+            break;
+            case R.id.action_mymsg: {
                 HashMap<String, String> params = new HashMap<String, String>();
                 params.put("nickname", user.getNickname());
                 Intent intent = new Intent(UserInfoWindow.this, SearchResultWindow.class);
@@ -166,7 +154,7 @@ public class UserInfoWindow extends AppCompatActivity
                 intent.putExtras(bundle);
                 startActivity(intent);
             }
-                break;
+            break;
             case R.id.action_editmyinfo:
                 Intent intent = new Intent(UserInfoWindow.this, EditMyInfoWindow.class);
                 startActivity(intent);
@@ -178,24 +166,19 @@ public class UserInfoWindow extends AppCompatActivity
 
     }
 
-    public void getFeedback()
-    {
-        StringRequestWithCookie stringRequest = new StringRequestWithCookie(StringRequest.Method.GET,"http://139.129.22.145:5000/feedbacks",
-                new Response.Listener<String>()
-                {
+    public void getFeedback() {
+        StringRequestWithCookie stringRequest = new StringRequestWithCookie(StringRequest.Method.GET, "http://139.129.22.145:5000/feedbacks",
+                new Response.Listener<String>() {
                     @Override
-                    public void onResponse(String response)
-                    {
+                    public void onResponse(String response) {
                         PostResult result = JSON.parseObject(response, PostResult.class);
-                        if(result.success)
-                        {
+                        if (result.success) {
                             Toast.makeText(UserInfoWindow.this, "成功", Toast.LENGTH_LONG);
                             List<Feedback> feedbacks = JSON.parseArray(result.data, Feedback.class);
                             System.out.println(feedbacks);
-                            ArrayAdapter<String> adapter =  new ArrayAdapter<String>(UserInfoWindow.this,
+                            ArrayAdapter<String> adapter = new ArrayAdapter<String>(UserInfoWindow.this,
                                     android.R.layout.simple_expandable_list_item_1);
-                            for(Feedback feedback:feedbacks)
-                            {
+                            for (Feedback feedback : feedbacks) {
                                 adapter.add(feedback.toShowString());
                             }
                             feedbackList.setAdapter(adapter);

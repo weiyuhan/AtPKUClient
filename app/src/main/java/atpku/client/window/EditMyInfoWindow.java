@@ -48,8 +48,7 @@ import atpku.client.util.ThemeUtil;
 /**
  * Created by JIANG YUMENG on 2016/5/28.
  */
-public class EditMyInfoWindow extends AppCompatActivity implements View.OnClickListener
-{
+public class EditMyInfoWindow extends AppCompatActivity implements View.OnClickListener {
     public EditText username;
     public RadioButton male;
     public RadioButton female;
@@ -76,28 +75,29 @@ public class EditMyInfoWindow extends AppCompatActivity implements View.OnClickL
         actionBar = getSupportActionBar();
         actionBar.setDisplayUseLogoEnabled(true);
         actionBar.setLogo(R.mipmap.ic_launcher);
-        actionBar.setDisplayHomeAsUpEnabled(true);;
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        ;
 
-        username = (EditText)findViewById(R.id.editmyinfo_username);
+        username = (EditText) findViewById(R.id.editmyinfo_username);
         username.setText(MapWindow.user.getNickname());
-        male = (RadioButton)findViewById(R.id.editmyinfo_male);
-        female = (RadioButton)findViewById(R.id.editmyinfo_female);
-        secret_sex = (RadioButton)findViewById(R.id.editmyinfo_secret);
-        if(MapWindow.user.gender.equals("m"))
+        male = (RadioButton) findViewById(R.id.editmyinfo_male);
+        female = (RadioButton) findViewById(R.id.editmyinfo_female);
+        secret_sex = (RadioButton) findViewById(R.id.editmyinfo_secret);
+        if (MapWindow.user.gender.equals("m"))
             male.setChecked(true);
-        else if(MapWindow.user.gender.equals("f"))
+        else if (MapWindow.user.gender.equals("f"))
             female.setChecked(true);
         else
             secret_sex.setChecked(true);
 
-        avatarView = (ImageView)findViewById(R.id.editmyinfo_avatar);
+        avatarView = (ImageView) findViewById(R.id.editmyinfo_avatar);
 
         setTitle("修改个人资料");
 
         volleyQuque = Volley.newRequestQueue(this);
 
         String userAvatarUrl = MapWindow.user.avatar;
-        Picasso.with(this).load(userAvatarUrl).placeholder(R.mipmap.image_loading).error(R.mipmap.default_avatar_1).resize(200,200).into(avatarView);
+        Picasso.with(this).load(userAvatarUrl).placeholder(R.mipmap.image_loading).error(R.mipmap.default_avatar_1).resize(200, 200).into(avatarView);
         avatarView.setOnClickListener(this);
     }
 
@@ -109,68 +109,60 @@ public class EditMyInfoWindow extends AppCompatActivity implements View.OnClickL
             Toast.makeText(EditMyInfoWindow.this, "用户名不能为空!", Toast.LENGTH_LONG).show();
             return;
         }
-        if(!username.getText().toString().equals(MapWindow.user.getNickname())) {   //用户名与当前值不同
+        if (!username.getText().toString().equals(MapWindow.user.getNickname())) {   //用户名与当前值不同
             needSubmit = true;
             params.put("nickname", username.getText().toString());
         }
         String genderStr = null;
-        if(male.isChecked() && !MapWindow.user.gender.equals("m")) {
+        if (male.isChecked() && !MapWindow.user.gender.equals("m")) {
             System.out.println("male");
             needSubmit = true;
             genderStr = "m";
             params.put("gender", genderStr);
-        }
-        else if(female.isChecked() && !MapWindow.user.gender.equals("f")) {
+        } else if (female.isChecked() && !MapWindow.user.gender.equals("f")) {
             System.out.println("female");
             needSubmit = true;
             genderStr = "f";
             params.put("gender", genderStr);
-        }
-        else if(secret_sex.isChecked()){
+        } else if (secret_sex.isChecked()) {
             Toast.makeText(EditMyInfoWindow.this, "服务器不支持私密性别！", Toast.LENGTH_LONG).show();
             // 服务器不支持私密性别！
         }
 
-        if(modifyAvatar && uploaded && avatarUrl != null)
-        {
+        if (modifyAvatar && uploaded && avatarUrl != null) {
             System.out.println(avatarUrl);
             params.put("avatar", avatarUrl);
             needSubmit = true;
         }
 
-        if(needSubmit) {
+        if (needSubmit) {
             StringRequestWithCookie stringRequest = new StringRequestWithCookie(Request.Method.POST,
                     "http://139.129.22.145:5000/profile",
                     new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
                             PostResult result = JSON.parseObject(response, PostResult.class);
-                            if(result.success) {
+                            if (result.success) {
                                 Toast.makeText(EditMyInfoWindow.this, result.message, Toast.LENGTH_LONG).show();
                                 finish();
-                            }
-                            else {
+                            } else {
                                 Toast.makeText(EditMyInfoWindow.this, result.message, Toast.LENGTH_LONG).show();
                             }
                             Log.d("TAG", response);
                         }
                     }, params);
             volleyQuque.add(stringRequest);
-        }
-        else {
+        } else {
             Toast.makeText(EditMyInfoWindow.this, "没有可以提交的东西！", Toast.LENGTH_LONG).show();
         }
     }
 
-    public boolean onOptionsItemSelected(MenuItem mi)
-    {
-        if(mi.isCheckable())
-        {
+    public boolean onOptionsItemSelected(MenuItem mi) {
+        if (mi.isCheckable()) {
             mi.setChecked(true);
         }
 
-        switch (mi.getItemId())
-        {
+        switch (mi.getItemId()) {
             case android.R.id.home:
                 super.onBackPressed();
                 break;
@@ -187,7 +179,7 @@ public class EditMyInfoWindow extends AppCompatActivity implements View.OnClickL
             if (data != null) {
                 // 得到图片的全路径
                 Uri uri = data.getData();
-                if(uri != null)
+                if (uri != null)
                     crop(uri);
             }
 
@@ -196,7 +188,7 @@ public class EditMyInfoWindow extends AppCompatActivity implements View.OnClickL
             // 从剪切图片返回的数据
             if (data != null) {
                 Bitmap bitmap = data.getParcelableExtra("data");
-                if(bitmap != null) {
+                if (bitmap != null) {
                     saveBitmap(bitmap);
                     Uri uri = Uri.fromFile(avatarFile);
                     Picasso.with(this).load(uri).placeholder(R.mipmap.image_loading).error(R.mipmap.default_avatar_1).resize(200, 200).into(avatarView);
@@ -214,15 +206,14 @@ public class EditMyInfoWindow extends AppCompatActivity implements View.OnClickL
         }
     }
 
-    public void modifyAvater(String imgUri)
-    {
+    public void modifyAvater(String imgUri) {
         Calendar calendar = Calendar.getInstance();
         String objectKey = "avatar" + MapWindow.user.getId() + calendar.get(Calendar.YEAR) +
                 calendar.get(Calendar.MONTH) + calendar.get(Calendar.DAY_OF_MONTH) +
                 calendar.get(Calendar.HOUR_OF_DAY) + calendar.get(Calendar.MINUTE) + calendar.get(Calendar.SECOND);
         String types = imgUri.substring(imgUri.lastIndexOf(".") - 1);
         PutObjectRequest put = new PutObjectRequest("public-image-source", objectKey + types, imgUri);
-        OSSAsyncTask task = ((AtPKUApplication)getApplication()).oss.asyncPutObject(put, new OSSCompletedCallback<PutObjectRequest, PutObjectResult>() {
+        OSSAsyncTask task = ((AtPKUApplication) getApplication()).oss.asyncPutObject(put, new OSSCompletedCallback<PutObjectRequest, PutObjectResult>() {
             @Override
             public void onSuccess(PutObjectRequest request, PutObjectResult result) {
                 Log.d("PutObject", "UploadSuccess");
@@ -251,13 +242,12 @@ public class EditMyInfoWindow extends AppCompatActivity implements View.OnClickL
         });
     }
 
-    public void saveBitmap(Bitmap bm)
-    {
+    public void saveBitmap(Bitmap bm) {
         Calendar calendar = Calendar.getInstance();
-        File cameraDir =  new File(Environment.getExternalStorageDirectory(),"AtPKUCameraTemp");
-        if(!cameraDir.exists())
+        File cameraDir = new File(Environment.getExternalStorageDirectory(), "AtPKUCameraTemp");
+        if (!cameraDir.exists())
             cameraDir.mkdirs();
-        avatarFile = new File(cameraDir,"avatar" + calendar.get(Calendar.YEAR) +
+        avatarFile = new File(cameraDir, "avatar" + calendar.get(Calendar.YEAR) +
                 calendar.get(Calendar.MONTH) + calendar.get(Calendar.DAY_OF_MONTH) +
                 calendar.get(Calendar.HOUR_OF_DAY) + calendar.get(Calendar.MINUTE) + calendar.get(Calendar.SECOND) +
                 calendar.get(Calendar.MILLISECOND) + ".jpg");
@@ -278,8 +268,7 @@ public class EditMyInfoWindow extends AppCompatActivity implements View.OnClickL
 
     @Override
     public void onClick(View v) {
-        if(v instanceof ImageView)
-        {
+        if (v instanceof ImageView) {
             Intent intent = new Intent(Intent.ACTION_PICK);
             intent.setType("image/*");
             // 开启一个带有返回值的Activity，请求码为PHOTO_REQUEST_GALLERY
@@ -307,23 +296,17 @@ public class EditMyInfoWindow extends AppCompatActivity implements View.OnClickL
     }
 
     @Override
-    protected void onResume()
-    {
+    protected void onResume() {
         super.onResume();
-        StringRequestWithCookie stringRequest = new StringRequestWithCookie(StringRequest.Method.GET,"http://139.129.22.145:5000/profile",
-                new Response.Listener<String>()
-                {
+        StringRequestWithCookie stringRequest = new StringRequestWithCookie(StringRequest.Method.GET, "http://139.129.22.145:5000/profile",
+                new Response.Listener<String>() {
                     @Override
-                    public void onResponse(String response)
-                    {
+                    public void onResponse(String response) {
                         PostResult result = JSON.parseObject(response, PostResult.class);
-                        if(result.success)
-                        {
+                        if (result.success) {
                             MapWindow.user = JSON.parseObject(result.data, User.class);
                             System.out.println(MapWindow.user);
-                        }
-                        else
-                        {
+                        } else {
                             Toast.makeText(EditMyInfoWindow.this, result.message, Toast.LENGTH_LONG).show();
                         }
                         Log.d("TAG", response);

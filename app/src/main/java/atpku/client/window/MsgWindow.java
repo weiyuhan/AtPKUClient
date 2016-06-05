@@ -44,8 +44,7 @@ import atpku.client.util.ThemeUtil;
 /**
  * Created by wyh on 2016/5/19.
  */
-public class MsgWindow extends AppCompatActivity implements AdapterView.OnItemClickListener
-{
+public class MsgWindow extends AppCompatActivity implements AdapterView.OnItemClickListener {
     public TextView title;
     public TextView time;
     public TextView author;
@@ -72,6 +71,7 @@ public class MsgWindow extends AppCompatActivity implements AdapterView.OnItemCl
     public static String CUT_TO_CYCLE = "@200-1ci";
 
     public ActionBar actionBar;
+
     protected void onCreate(Bundle savedInstanceState) {
         ThemeUtil.setTheme(this);
         super.onCreate(savedInstanceState);
@@ -82,26 +82,24 @@ public class MsgWindow extends AppCompatActivity implements AdapterView.OnItemCl
         actionBar.setLogo(R.mipmap.ic_launcher);
         actionBar.setDisplayHomeAsUpEnabled(true);
 
-        title = (TextView)findViewById(R.id.msg_title);
-        time = (TextView)findViewById(R.id.msg_time);
-        author = (TextView)findViewById(R.id.msg_author);
-        content = (TextView)findViewById(R.id.msg_content);
-        likeNum = (TextView)findViewById(R.id.msg_likeNum);
-        likeButton = (Button)findViewById(R.id.msg_likeButton);
-        dislikeNum = (TextView)findViewById(R.id.msg_dislikeNum);
-        dislikeButton = (Button)findViewById(R.id.msg_dislikeButton);
-        reportNum = (TextView)findViewById(R.id.msg_reportNum);
-        reportButton = (Button)findViewById(R.id.msg_reportButton);
-        deleteButton = (Button)findViewById(R.id.msg_deleteButton);
-        commentText = (EditText)findViewById(R.id.msg_addComment);
-        commentButton = (Button)findViewById(R.id.msg_commentButton);
-        commentList = (ListView)findViewById(R.id.msg_commentList);
-        imageList = (GridView)findViewById(R.id.msg_imgList);
-        avatarView = (ImageView)findViewById(R.id.showmsg_avatar);
+        title = (TextView) findViewById(R.id.msg_title);
+        time = (TextView) findViewById(R.id.msg_time);
+        author = (TextView) findViewById(R.id.msg_author);
+        content = (TextView) findViewById(R.id.msg_content);
+        likeNum = (TextView) findViewById(R.id.msg_likeNum);
+        likeButton = (Button) findViewById(R.id.msg_likeButton);
+        dislikeNum = (TextView) findViewById(R.id.msg_dislikeNum);
+        dislikeButton = (Button) findViewById(R.id.msg_dislikeButton);
+        reportNum = (TextView) findViewById(R.id.msg_reportNum);
+        reportButton = (Button) findViewById(R.id.msg_reportButton);
+        deleteButton = (Button) findViewById(R.id.msg_deleteButton);
+        commentText = (EditText) findViewById(R.id.msg_addComment);
+        commentButton = (Button) findViewById(R.id.msg_commentButton);
+        commentList = (ListView) findViewById(R.id.msg_commentList);
+        imageList = (GridView) findViewById(R.id.msg_imgList);
+        avatarView = (ImageView) findViewById(R.id.showmsg_avatar);
 
-        CharSequence label = (CharSequence) "";
-        setTitle(label);
-        getWindow().setSoftInputMode( WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         Intent intent = this.getIntent();
         messageID = (int) intent.getSerializableExtra("messageID");
         volleyQuque = Volley.newRequestQueue(this);
@@ -109,8 +107,7 @@ public class MsgWindow extends AppCompatActivity implements AdapterView.OnItemCl
         likeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(!MapWindow.isLogin)
-                {
+                if (!MapWindow.isLogin) {
                     Toast.makeText(MsgWindow.this, "请登录", Toast.LENGTH_LONG).show();
                     return;
                 }
@@ -123,8 +120,7 @@ public class MsgWindow extends AppCompatActivity implements AdapterView.OnItemCl
                                 if (result.success) {
                                     //likeNum.setText(msg.getLikeUsers().size()+1+"");
                                     refreshMessageInfo(false);
-                                }
-                                else {
+                                } else {
                                     Toast.makeText(MsgWindow.this, result.message, Toast.LENGTH_LONG).show();
                                 }
                             }
@@ -135,22 +131,20 @@ public class MsgWindow extends AppCompatActivity implements AdapterView.OnItemCl
         dislikeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(!MapWindow.isLogin)
-                {
+                if (!MapWindow.isLogin) {
                     Toast.makeText(MsgWindow.this, "请登录", Toast.LENGTH_LONG).show();
                     return;
                 }
                 StringRequestWithCookie stringRequest = new StringRequestWithCookie(Request.Method.POST,
-                        "http://139.129.22.145:5000/message/"+messageID+"/dislike",
+                        "http://139.129.22.145:5000/message/" + messageID + "/dislike",
                         new Response.Listener<String>() {
                             @Override
                             public void onResponse(String response) {
                                 PostResult result = JSON.parseObject(response, PostResult.class);
-                                if(result.success) {
+                                if (result.success) {
                                     //dislikeNum.setText(msg.getDislikeUsers().size()+1+"");
                                     refreshMessageInfo(false);
-                                }
-                                else {
+                                } else {
                                     Toast.makeText(MsgWindow.this, result.message, Toast.LENGTH_LONG).show();
                                 }
                             }
@@ -161,22 +155,20 @@ public class MsgWindow extends AppCompatActivity implements AdapterView.OnItemCl
         reportButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(!MapWindow.isLogin)
-                {
+                if (!MapWindow.isLogin) {
                     Toast.makeText(MsgWindow.this, "请登录", Toast.LENGTH_LONG).show();
                     return;
                 }
                 StringRequestWithCookie stringRequest = new StringRequestWithCookie(Request.Method.POST,
-                        "http://139.129.22.145:5000/message/"+messageID+"/report",
+                        "http://139.129.22.145:5000/message/" + messageID + "/report",
                         new Response.Listener<String>() {
                             @Override
                             public void onResponse(String response) {
                                 PostResult result = JSON.parseObject(response, PostResult.class);
-                                if(result.success) {
+                                if (result.success) {
                                     //dislikeNum.setText(msg.getDislikeUsers().size()+1+"");
                                     refreshMessageInfo(false);
-                                }
-                                else {
+                                } else {
                                     Toast.makeText(MsgWindow.this, result.message, Toast.LENGTH_LONG).show();
                                 }
                             }
@@ -187,7 +179,7 @@ public class MsgWindow extends AppCompatActivity implements AdapterView.OnItemCl
         deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (MapWindow.user.getIsAdmin() && MapWindow.user.getId()!=msg.getId()) {
+                if (MapWindow.user.getIsAdmin() && MapWindow.user.getId() != msg.getId()) {
                     new AlertDialog.Builder(MsgWindow.this).setTitle("是否同时禁言该用户？")
                             .setPositiveButton("是", new DialogInterface.OnClickListener() {
                                 @Override
@@ -235,13 +227,11 @@ public class MsgWindow extends AppCompatActivity implements AdapterView.OnItemCl
         commentButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(!MapWindow.isLogin)
-                {
+                if (!MapWindow.isLogin) {
                     Toast.makeText(MsgWindow.this, "请登录", Toast.LENGTH_LONG).show();
                     return;
                 }
-                if (commentText.getText().toString().equals(""))
-                {
+                if (commentText.getText().toString().equals("")) {
                     Toast.makeText(MsgWindow.this, "评论不能为空", Toast.LENGTH_LONG).show();
                     return;
                 }
@@ -250,20 +240,19 @@ public class MsgWindow extends AppCompatActivity implements AdapterView.OnItemCl
                 Map<String, String> params = new HashMap<String, String>();
                 params.put("content", commentText.getText().toString());
                 StringRequestWithCookie stringRequest = new StringRequestWithCookie(Request.Method.POST,
-                        "http://139.129.22.145:5000/message/"+messageID+"/comment",
+                        "http://139.129.22.145:5000/message/" + messageID + "/comment",
                         new Response.Listener<String>() {
                             @Override
                             public void onResponse(String response) {
                                 commentButton.setEnabled(true);
                                 commentButton.setText("评论");
                                 PostResult result = JSON.parseObject(response, PostResult.class);
-                                if(result.success) {
+                                if (result.success) {
                                     commentText.setText("");
                                     commentText.clearFocus();
                                     Toast.makeText(MsgWindow.this, "评论成功！", Toast.LENGTH_LONG).show();
                                     refreshMessageInfo(false);
-                                }
-                                else {
+                                } else {
                                     Toast.makeText(MsgWindow.this, result.message, Toast.LENGTH_LONG).show();
                                 }
                             }
@@ -273,20 +262,18 @@ public class MsgWindow extends AppCompatActivity implements AdapterView.OnItemCl
         });
     }
 
-    private void deleteMsg()
-    {
+    private void deleteMsg() {
         StringRequestWithCookie stringRequest = new StringRequestWithCookie(Request.Method.POST,
-                "http://139.129.22.145:5000/message/"+messageID+"/delete",
+                "http://139.129.22.145:5000/message/" + messageID + "/delete",
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
                         PostResult result = JSON.parseObject(response, PostResult.class);
-                        if(result.success) {
+                        if (result.success) {
                             //dislikeNum.setText(msg.getDislikeUsers().size()+1+"");
                             Toast.makeText(MsgWindow.this, "删除成功！", Toast.LENGTH_LONG).show();
                             finish();
-                        }
-                        else {
+                        } else {
                             Toast.makeText(MsgWindow.this, result.message, Toast.LENGTH_LONG).show();
                         }
                     }
@@ -294,15 +281,12 @@ public class MsgWindow extends AppCompatActivity implements AdapterView.OnItemCl
         volleyQuque.add(stringRequest);
     }
 
-    public boolean onOptionsItemSelected(MenuItem mi)
-    {
-        if(mi.isCheckable())
-        {
+    public boolean onOptionsItemSelected(MenuItem mi) {
+        if (mi.isCheckable()) {
             mi.setChecked(true);
         }
 
-        switch (mi.getItemId())
-        {
+        switch (mi.getItemId()) {
             case android.R.id.home:
                 super.onBackPressed();
                 break;
@@ -313,17 +297,13 @@ public class MsgWindow extends AppCompatActivity implements AdapterView.OnItemCl
 
     }
 
-    public void refreshMessageList()
-    {
-        if(msg != null && msg.owner.avatar != null)
-        {
+    public void refreshMessageList() {
+        if (msg != null && msg.owner.avatar != null) {
             Picasso.with(this).load(msg.owner.avatarIntoCycle()).resize(144, 144).into(avatarView);
         }
-        if(msg != null && msg.images != null)
-        {
+        if (msg != null && msg.images != null) {
             ImageAdapter adapter = new ImageAdapter(this, R.layout.image_row);
-            for(Image image:msg.images)
-            {
+            for (Image image : msg.images) {
                 System.out.println(image.getUrl());
                 adapter.add(image.getUrl() + MsgWindow.CUT_FILL_BLACK);
             }
@@ -335,42 +315,42 @@ public class MsgWindow extends AppCompatActivity implements AdapterView.OnItemCl
     public void refreshMessageInfo(final boolean refreshImage) {
         final CommentAdapter adapter = new CommentAdapter(this, R.layout.comment_row);
         StringRequestWithCookie stringRequest = new StringRequestWithCookie(StringRequest.Method.GET,
-                "http://139.129.22.145:5000/message/"+messageID,
+                "http://139.129.22.145:5000/message/" + messageID,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
                         PostResult result = JSON.parseObject(response, PostResult.class);
-                        if(result.success) {
+                        if (result.success) {
                             msg = JSON.parseObject(result.data, Message.class);
+                            setTitle(msg.atPlace.getName());
                             title.setText(msg.getTitle());
                             time.setText(msg.getPostTime());
                             author.setText(msg.getOwner().getNickname());
                             content.setText(msg.getContent());
-                            likeNum.setText(msg.getLikeUsers().size()+"");
-                            dislikeNum.setText(msg.getDislikeUsers().size()+"");
-                            reportNum.setText(msg.getReportUsers().size()+"");
-                            for(Comment comment:msg.comments) {
+                            likeNum.setText(msg.getLikeUsers().size() + "");
+                            dislikeNum.setText(msg.getDislikeUsers().size() + "");
+                            reportNum.setText(msg.getReportUsers().size() + "");
+                            for (Comment comment : msg.comments) {
                                 adapter.add(comment);
                             }
-                            if (MapWindow.user.getIsAdmin())
-                            {
+                            if (MapWindow.user.getIsAdmin()) {
                                 reportButton.setVisibility(View.GONE);
-                                reportNum.setText(msg.getReportUsers().size()+"举报");
+                                reportNum.setText(msg.getReportUsers().size() + "举报");
                                 deleteButton.setVisibility(View.VISIBLE);
                             }
-                            if(refreshImage)
+                            if (refreshImage)
                                 refreshMessageList();
                         }
                         commentList.setAdapter(adapter);
                         adapter.notifyDataSetChanged();
-                    }}, null);
+                    }
+                }, null);
         volleyQuque.add(stringRequest);
     }
 
     @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id)
-    {
-        String smallImgUrl = (String)parent.getItemAtPosition(position);
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        String smallImgUrl = (String) parent.getItemAtPosition(position);
         String imgUrl = smallImgUrl.substring(0, smallImgUrl.lastIndexOf("@"));
         ImageDialog imageDialog = new ImageDialog(this, imgUrl);
         imageDialog.show();

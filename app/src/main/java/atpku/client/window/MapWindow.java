@@ -62,8 +62,7 @@ import atpku.client.util.ThemeUtil;
 public class MapWindow extends AppCompatActivity implements
         AMapLocationListener, LocationSource,
         SearchView.OnQueryTextListener, AMap.OnMarkerClickListener, AMap.OnCameraChangeListener,
-        AMap.OnMapClickListener, NavigationView.OnNavigationItemSelectedListener
-{
+        AMap.OnMapClickListener, NavigationView.OnNavigationItemSelectedListener {
     public static boolean mapShow;
 
     private MapView mapView;
@@ -82,7 +81,7 @@ public class MapWindow extends AppCompatActivity implements
 
     private static double pkuLng = 116.31059288978577;
     private static double pkuLat = 39.99183503192985;
-    private static LatLng pkuPos = new LatLng(pkuLat,pkuLng);
+    private static LatLng pkuPos = new LatLng(pkuLat, pkuLng);
     private static float defaultZoom = 16;
     private static double maxDistance = 2000;
     private static float minZoom = 15;
@@ -109,16 +108,13 @@ public class MapWindow extends AppCompatActivity implements
     private TextView drawerEmail;
 
 
-
-    public static String getCookie()
-    {
-        if(cookie != null)
+    public static String getCookie() {
+        if (cookie != null)
             return cookie;
         return "";
     }
 
-    public static void setCookie(String cookie)
-    {
+    public static void setCookie(String cookie) {
         MapWindow.cookie = cookie;
     }
 
@@ -134,29 +130,29 @@ public class MapWindow extends AppCompatActivity implements
 
         currPos = pkuPos;
 
-        drawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
+        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 
-        slideMenu = (NavigationView)findViewById(R.id.navigation);
+        slideMenu = (NavigationView) findViewById(R.id.navigation);
         slideMenu.setNavigationItemSelectedListener(this);
 
         actionBar = getSupportActionBar();
-        actionBar.setDisplayShowHomeEnabled(true);;
+        actionBar.setDisplayShowHomeEnabled(true);
         actionBar.setDisplayUseLogoEnabled(true);
         actionBar.setLogo(R.mipmap.ic_launcher);
 
         mapView = (MapView) findViewById(R.id.map);
         mapView.onCreate(savedInstanceState);
 
-        drawerAvatar = (ImageView)findViewById(R.id.drawer_avatar);
-        drawerUsername = (TextView)findViewById(R.id.drawer_username);
-        drawerEmail = (TextView)findViewById(R.id.drawer_email);
+        drawerAvatar = (ImageView) findViewById(R.id.drawer_avatar);
+        drawerUsername = (TextView) findViewById(R.id.drawer_username);
+        drawerEmail = (TextView) findViewById(R.id.drawer_email);
 
         volleyQuque = Volley.newRequestQueue(this);
         init(); // 初始化地图
 
         SharedPreferences prefs = getSharedPreferences("userInfo", 1);
         user = JSON.parseObject(prefs.getString("userInfoJson", "{}"), User.class);
-        if(user.avatar == null)
+        if (user.avatar == null)
             user.avatar = "http://public-image-source.img-cn-shanghai.aliyuncs.com/avatar33201652203559.jpg";
 
         refreshSlideMenu();
@@ -172,47 +168,39 @@ public class MapWindow extends AppCompatActivity implements
 
     }
 
-    public boolean onCreateOptionsMenu(Menu menu)
-    {
+    public boolean onCreateOptionsMenu(Menu menu) {
         new MenuInflater(getApplication()).inflate(R.menu.menu_map, menu);
-        boolean ret =  super.onCreateOptionsMenu(menu);
+        boolean ret = super.onCreateOptionsMenu(menu);
         return ret;
     }
 
-    public void loadDrawer()
-    {
-        if(MapWindow.isLogin && MapWindow.user != null)
-        {
+    public void loadDrawer() {
+        if (MapWindow.isLogin && MapWindow.user != null) {
             drawerAvatar.setVisibility(View.VISIBLE);
-            Picasso.with(this).load(MapWindow.user.avatarIntoCycle()).resize(144,144).into(drawerAvatar);
+            Picasso.with(this).load(MapWindow.user.avatarIntoCycle()).resize(144, 144).into(drawerAvatar);
             drawerUsername.setText(MapWindow.user.nickname);
             drawerEmail.setText(MapWindow.user.email);
-        }
-        else {
+        } else {
             drawerAvatar.setVisibility(View.INVISIBLE);
             drawerEmail.setText("");
             drawerUsername.setText("请登录");
         }
     }
 
-    public void refreshSlideMenu()
-    {
+    public void refreshSlideMenu() {
         loadDrawer();
         slideMenu.getMenu().clear(); //clear old inflated items.
         slideMenu.inflateMenu(R.menu.menu_drawer);
         slideMenu.setNavigationItemSelectedListener(this);
         Menu menu = slideMenu.getMenu();
-        if (user != null && !user.isAdmin)
-        {
+        if (user != null && !user.isAdmin) {
             MenuItem menuItem = menu.findItem(R.id.drawer_manager);
             menuItem.setVisible(false);
-        }
-        else
-        {
+        } else {
             MenuItem menuItem = menu.findItem(R.id.drawer_manager);
             menuItem.setVisible(true);
         }
-        if(!MapWindow.isLogin) //未登录时
+        if (!MapWindow.isLogin) //未登录时
         {
             MenuItem menuItem = menu.findItem(R.id.drawer_logout);
             menuItem.setVisible(false);
@@ -220,42 +208,35 @@ public class MapWindow extends AppCompatActivity implements
             menuItem.setVisible(false);
             menuItem = menu.findItem(R.id.drawer_mail);
             menuItem.setVisible(false);
-        }
-        else
-        {
+        } else {
             MenuItem menuItem = menu.findItem(R.id.drawer_login);
             menuItem.setVisible(false);
         }
     }
 
-    public void sendMsgHandler(View view)
-    {
+    public void sendMsgHandler(View view) {
         startSendMsgWindow();
     }
 
-    public void startSendMsgWindow()
-    {
-        if(!MapWindow.isLogin)
-        {
+    public void startSendMsgWindow() {
+        if (!MapWindow.isLogin) {
             Toast.makeText(this, "请登录", Toast.LENGTH_LONG).show();
             return;
         }
         Place nearPlace = null;
         double minDistance = 50000;
-        for(String placename:MapWindow.places.keySet())
-        {
+        for (String placename : MapWindow.places.keySet()) {
             Place place = places.get(placename);
             LatLng placePos = new LatLng(place.getLat(), place.getLng());
             double distance = AMapUtils.calculateLineDistance(currPos, placePos);
-            if(distance < minDistance)
-            {
+            if (distance < minDistance) {
                 minDistance = distance;
                 nearPlace = place;
             }
         }
         Intent intent = new Intent(this, SendMsgWindow.class);
         Bundle bundle = new Bundle();
-        if(nearPlace != null)
+        if (nearPlace != null)
             bundle.putSerializable("placeId", nearPlace.getId());
         else
             bundle.putSerializable("placeId", -1);
@@ -263,68 +244,55 @@ public class MapWindow extends AppCompatActivity implements
         startActivity(intent);
     }
 
-    public void startUserInfoWindow()
-    {
+    public void startUserInfoWindow() {
         Intent intent = new Intent(MapWindow.this, UserInfoWindow.class);
         startActivity(intent);
         System.out.println(user);
     }
 
-    public void logOutOrLogIn()
-    {
-        if(isLogin) //登出
+    public void logOutOrLogIn() {
+        if (isLogin) //登出
         {
             Map<String, String> params = new HashMap<String, String>();
             params.put("deviceid", MapWindow.deviceid);
-            StringRequestWithCookie stringRequest = new StringRequestWithCookie(StringRequest.Method.POST,"http://139.129.22.145:5000/logout",
-                    new Response.Listener<String>()
-                    {
+            StringRequestWithCookie stringRequest = new StringRequestWithCookie(StringRequest.Method.POST, "http://139.129.22.145:5000/logout",
+                    new Response.Listener<String>() {
                         @Override
-                        public void onResponse(String response)
-                        {
+                        public void onResponse(String response) {
                             PostResult result = JSON.parseObject(response, PostResult.class);
-                            if(result.success)
-                            {
-                                Toast.makeText(MapWindow.this, result.message , Toast.LENGTH_LONG).show();
+                            if (result.success) {
+                                Toast.makeText(MapWindow.this, result.message, Toast.LENGTH_LONG).show();
                                 MapWindow.isLogin = false;
                                 refreshSlideMenu();
                                 SharedPreferences prefs = getSharedPreferences("login", Context.MODE_PRIVATE);
                                 SharedPreferences.Editor editPrefs = prefs.edit();
                                 editPrefs.remove("Cookie");
                                 editPrefs.apply();
-                            }
-                            else
-                            {
+                            } else {
                                 Toast.makeText(MapWindow.this, result.message, Toast.LENGTH_LONG).show();
                             }
                             Log.d("TAG", response);
                         }
                     }, params);
             volleyQuque.add(stringRequest);
-        }
-        else //登录
+        } else //登录
         {
             Intent intent = new Intent(this, LoginWindow.class);
             startActivity(intent);
         }
     }
 
-    public void switchMapType()
-    {
-        if(aMap.getMapType() == AMap.MAP_TYPE_NORMAL)
-        {
+    public void switchMapType() {
+        if (aMap.getMapType() == AMap.MAP_TYPE_NORMAL) {
             aMap.setMapType(AMap.MAP_TYPE_SATELLITE);
-        }
-        else
-        {
+        } else {
             aMap.setMapType(AMap.MAP_TYPE_NORMAL);
         }
     }
 
     private void init()   //初始化高德地图
     {
-        if(aMap == null)
-        {
+        if (aMap == null) {
             aMap = mapView.getMap();
 
             aMap.setMyLocationEnabled(true);
@@ -345,6 +313,7 @@ public class MapWindow extends AppCompatActivity implements
             refreshMarkers();
         }
     }
+
     protected void onResume() {
         super.onResume();
         drawerLayout.closeDrawers();
@@ -362,58 +331,57 @@ public class MapWindow extends AppCompatActivity implements
         super.onSaveInstanceState(outState);
         mapView.onSaveInstanceState(outState);
     }
+
     protected void onDestroy() {
         super.onDestroy();
         mapView.onDestroy();
-        if(null != mlocationClient){
+        if (null != mlocationClient) {
             mlocationClient.onDestroy();
         }
     }
 
     @Override
-    public boolean onNavigationItemSelected(MenuItem menuItem)
-    {
-        if(menuItem.isCheckable()) {
+    public boolean onNavigationItemSelected(MenuItem menuItem) {
+        if (menuItem.isCheckable()) {
             menuItem.setChecked(true);
         }
         switch (menuItem.getItemId()) {
-            case R.id.drawer_help:
-            {  //使用说明
+            case R.id.drawer_help: {  //使用说明
                 Intent intent = new Intent(this, HelpWindow.class);
                 startActivity(intent);
             }
-                break;
+            break;
             case R.id.drawer_mail: {   //发信息
                 startSendMsgWindow();
             }
-                break;
-            case R.id.drawer_search:{  //高级搜索
+            break;
+            case R.id.drawer_search: {  //高级搜索
                 Intent intent = new Intent(this, SearchMsgWindow.class);
                 startActivity(intent);
             }
-                break;
-            case R.id.drawer_userinfo:{  //用户信息
+            break;
+            case R.id.drawer_userinfo: {  //用户信息
                 startUserInfoWindow();
             }
-                break;
-            case R.id.drawer_login:{  //登录
+            break;
+            case R.id.drawer_login: {  //登录
                 logOutOrLogIn();
             }
-                break;
-            case R.id.drawer_logout:{  //登录
+            break;
+            case R.id.drawer_logout: {  //登录
                 logOutOrLogIn();
             }
-                break;
-            case R.id.drawer_manageUser:{
+            break;
+            case R.id.drawer_manageUser: {
                 Intent intent = new Intent(this, UserListWindow.class);
                 startActivity(intent);
             }
-                break;
-            case R.id.drawer_manageReport:{
+            break;
+            case R.id.drawer_manageReport: {
                 Intent intent = new Intent(this, ReportHandlingWindow.class);
                 startActivity(intent);
             }
-                break;
+            break;
             default:
                 break;
         }
@@ -421,10 +389,8 @@ public class MapWindow extends AppCompatActivity implements
     }
 
 
-    public boolean onOptionsItemSelected(MenuItem mi)
-    {
-        if(mi.isCheckable())
-        {
+    public boolean onOptionsItemSelected(MenuItem mi) {
+        if (mi.isCheckable()) {
             mi.setChecked(true);
         }
 
@@ -435,62 +401,54 @@ public class MapWindow extends AppCompatActivity implements
             case R.id.action_refresh: {
                 refreshPlaces();
             }
-                break;
-            case R.id.action_search:{
+            break;
+            case R.id.action_search: {
                 //mi.expandActionView();
                 searchView = (SearchView) MenuItemCompat.getActionView(mi);
                 if (searchView != null)
                     searchView.setOnQueryTextListener(this);
-                }
-                break;
+            }
+            break;
             default:
                 break;
         }
         return true;
     }
 
-    public void refreshPlaces()
-    {
+    public void refreshPlaces() {
         // 获取所有place并刷新所有Marker的显示
-        StringRequestWithCookie stringRequest = new StringRequestWithCookie(Request.Method.GET,"http://139.129.22.145:5000/places?lngbeg=-180&lngend=180&latbeg=-90&latend=90",
-                new Response.Listener<String>()
-                {
+        StringRequestWithCookie stringRequest = new StringRequestWithCookie(Request.Method.GET, "http://139.129.22.145:5000/places?lngbeg=-180&lngend=180&latbeg=-90&latend=90",
+                new Response.Listener<String>() {
                     @Override
-                    public void onResponse(String response)
-                    {
+                    public void onResponse(String response) {
                         PostResult result = JSON.parseObject(response, PostResult.class);
-                        if(result.success)
-                        {
+                        if (result.success) {
                             String jsonPlaces = result.data;
                             List<Place> places = JSON.parseArray(jsonPlaces, Place.class);
                             System.out.println(places);
-                            if(MapWindow.places == null) {
+                            if (MapWindow.places == null) {
                                 MapWindow.places = new HashMap<String, Place>();
                             }
-                            if(MapWindow.markers == null)
-                            {
+                            if (MapWindow.markers == null) {
                                 MapWindow.markers = new HashMap<String, Marker>();
                             }
-                            for(final Place place: places)
-                            {
+                            for (final Place place : places) {
                                 MapWindow.places.put(place.getName(), place);
                                 StringRequestWithCookie globalMsgRequest = new StringRequestWithCookie(Request.Method.GET,
                                         "http://139.129.22.145:5000/hotmessages/" + String.valueOf(place.getId()),
                                         new Response.Listener<String>() {
                                             @Override
-                                            public void onResponse(String response)
-                                            {
+                                            public void onResponse(String response) {
                                                 String placename = place.getName();
                                                 PostResult result = JSON.parseObject(response, PostResult.class);
                                                 System.out.println(result);
-                                                if (result.success)
-                                                {
-                                                    List<Message> messages = JSON.parseArray(result.data, Message.class);;
+                                                if (result.success) {
+                                                    List<Message> messages = JSON.parseArray(result.data, Message.class);
                                                     place.setGlobalMessages(messages);
+                                                    MapWindow.places.put(place.getName(), place);
                                                     Marker marker = MapWindow.markers.get(placename);
-                                                    if(marker != null && messages != null)
-                                                    {
-                                                        marker.setSnippet(place.snippetString());
+                                                    if (marker != null && messages.size() > 0) {
+                                                        marker.setSnippet(messages.get(0).snippetString());
                                                     }
                                                 }
                                                 Log.d("TAG", response);
@@ -498,9 +456,7 @@ public class MapWindow extends AppCompatActivity implements
                                         }, null);
                                 volleyQuque.add(globalMsgRequest);
                             }
-                        }
-                        else
-                        {
+                        } else {
                             Toast.makeText(MapWindow.this, result.message, Toast.LENGTH_LONG).show();
                         }
                         Log.d("TAG", response);
@@ -509,25 +465,26 @@ public class MapWindow extends AppCompatActivity implements
         volleyQuque.add(stringRequest);
     }
 
-    public void refreshMarkers() {
-        if(MapWindow.markers == null) {
+    public static void refreshMarkers() {
+        if (MapWindow.markers == null) {
             MapWindow.markers = new HashMap<String, Marker>();
         }
-        if(MapWindow.places == null)
-        {
+        if (MapWindow.places == null) {
             MapWindow.places = new HashMap<String, Place>();
         }
         MarkerOptions markerOptions = new MarkerOptions();
         LatLng pos;
         Set<String> keys = MapWindow.places.keySet();
-        for(String placename: keys) {
+        for (String placename : keys) {
             Place place = MapWindow.places.get(placename);
             pos = new LatLng(place.getLat(), place.getLng());
-            Marker marker;
-            if((marker = MapWindow.markers.get(placename)) == null) {
+            Marker marker = MapWindow.markers.get(placename);
+            if (marker == null) {
                 markerOptions.position(pos);
                 markerOptions.title(placename);
+                System.out.println("addMarker " + placename);
                 marker = aMap.addMarker(markerOptions);
+                markers.put(placename, marker);
             }
             marker.setSnippet(place.snippetString());
         }
@@ -538,10 +495,9 @@ public class MapWindow extends AppCompatActivity implements
             if (amapLocation.getErrorCode() == 0) {
                 currPos = new LatLng(amapLocation.getLatitude(), amapLocation.getLongitude());
                 double distance = AMapUtils.calculateLineDistance(currPos, pkuPos);
-                if(distance < maxDistance)
+                if (distance < maxDistance)
                     mListener.onLocationChanged(amapLocation);// 显示系统小蓝点
-                else
-                {
+                else {
                     currPos = pkuPos;
                     aMap.moveCamera(CameraUpdateFactory.changeLatLng(pkuPos));
                 }
@@ -593,13 +549,11 @@ public class MapWindow extends AppCompatActivity implements
     }
 
 
-    public boolean onQueryTextChange(String newText)
-    {
+    public boolean onQueryTextChange(String newText) {
         return true;
     }
 
-    public boolean onQueryTextSubmit(String query)
-    {
+    public boolean onQueryTextSubmit(String query) {
         HashMap<String, String> params = new HashMap<String, String>();
         // 按标题搜索
         params.put("title", query);
@@ -616,7 +570,7 @@ public class MapWindow extends AppCompatActivity implements
         String placename = marker.getTitle();
         Place place = MapWindow.places.get(placename);
         int placeid = place.getId();
-        if(marker.isInfoWindowShown() || shownMarker == marker) {
+        if (marker.isInfoWindowShown() || shownMarker == marker) {
             System.out.println("Double click on marker.");
             Intent intent = new Intent(this, PlaceWindow.class);
             Bundle bundle = new Bundle();
@@ -626,8 +580,7 @@ public class MapWindow extends AppCompatActivity implements
             startActivity(intent);
             marker.hideInfoWindow();
             shownMarker = null;
-        }
-        else {
+        } else {
             System.out.println("Single click on marker.");
             marker.showInfoWindow();
             shownMarker = marker;
@@ -636,35 +589,33 @@ public class MapWindow extends AppCompatActivity implements
     }
 
     //对正在移动地图事件回调
-    public void onCameraChange(CameraPosition cameraPosition)
-    {
+    public void onCameraChange(CameraPosition cameraPosition) {
     }
+
     //对移动地图结束事件回调
-    public void onCameraChangeFinish(CameraPosition cameraPosition)
-    {
+    public void onCameraChangeFinish(CameraPosition cameraPosition) {
         LatLng target = cameraPosition.target;
         double distance = AMapUtils.calculateLineDistance(target, pkuPos);
-        if(distance >= maxDistance)
-        {
+        if (distance >= maxDistance) {
             aMap.moveCamera(CameraUpdateFactory.changeLatLng(pkuPos));
         }
         float zoom = cameraPosition.zoom;
-        if(zoom <= minZoom)
-        {
+        if (zoom <= minZoom) {
             aMap.moveCamera(CameraUpdateFactory.zoomTo(minZoom));
         }
     }
+
     public void onMapClick(LatLng latLng) {
-        if(shownMarker != null) {
+        if (shownMarker != null) {
             shownMarker.hideInfoWindow();
             shownMarker = null;
         }
     }
 
     public long mExitTime = 0;
+
     @Override
-    public void onBackPressed()
-    {
+    public void onBackPressed() {
         if ((System.currentTimeMillis() - mExitTime) > 2000) {
             Object mHelperUtils;
             Toast.makeText(this, "再按一次退出程序", Toast.LENGTH_SHORT).show();

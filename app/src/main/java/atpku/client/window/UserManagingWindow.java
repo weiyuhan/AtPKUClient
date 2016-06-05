@@ -44,8 +44,7 @@ import atpku.client.util.ThemeUtil;
 /**
  * Created by wyh on 2016/5/19.
  */
-public class UserManagingWindow extends AppCompatActivity
-{
+public class UserManagingWindow extends AppCompatActivity {
     public TextView nicknameText;
     public TextView emailText;
     public TextView isBannedText;
@@ -58,6 +57,7 @@ public class UserManagingWindow extends AppCompatActivity
     private int userID;
 
     public ActionBar actionBar;
+
     protected void onCreate(Bundle savedInstanceState) {
         ThemeUtil.setTheme(this);
         super.onCreate(savedInstanceState);
@@ -68,14 +68,14 @@ public class UserManagingWindow extends AppCompatActivity
         actionBar.setLogo(R.mipmap.ic_launcher);
         actionBar.setDisplayHomeAsUpEnabled(true);
 
-        nicknameText = (TextView)findViewById(R.id.nickname);
-        emailText = (TextView)findViewById(R.id.email);
-        isBannedText = (TextView)findViewById(R.id.isBanned);
-        reportedText = (TextView)findViewById(R.id.reportNum);
-        banButton = (Button)findViewById(R.id.banButton);
-        msgList = (ListView)findViewById(R.id.msgList);
+        nicknameText = (TextView) findViewById(R.id.nickname);
+        emailText = (TextView) findViewById(R.id.email);
+        isBannedText = (TextView) findViewById(R.id.isBanned);
+        reportedText = (TextView) findViewById(R.id.reportNum);
+        banButton = (Button) findViewById(R.id.banButton);
+        msgList = (ListView) findViewById(R.id.msgList);
 
-        getWindow().setSoftInputMode( WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         Intent intent = this.getIntent();
         userID = (int) intent.getSerializableExtra("userID");
         volleyQuque = Volley.newRequestQueue(this);
@@ -91,7 +91,7 @@ public class UserManagingWindow extends AppCompatActivity
                     public void onClick(DialogInterface dialog, int which) {
                         StringRequestWithCookie stringRequest = new StringRequestWithCookie(Request.Method.POST,
                                 "http://139.129.22.145:5000/banUser/" + userID
-                                        + "/" +daysText.getText().toString(),
+                                        + "/" + daysText.getText().toString(),
                                 new Response.Listener<String>() {
                                     @Override
                                     public void onResponse(String response) {
@@ -100,8 +100,7 @@ public class UserManagingWindow extends AppCompatActivity
                                             //likeNum.setText(msg.getLikeUsers().size()+1+"");
                                             refreshUserInfo();
                                             Toast.makeText(UserManagingWindow.this, "禁言成功", Toast.LENGTH_LONG).show();
-                                        }
-                                        else {
+                                        } else {
                                             Toast.makeText(UserManagingWindow.this, result.message, Toast.LENGTH_LONG).show();
                                         }
                                     }
@@ -119,15 +118,12 @@ public class UserManagingWindow extends AppCompatActivity
         });
     }
 
-    public boolean onOptionsItemSelected(MenuItem mi)
-    {
-        if(mi.isCheckable())
-        {
+    public boolean onOptionsItemSelected(MenuItem mi) {
+        if (mi.isCheckable()) {
             mi.setChecked(true);
         }
 
-        switch (mi.getItemId())
-        {
+        switch (mi.getItemId()) {
             case android.R.id.home:
                 super.onBackPressed();
                 break;
@@ -140,29 +136,27 @@ public class UserManagingWindow extends AppCompatActivity
     public void refreshUserInfo() {
         StringRequestWithCookie stringRequest = null;
         stringRequest = new StringRequestWithCookie(Request.Method.GET,
-                    "http://139.129.22.145:5000/admin/profile?id="+ userID,
-                    new Response.Listener<String>() {
-                        @Override
-                        public void onResponse(String response) {
-                            PostResult result = JSON.parseObject(response, PostResult.class);
-                            if(result.success) {
-                                List<User> users = JSON.parseArray(result.data, User.class);
-                                managedUser = users.get(0);
-                                nicknameText.setText(managedUser.getNickname());
-                                emailText.setText(managedUser.getEmail());
-                                if (managedUser.isBanned()) {
-                                    isBannedText.setText("被禁言：是");
-                                    banButton.setVisibility(View.GONE);
-                                }
-                                else {
-                                    isBannedText.setText("被禁言：否");
-                                }
-                                reportedText.setText("被举报次数："+managedUser.getReportReceived());
+                "http://139.129.22.145:5000/admin/profile?id=" + userID,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        PostResult result = JSON.parseObject(response, PostResult.class);
+                        if (result.success) {
+                            List<User> users = JSON.parseArray(result.data, User.class);
+                            managedUser = users.get(0);
+                            nicknameText.setText(managedUser.getNickname());
+                            emailText.setText(managedUser.getEmail());
+                            if (managedUser.isBanned()) {
+                                isBannedText.setText("被禁言：是");
+                                banButton.setVisibility(View.GONE);
+                            } else {
+                                isBannedText.setText("被禁言：否");
                             }
-                            else
-                                Toast.makeText(UserManagingWindow.this, result.message, Toast.LENGTH_LONG).show();
-                        }
-                    }, null);
+                            reportedText.setText("被举报次数：" + managedUser.getReportReceived());
+                        } else
+                            Toast.makeText(UserManagingWindow.this, result.message, Toast.LENGTH_LONG).show();
+                    }
+                }, null);
         volleyQuque.add(stringRequest);
 
         final MessageAdapter adapter = new MessageAdapter(this, R.layout.messagemore_row);
@@ -174,13 +168,12 @@ public class UserManagingWindow extends AppCompatActivity
                     @Override
                     public void onResponse(String response) {
                         PostResult result = JSON.parseObject(response, PostResult.class);
-                        if(result.success) {
+                        if (result.success) {
                             List<Message> messages = JSON.parseArray(result.data, Message.class);
-                            for(Message message:messages) {
+                            for (Message message : messages) {
                                 adapter.add(message);
                             }
-                        }
-                        else
+                        } else
                             Toast.makeText(UserManagingWindow.this, result.message, Toast.LENGTH_LONG).show();
                         msgList.setAdapter(adapter);
                         adapter.notifyDataSetChanged();
@@ -223,7 +216,7 @@ public class UserManagingWindow extends AppCompatActivity
             titleText.setText(msg.getTitle());
             timeText.setText(msg.getPostTime());
             placeText.setText(msg.getAtPlace().getName());
-            msgReportedText.setText("被举报次数："+msg.getReportTimes());
+            msgReportedText.setText("被举报次数：" + msg.getReportTimes());
             return view;
         }
     }

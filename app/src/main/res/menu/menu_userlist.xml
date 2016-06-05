@@ -3,13 +3,13 @@
 
     <item
         android:id="@+id/action_user_search"
-        android:icon="@drawable/search"
         android:actionViewClass="android.widget.SearchView"
+        android:icon="@drawable/search"
         android:showAsAction="ifRoom|collapseActionView"
         android:title="搜索" />
     <item
         android:id="@+id/action_mode_change"
-        android:title="只看未禁言"
-        android:showAsAction="always"/>
+        android:showAsAction="always"
+        android:title="只看未禁言" />
 
 </menu>

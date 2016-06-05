@@ -13,10 +13,10 @@ import atpku.client.util.ThemeUtil;
 /**
  * Created by wyh on 2016/5/20.
  */
-public class HelpWindow extends AppCompatActivity
-{
+public class HelpWindow extends AppCompatActivity {
     private ActionBar actionBar = null;
     private TextView helpcontent;
+
     public void onCreate(Bundle savedInstanceState)
     {
         ThemeUtil.setTheme(this);
@@ -28,29 +28,26 @@ public class HelpWindow extends AppCompatActivity
         actionBar.setLogo(R.mipmap.ic_launcher);
         actionBar.setDisplayHomeAsUpEnabled(true);
 
-        helpcontent = (TextView)findViewById(R.id.helpcontent);
+        helpcontent = (TextView) findViewById(R.id.helpcontent);
         helpcontent.setText("欢迎使用AtPKU。\n"
-                + "本app的主要功能是提供基于地理位置的信息。\n"
-                + "作为游客，您可以查看各主要地点及其信息摘要。\n"
-                + "登录之后就可以发送信息，对信息进行评论、点赞等操作。\n"
-                + "注册时请填写PKU邮箱，我们会发送确认邮件，确认之后即注册成功。\n"
-                + "发言请保持文明善意，否则关进小黑屋~\n"
-                + "\n一些额外的信息：\n"
-                + "注册时性别只要没有选中男，就视为女。\n"
-                + "你可以对自己发送的信息进行赞、踩或举报。\n"
-                + "主地图的信息每2分钟会自动刷新一次。暂时不支持用户自定义该间隔时间。\n"
+                        + "本app的主要功能是提供基于地理位置的信息。\n"
+                        + "作为游客，您可以查看各主要地点及其信息摘要。\n"
+                        + "登录之后就可以发送信息，对信息进行评论、点赞等操作。\n"
+                        + "注册时请填写PKU邮箱，我们会发送确认邮件，确认之后即注册成功。\n"
+                        + "发言请保持文明善意，否则关进小黑屋~\n"
+                        + "\n一些额外的信息：\n"
+                        + "注册时性别只要没有选中男，就视为女。\n"
+                        + "你可以对自己发送的信息进行赞、踩或举报。\n"
+                        + "主地图的信息每2分钟会自动刷新一次。暂时不支持用户自定义该间隔时间。\n"
         );
     }
 
-    public boolean onOptionsItemSelected(MenuItem mi)
-    {
-        if(mi.isCheckable())
-        {
+    public boolean onOptionsItemSelected(MenuItem mi) {
+        if (mi.isCheckable()) {
             mi.setChecked(true);
         }
 
-        switch (mi.getItemId())
-        {
+        switch (mi.getItemId()) {
             case android.R.id.home:
                 super.onBackPressed();
                 break;

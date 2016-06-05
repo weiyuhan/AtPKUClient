@@ -40,8 +40,7 @@ import atpku.client.util.ThemeUtil;
 /**
  * Created by wyh on 2016/5/19.
  */
-public class PlaceWindow extends AppCompatActivity implements SearchView.OnQueryTextListener, SwipeRefreshLayout.OnRefreshListener
-{
+public class PlaceWindow extends AppCompatActivity implements SearchView.OnQueryTextListener, SwipeRefreshLayout.OnRefreshListener {
     private SwipeRefreshLayout refreshLayout;
     public ListView msgList;
     private int placeID;
@@ -59,10 +58,10 @@ public class PlaceWindow extends AppCompatActivity implements SearchView.OnQuery
         actionBar.setLogo(R.mipmap.ic_launcher);
         actionBar.setDisplayHomeAsUpEnabled(true);
 
-        refreshLayout = (SwipeRefreshLayout)this.findViewById(R.id.refresh_layout);
+        refreshLayout = (SwipeRefreshLayout) this.findViewById(R.id.refresh_layout);
         refreshLayout.setColorScheme(R.color.lawngreen, R.color.yellow, R.color.blue, R.color.white);
         refreshLayout.setOnRefreshListener(this);
-        msgList = (ListView)this.findViewById(R.id.place_msgList);
+        msgList = (ListView) this.findViewById(R.id.place_msgList);
 
         Intent intent = this.getIntent();
         placeID = (int) intent.getSerializableExtra("id");
@@ -80,18 +79,18 @@ public class PlaceWindow extends AppCompatActivity implements SearchView.OnQuery
     public void refreshMessageList() {
         final MessageAdapter adapter = new MessageAdapter(this, R.layout.message_row);
         StringRequestWithCookie stringRequest = new StringRequestWithCookie(Request.Method.GET,
-                "http://139.129.22.145:5000/msgsAtPlace/"+placeID,
+                "http://139.129.22.145:5000/msgsAtPlace/" + placeID,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
                         PostResult result = JSON.parseObject(response, PostResult.class);
-                        if(result.success) {
+                        if (result.success) {
                             List<Message> messages = JSON.parseArray(result.data, Message.class);
-                            for(Message message:messages) {
+                            for (Message message : messages) {
+                                System.out.println("Get message: " + message.getTitle().toString());
                                 adapter.add(message);
                             }
-                        }
-                        else
+                        } else
                             Toast.makeText(PlaceWindow.this, result.message, Toast.LENGTH_LONG).show();
                         msgList.setAdapter(adapter);
                         adapter.notifyDataSetChanged();
@@ -110,10 +109,8 @@ public class PlaceWindow extends AppCompatActivity implements SearchView.OnQuery
             case android.R.id.home:
                 super.onBackPressed();
                 break;
-            case R.id.action_sendmsg:
-            {
-                if(!MapWindow.isLogin)
-                {
+            case R.id.action_sendmsg: {
+                if (!MapWindow.isLogin) {
                     Toast.makeText(this, "请登录", Toast.LENGTH_LONG).show();
                     return true;
                 }
@@ -124,7 +121,7 @@ public class PlaceWindow extends AppCompatActivity implements SearchView.OnQuery
                 startActivity(intent);
             }
             break;
-            case R.id.action_place_search:{
+            case R.id.action_place_search: {
                 searchView = (SearchView) MenuItemCompat.getActionView(mi);
                 if (searchView != null)
                     searchView.setOnQueryTextListener(this);
@@ -138,13 +135,11 @@ public class PlaceWindow extends AppCompatActivity implements SearchView.OnQuery
     }
 
 
-    public boolean onQueryTextChange(String newText)
-    {
+    public boolean onQueryTextChange(String newText) {
         return true;
     }
 
-    public boolean onQueryTextSubmit(String query)
-    {
+    public boolean onQueryTextSubmit(String query) {
         HashMap<String, String> params = new HashMap<String, String>();
         // 按标题搜索
         params.put("title", query);

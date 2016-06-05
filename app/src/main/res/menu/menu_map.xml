@@ -1,19 +1,20 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" tools:context=".MainActivity">
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".MainActivity">
     <item
         android:id="@+id/action_search"
-        android:icon="@drawable/search"
         android:actionViewClass="android.widget.SearchView"
+        android:icon="@drawable/search"
         android:showAsAction="ifRoom|collapseActionView"
         android:title="搜索" />
     <item
         android:id="@+id/action_switch"
-        android:title="切换"
         android:icon="@drawable/earth"
-        android:showAsAction="always"/>
+        android:showAsAction="always"
+        android:title="切换" />
     <item
         android:id="@+id/action_refresh"
-        android:title="刷新"
         android:icon="@drawable/refresh"
-        android:showAsAction="always"/>
+        android:showAsAction="always"
+        android:title="刷新" />
 </menu>
