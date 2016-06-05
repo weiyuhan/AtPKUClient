@@ -1,43 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-
-<!-- A DrawerLayout is intended to be used as the top-level content view using match_parent for both width and height to consume the full space available. -->
-<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/drawer_layout"
+    android:id="@+id/map_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <!-- As the main content view, the view below consumes the entire
-         space available using match_parent in both dimensions. -->
-    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
 
-        <com.amap.api.maps.MapView
-            android:id="@+id/map"
+    <!-- A DrawerLayout is intended to be used as the top-level content view using match_parent for both width and height to consume the full space available. -->
+    <android.support.v4.widget.DrawerLayout
+        android:id="@+id/drawer_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <!-- As the main content view, the view below consumes the entire
+             space available using match_parent in both dimensions. -->
+        <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"></com.amap.api.maps.MapView>
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-        <android.support.design.widget.FloatingActionButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="right|bottom"
-            android:layout_marginBottom="16dp"
-            app:backgroundTint= "?attr/colorPrimaryDark"
-            android:layout_marginRight="16dp"
-            android:onClick="sendMsgHandler"
-            android:src="@mipmap/send_mail_big">
-        </android.support.design.widget.FloatingActionButton>
-    </FrameLayout>
+            <com.amap.api.maps.MapView
+                android:id="@+id/map"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"></com.amap.api.maps.MapView>
 
-    <android.support.design.widget.NavigationView
-        android:id="@+id/navigation"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="start"
-        android:fitsSystemWindows="true"
-        app:headerLayout="@layout/drawer_header"
-        app:menu="@menu/menu_drawer" />
+        </FrameLayout>
 
-</android.support.v4.widget.DrawerLayout>
+        <android.support.design.widget.NavigationView
+            android:id="@+id/navigation"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="start"
+            android:fitsSystemWindows="true"
+            app:headerLayout="@layout/drawer_header"
+            app:menu="@menu/menu_drawer" />
+
+    </android.support.v4.widget.DrawerLayout>
+
+    <android.support.design.widget.FloatingActionButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right|bottom"
+        android:layout_marginBottom="16dp"
+        android:layout_marginRight="16dp"
+        android:onClick="sendMsgHandler"
+        android:src="@mipmap/send_mail_big"
+        app:backgroundTint="?attr/colorPrimaryDark"></android.support.design.widget.FloatingActionButton>
+
+</android.support.design.widget.CoordinatorLayout>

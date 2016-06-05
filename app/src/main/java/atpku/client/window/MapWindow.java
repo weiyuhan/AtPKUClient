@@ -7,6 +7,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
@@ -225,7 +226,13 @@ public class MapWindow extends AppCompatActivity implements
 
     public void startSendMsgWindow() {
         if (!MapWindow.isLogin) {
-            Toast.makeText(this, "请登录", Toast.LENGTH_LONG).show();
+            Snackbar.make(findViewById(R.id.map_layout), "请登录后再发送", Snackbar.LENGTH_INDEFINITE)
+                    .setAction("登录", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            logOutOrLogIn();
+                        }
+                    }).setActionTextColor(getResources().getColor(R.color.white)).show();
             return;
         }
         Place nearPlace = null;
@@ -632,8 +639,8 @@ public class MapWindow extends AppCompatActivity implements
     @Override
     public void onBackPressed() {
         if ((System.currentTimeMillis() - mExitTime) > 2000) {
-            Object mHelperUtils;
-            Toast.makeText(this, "再按一次退出程序", Toast.LENGTH_SHORT).show();
+            Snackbar.make(findViewById(R.id.map_layout), "再按一次退出程序", Snackbar.LENGTH_LONG).show();
+            //Toast.makeText(this, "再按一次退出程序", Toast.LENGTH_SHORT).show();
             mExitTime = System.currentTimeMillis();
             return;
         }
