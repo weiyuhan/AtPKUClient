@@ -6,100 +6,17 @@
     android:orientation="vertical">
 
 
-    <LinearLayout
+    <ListView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:id="@+id/userInfo_infoList">
+    </ListView>
 
-        <TextView
-            android:id="@+id/userInfo_username"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="5sp"
-            android:text="用户名："
-            android:textColor="#3498db"
-            android:textSize="20sp" />
-
-        <ImageView
-            android:id="@+id/userInfo_avatar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-    </LinearLayout>
-
-    <TextView
-        android:id="@+id/userInfo_studentNum"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="5sp"
-        android:text="邮箱："
-        android:textColor="#3498db"
-        android:textSize="20sp" />
-
-    <TextView
-        android:id="@+id/userInfo_status"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="5sp"
-        android:text="状态："
-        android:textColor="#3498db"
-        android:textSize="20dp" />
-
-    <TextView
-        android:id="@+id/userInfo_joinTime"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="5sp"
-        android:text="加入时间："
-        android:textColor="#3498db"
-        android:textSize="20dp" />
-
-    <TextView
-        android:id="@+id/userInfo_commentReceived"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="5sp"
-        android:text="收到评论数："
-        android:textColor="#3498db"
-        android:textSize="20dp" />
-
-    <TextView
-        android:id="@+id/userInfo_likeReceived"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="5sp"
-        android:text="收到过的赞："
-        android:textColor="#3498db"
-        android:textSize="20dp" />
-
-    <TextView
-        android:id="@+id/userInfo_dislikeReceived"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="5sp"
-        android:text="收到过的踩："
-        android:textColor="#3498db"
-        android:textSize="20dp" />
-
-    <TextView
-        android:id="@+id/userInfo_reportReceived"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="5sp"
-        android:text="被举报次数："
-        android:textColor="#3498db"
-        android:textSize="20dp" />
-
-    <LinearLayout
+    <ListView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
-
-        <ListView
-            android:id="@+id/userInfo_feedbackList"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal" />
-    </LinearLayout>
+        android:id="@+id/userInfo_otherList">
+    </ListView>
 
 
 </LinearLayout>

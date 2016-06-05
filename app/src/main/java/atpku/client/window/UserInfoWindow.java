@@ -36,17 +36,6 @@ import atpku.client.util.ThemeUtil;
  * Show user info.
  */
 public class UserInfoWindow extends AppCompatActivity {
-    public TextView studentNum;
-    public TextView username;
-    public TextView status;
-    public TextView joinTime;
-    public TextView commentReceived;
-    public TextView likeReceived;
-    public TextView dislikeReceived;
-    public TextView reportReceived;
-    public ListView feedbackList;
-
-    public ImageView avatarView;
 
     private User user;
 
@@ -64,17 +53,6 @@ public class UserInfoWindow extends AppCompatActivity {
         actionBar.setLogo(R.mipmap.ic_launcher);
         actionBar.setDisplayHomeAsUpEnabled(true);
 
-        studentNum = (TextView) findViewById(R.id.userInfo_studentNum);
-        username = (TextView) findViewById(R.id.userInfo_username);
-        status = (TextView) findViewById(R.id.userInfo_status);
-        joinTime = (TextView) findViewById(R.id.userInfo_joinTime);
-        commentReceived = (TextView) findViewById(R.id.userInfo_commentReceived);
-        likeReceived = (TextView) findViewById(R.id.userInfo_likeReceived);
-        dislikeReceived = (TextView) findViewById(R.id.userInfo_dislikeReceived);
-        reportReceived = (TextView) findViewById(R.id.userInfo_reportReceived);
-        feedbackList = (ListView) findViewById(R.id.userInfo_feedbackList);
-        avatarView = (ImageView) findViewById(R.id.userInfo_avatar);
-
         volleyQuque = Volley.newRequestQueue(this);
     }
 
@@ -84,24 +62,6 @@ public class UserInfoWindow extends AppCompatActivity {
             user.avatar = "http://public-image-source.img-cn-shanghai.aliyuncs.com/avatar33201652203559.jpg";
         System.out.println(user);
         if (user != null) {
-            studentNum.setText("邮箱：" + user.email);
-            username.setText("用户名：" + user.nickname);
-            if (user.gender.equals("m"))
-                username.setText(username.getText() + " ♂");
-            else if (user.gender.equals("f"))
-                username.setText(username.getText() + " ♀");
-            if (user.isBanned)
-                status.setText("状态：" + "禁言");
-            else
-                status.setText("状态：" + "正常");
-            String[] time = user.date_joined.split("T");
-            joinTime.setText("加入时间：" + time[0] + " " + time[1]);
-            commentReceived.setText("收到评论数：" + String.valueOf(user.commentReceived));
-            likeReceived.setText("收到过的赞：" + String.valueOf(user.likeReceived));
-            dislikeReceived.setText("收到过的踩：" + String.valueOf(user.dislikeReceived));
-            reportReceived.setText("被举报次数：" + String.valueOf(user.reportReceived));
-
-            Picasso.with(this).load(user.avatar).placeholder(R.mipmap.image_loading).error(R.mipmap.default_avatar_1).resize(200, 200).into(avatarView);
         }
     }
 
@@ -180,7 +140,6 @@ public class UserInfoWindow extends AppCompatActivity {
                             for (Feedback feedback : feedbacks) {
                                 adapter.add(feedback.toShowString());
                             }
-                            feedbackList.setAdapter(adapter);
                         }
                         Log.d("TAG", response);
                     }

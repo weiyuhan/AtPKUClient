@@ -62,7 +62,6 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:hint="起始时间"
-                    android:onClick="sendMsgSelectTimeHanlder"
                     android:textSize="14sp" />
             </LinearLayout>
 
@@ -84,7 +83,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="结束时间"
-                    android:onClick="sendMsgSelectTimeHanlder"
                     android:textSize="14sp" />
 
             </LinearLayout>

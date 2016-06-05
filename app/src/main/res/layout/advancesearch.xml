@@ -48,7 +48,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="起始时间"
-        android:onClick="searchMsgSelectTimeHanlder"
         android:textSize="14sp" />
 
     <EditText
@@ -56,7 +55,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="终止时间"
-        android:onClick="searchMsgSelectTimeHanlder"
         android:textSize="14sp" />
 
 

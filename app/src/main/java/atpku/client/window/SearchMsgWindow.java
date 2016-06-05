@@ -51,7 +51,19 @@ public class SearchMsgWindow extends AppCompatActivity {
         author = (TextInputLayout) findViewById(R.id.advanceSearch_author);
         content = (TextInputLayout) findViewById(R.id.advanceSearch_content);
         startTime = (EditText) findViewById(R.id.advanceSearch_startTime);
+        startTime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                searchMsgSelectTimeHanlder(v);
+            }
+        });
         endTime = (EditText) findViewById(R.id.advanceSearch_endTime);
+        endTime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                searchMsgSelectTimeHanlder(v);
+            }
+        });
         place = (Spinner) findViewById(R.id.advanceSearch_place);
         isGlobal = (Switch) findViewById(R.id.advanceSearch_global);
         submitButton = (Button) findViewById(R.id.advanceSearch_submitButton);

@@ -107,8 +107,20 @@ public class SendMsgWindow extends AppCompatActivity implements AdapterView.OnIt
         int month = c.get(Calendar.MONTH);
         int day = c.get(Calendar.DAY_OF_MONTH);
         startTime.setText(String.valueOf(year) + "-" + String.valueOf(month + 1) + "-" + String.valueOf(day));
+        startTime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sendMsgSelectTimeHanlder(v);
+            }
+        });
         endTime = (EditText) findViewById(R.id.sendMsg_endTime);
         endTime.setText(String.valueOf(year) + "-" + String.valueOf(month + 1) + "-" + String.valueOf(day));
+        endTime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sendMsgSelectTimeHanlder(v);
+            }
+        });
         place = (Spinner) findViewById(R.id.sendMsg_selectPlace);
         submitButton = (Button) findViewById(R.id.sendMsg_submitButton);
         imageList = (GridView) findViewById(R.id.sendMsg_imageList);
