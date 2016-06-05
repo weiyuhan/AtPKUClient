@@ -30,25 +30,18 @@ import okhttp3.Response;
 /**
  * Created by wyh on 2016/5/30.
  */
-public class PushTestReceiver extends PushMessageReceiver
-{
+public class PushTestReceiver extends PushMessageReceiver {
     /**
      * 调用PushManager.startWork后，sdk将对push
      * server发起绑定请求，这个过程是异步的。绑定请求的结果通过onBind返回。 如果您需要用单播推送，需要把这里获取的channel
      * id和user id上传到应用server中，再调用server接口用channel id和user id给单个手机或者用户推送。
      *
-     * @param context
-     *            BroadcastReceiver的执行Context
-     * @param errorCode
-     *            绑定接口返回值，0 - 成功
-     * @param appid
-     *            应用id。errorCode非0时为null
-     * @param userId
-     *            应用user id。errorCode非0时为null
-     * @param channelId
-     *            应用channel id。errorCode非0时为null
-     * @param requestId
-     *            向服务端发起的请求id。在追查问题时有用；
+     * @param context   BroadcastReceiver的执行Context
+     * @param errorCode 绑定接口返回值，0 - 成功
+     * @param appid     应用id。errorCode非0时为null
+     * @param userId    应用user id。errorCode非0时为null
+     * @param channelId 应用channel id。errorCode非0时为null
+     * @param requestId 向服务端发起的请求id。在追查问题时有用；
      * @return none
      */
     @Override
@@ -68,7 +61,7 @@ public class PushTestReceiver extends PushMessageReceiver
         // Demo更新界面展示代码，应用请在这里加入自己的处理逻辑
         updateContent(context, responseString);
 
-        if(!MapWindow.isLogin) {
+        if (!MapWindow.isLogin) {
             System.out.println("send deviceid");
             OkHttpClient mOkHttpClient = new OkHttpClient();
 //创建一个Request
@@ -97,12 +90,9 @@ public class PushTestReceiver extends PushMessageReceiver
     /**
      * 接收透传消息的函数。
      *
-     * @param context
-     *            上下文
-     * @param message
-     *            推送的消息
-     * @param customContentString
-     *            自定义内容,为空或者json字符串
+     * @param context             上下文
+     * @param message             推送的消息
+     * @param customContentString 自定义内容,为空或者json字符串
      */
     @Override
     public void onMessage(Context context, String message,
@@ -133,14 +123,10 @@ public class PushTestReceiver extends PushMessageReceiver
     /**
      * 接收通知到达的函数。
      *
-     * @param context
-     *            上下文
-     * @param title
-     *            推送的通知的标题
-     * @param description
-     *            推送的通知的描述
-     * @param customContentString
-     *            自定义内容，为空或者json字符串
+     * @param context             上下文
+     * @param title               推送的通知的标题
+     * @param description         推送的通知的描述
+     * @param customContentString 自定义内容，为空或者json字符串
      */
 
     @Override
@@ -174,14 +160,10 @@ public class PushTestReceiver extends PushMessageReceiver
     /**
      * 接收通知点击的函数。
      *
-     * @param context
-     *            上下文
-     * @param title
-     *            推送的通知的标题
-     * @param description
-     *            推送的通知的描述
-     * @param customContentString
-     *            自定义内容，为空或者json字符串
+     * @param context             上下文
+     * @param title               推送的通知的标题
+     * @param description         推送的通知的描述
+     * @param customContentString 自定义内容，为空或者json字符串
      */
     @Override
     public void onNotificationClicked(Context context, String title,
@@ -205,8 +187,7 @@ public class PushTestReceiver extends PushMessageReceiver
             }
         }
 
-        if(!MapWindow.mapShow)
-        {
+        if (!MapWindow.mapShow) {
             Intent launchIntent = context.getPackageManager().getLaunchIntentForPackage("atpku.client");
             launchIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
             context.startActivity(launchIntent);
@@ -219,16 +200,11 @@ public class PushTestReceiver extends PushMessageReceiver
     /**
      * setTags() 的回调函数。
      *
-     * @param context
-     *            上下文
-     * @param errorCode
-     *            错误码。0表示某些tag已经设置成功；非0表示所有tag的设置均失败。
-     * @param sucessTags
-     *            设置成功的tag
-     * @param failTags
-     *            设置失败的tag
-     * @param requestId
-     *            分配给对云推送的请求的id
+     * @param context    上下文
+     * @param errorCode  错误码。0表示某些tag已经设置成功；非0表示所有tag的设置均失败。
+     * @param sucessTags 设置成功的tag
+     * @param failTags   设置失败的tag
+     * @param requestId  分配给对云推送的请求的id
      */
     @Override
     public void onSetTags(Context context, int errorCode,
@@ -245,16 +221,11 @@ public class PushTestReceiver extends PushMessageReceiver
     /**
      * delTags() 的回调函数。
      *
-     * @param context
-     *            上下文
-     * @param errorCode
-     *            错误码。0表示某些tag已经删除成功；非0表示所有tag均删除失败。
-     * @param sucessTags
-     *            成功删除的tag
-     * @param failTags
-     *            删除失败的tag
-     * @param requestId
-     *            分配给对云推送的请求的id
+     * @param context    上下文
+     * @param errorCode  错误码。0表示某些tag已经删除成功；非0表示所有tag均删除失败。
+     * @param sucessTags 成功删除的tag
+     * @param failTags   删除失败的tag
+     * @param requestId  分配给对云推送的请求的id
      */
     @Override
     public void onDelTags(Context context, int errorCode,
@@ -271,14 +242,10 @@ public class PushTestReceiver extends PushMessageReceiver
     /**
      * listTags() 的回调函数。
      *
-     * @param context
-     *            上下文
-     * @param errorCode
-     *            错误码。0表示列举tag成功；非0表示失败。
-     * @param tags
-     *            当前应用设置的所有tag。
-     * @param requestId
-     *            分配给对云推送的请求的id
+     * @param context   上下文
+     * @param errorCode 错误码。0表示列举tag成功；非0表示失败。
+     * @param tags      当前应用设置的所有tag。
+     * @param requestId 分配给对云推送的请求的id
      */
     @Override
     public void onListTags(Context context, int errorCode, List<String> tags,
@@ -294,12 +261,9 @@ public class PushTestReceiver extends PushMessageReceiver
     /**
      * PushManager.stopWork() 的回调函数。
      *
-     * @param context
-     *            上下文
-     * @param errorCode
-     *            错误码。0表示从云推送解绑定成功；非0表示失败。
-     * @param requestId
-     *            分配给对云推送的请求的id
+     * @param context   上下文
+     * @param errorCode 错误码。0表示从云推送解绑定成功；非0表示失败。
+     * @param requestId 分配给对云推送的请求的id
      */
     @Override
     public void onUnbind(Context context, int errorCode, String requestId) {

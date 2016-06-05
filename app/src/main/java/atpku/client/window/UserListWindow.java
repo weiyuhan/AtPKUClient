@@ -43,8 +43,7 @@ import atpku.client.model.PostResult;
 /**
  * Created by wyh on 2016/5/19.
  */
-public class UserListWindow extends AppCompatActivity implements SearchView.OnQueryTextListener
-{
+public class UserListWindow extends AppCompatActivity implements SearchView.OnQueryTextListener {
     public ListView userList;
     public ActionBar actionBar;
     private RequestQueue volleyQuque;
@@ -76,9 +75,8 @@ public class UserListWindow extends AppCompatActivity implements SearchView.OnQu
 
     public void refreshUserList() {
         final UserAdapter adapter = new UserAdapter(this, R.layout.user_row);
-        if (users != null)
-        {
-            for(User user: users) {
+        if (users != null) {
+            for (User user : users) {
                 if (user.getNickname().contains(nickname) && !(hideBanned && user.isBanned()))
                     adapter.add(user);
             }
@@ -90,24 +88,23 @@ public class UserListWindow extends AppCompatActivity implements SearchView.OnQu
         StringRequestWithCookie stringRequest = null;
         try {
             stringRequest = new StringRequestWithCookie(Request.Method.GET,
-                    "http://139.129.22.145:5000/admin/profile?nickname="+ URLEncoder.encode(nickname,"UTF-8"),
+                    "http://139.129.22.145:5000/admin/profile?nickname=" + URLEncoder.encode(nickname, "UTF-8"),
                     new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
                             PostResult result = JSON.parseObject(response, PostResult.class);
-                            if(result.success) {
+                            if (result.success) {
                                 users = JSON.parseArray(result.data, User.class);
                                 Collections.sort(users, new Comparator<User>() {
                                     @Override
                                     public int compare(User lhs, User rhs) {
-                                        return rhs.getReportReceived()-lhs.getReportReceived();
+                                        return rhs.getReportReceived() - lhs.getReportReceived();
                                     }
                                 });
-                                for(User user: users) {
+                                for (User user : users) {
                                     adapter.add(user);
                                 }
-                            }
-                            else
+                            } else
                                 Toast.makeText(UserListWindow.this, result.message, Toast.LENGTH_LONG).show();
                             userList.setAdapter(adapter);
                             adapter.notifyDataSetChanged();
@@ -128,21 +125,18 @@ public class UserListWindow extends AppCompatActivity implements SearchView.OnQu
             case android.R.id.home:
                 super.onBackPressed();
                 break;
-            case R.id.action_user_search:{
+            case R.id.action_user_search: {
                 //mi.expandActionView();
                 searchView = (SearchView) MenuItemCompat.getActionView(mi);
                 if (searchView != null)
                     searchView.setOnQueryTextListener(this);
             }
             break;
-            case R.id.action_mode_change:{
-                if (hideBanned)
-                {
+            case R.id.action_mode_change: {
+                if (hideBanned) {
                     hideBanned = false;
                     mi.setTitle("只看未禁言");
-                }
-                else
-                {
+                } else {
                     hideBanned = true;
                     mi.setTitle("查看全部用户");
                 }
@@ -187,12 +181,9 @@ public class UserListWindow extends AppCompatActivity implements SearchView.OnQu
             TextView reportedText = (TextView) view.findViewById(R.id.reportNum);
 
             nicknameText.setText((user.getNickname()));
-            if (user.isBanned())
-            {
+            if (user.isBanned()) {
                 isBannedText.setText("被禁言：是");
-            }
-            else
-            {
+            } else {
                 isBannedText.setText("被禁言：否");
             }
             reportedText.setText("被举报次数：" + user.getReportReceived());
@@ -200,16 +191,14 @@ public class UserListWindow extends AppCompatActivity implements SearchView.OnQu
         }
     }
 
-    public boolean onQueryTextChange(String newText)
-    {
+    public boolean onQueryTextChange(String newText) {
         // 按昵称搜索
         nickname = newText;
         refreshUserList();
         return true;
     }
 
-    public boolean onQueryTextSubmit(String query)
-    {
+    public boolean onQueryTextSubmit(String query) {
         // 按昵称搜索
         nickname = query;
         refreshUserList();

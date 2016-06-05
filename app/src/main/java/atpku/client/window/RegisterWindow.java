@@ -32,8 +32,7 @@ import atpku.client.R;
 import atpku.client.model.PostResult;
 import atpku.client.util.StringRequestWithCookie;
 
-public class RegisterWindow extends AppCompatActivity
-{
+public class RegisterWindow extends AppCompatActivity {
     public TextInputLayout studentNum;
     public TextInputLayout username;
     public TextInputLayout password;
@@ -47,8 +46,7 @@ public class RegisterWindow extends AppCompatActivity
     private RequestQueue volleyQuque;
 
 
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.register);
 
@@ -57,73 +55,60 @@ public class RegisterWindow extends AppCompatActivity
         actionBar.setLogo(R.mipmap.ic_launcher);
         actionBar.setDisplayHomeAsUpEnabled(true);
 
-        studentNum = (TextInputLayout)findViewById(R.id.regist_studentNum);
-        username = (TextInputLayout)findViewById(R.id.register_username);
-        password = (TextInputLayout)findViewById(R.id.register_password);
-        confirmPasswd = (TextInputLayout)findViewById(R.id.regist_confirmpasswd);
-        male = (RadioButton)findViewById(R.id.register_male);
-        female = (RadioButton)findViewById(R.id.register_female);
-        submitButton = (Button)findViewById(R.id.regist_submitButton);
+        studentNum = (TextInputLayout) findViewById(R.id.regist_studentNum);
+        username = (TextInputLayout) findViewById(R.id.register_username);
+        password = (TextInputLayout) findViewById(R.id.register_password);
+        confirmPasswd = (TextInputLayout) findViewById(R.id.regist_confirmpasswd);
+        male = (RadioButton) findViewById(R.id.register_male);
+        female = (RadioButton) findViewById(R.id.register_female);
+        submitButton = (Button) findViewById(R.id.regist_submitButton);
 
         volleyQuque = Volley.newRequestQueue(this);
 
     }
 
-    public void registSubmitHandler(View source)
-    {
+    public void registSubmitHandler(View source) {
         final String stuNumStr = studentNum.getEditText().getText().toString();
-        if (stuNumStr.length() < 1)
-        {
+        if (stuNumStr.length() < 1) {
             studentNum.setErrorEnabled(true);
             studentNum.setError("请输入学号");
             return;
-        }
-        else {
-            try
-            {
+        } else {
+            try {
                 int num = Integer.parseInt(stuNumStr);
-            }catch (NumberFormatException e)
-            {
+            } catch (NumberFormatException e) {
                 studentNum.setError("请输入正确的学号");
                 return;
             }
             studentNum.setErrorEnabled(false);
         }
         final String userNameStr = username.getEditText().getText().toString();
-        if (userNameStr.length() < 1)
-        {
+        if (userNameStr.length() < 1) {
             username.setErrorEnabled(true);
             username.setError("请输入用户名");
             return;
-        }
-        else
+        } else
             username.setErrorEnabled(false);
         final String passwordStr = password.getEditText().getText().toString();
-        if (passwordStr.length() < 1)
-        {
+        if (passwordStr.length() < 1) {
             password.setErrorEnabled(true);
             password.setError("请输入密码");
             return;
-        }
-        else
+        } else
             password.setErrorEnabled(false);
         String confirmpwStr = confirmPasswd.getEditText().getText().toString();
-        if (passwordStr.length() < 1)
-        {
+        if (passwordStr.length() < 1) {
             confirmPasswd.setErrorEnabled(true);
             confirmPasswd.setError("请确认密码");
             return;
-        }
-        else if(!confirmpwStr.equals(passwordStr))
-        {
+        } else if (!confirmpwStr.equals(passwordStr)) {
             confirmPasswd.setErrorEnabled(true);
             confirmPasswd.setError("两次输入的密码不一致");
             return;
-        }
-        else
+        } else
             confirmPasswd.setErrorEnabled(false);
         String genderStrTmp = null;
-        if(male.isChecked())
+        if (male.isChecked())
             genderStrTmp = "m";
         else
             genderStrTmp = "f";
@@ -136,48 +121,39 @@ public class RegisterWindow extends AppCompatActivity
         params.put("gender", genderStr);
         StringRequestWithCookie stringRequest = new StringRequestWithCookie(StringRequest.Method.POST,
                 "http://139.129.22.145:5000/register",
-                new Response.Listener<String>()
-                {
+                new Response.Listener<String>() {
                     @Override
-                    public void onResponse(String response)
-                    {
-                        PostResult result = JSON.parseObject(response,PostResult.class);
+                    public void onResponse(String response) {
+                        PostResult result = JSON.parseObject(response, PostResult.class);
                         System.out.println(result.toString());
-                        if(result.success)
-                        {
+                        if (result.success) {
                             Toast.makeText(RegisterWindow.this, result.message, Toast.LENGTH_LONG).show();
-                            SharedPreferences prefs = getSharedPreferences("userinfo",1);
+                            SharedPreferences prefs = getSharedPreferences("userinfo", 1);
                             SharedPreferences.Editor mEditor = prefs.edit();
                             mEditor.putString("stunum", stuNumStr);
                             mEditor.putString("nickname", userNameStr);
                             mEditor.putString("gender", genderStr);
                             mEditor.apply();
                             RegisterWindow.this.finish();
-                        }
-                        else
-                        {
+                        } else {
                             Toast.makeText(RegisterWindow.this, result.message, Toast.LENGTH_LONG).show();
                         }
                         Log.d("TAG", response);
-                        }
-                },params);
+                    }
+                }, params);
         volleyQuque.add(stringRequest);
     }
 
-    public void registerBackHandler(View source)
-    {
+    public void registerBackHandler(View source) {
         super.onBackPressed();
     }
 
-    public boolean onOptionsItemSelected(MenuItem mi)
-    {
-        if(mi.isCheckable())
-        {
+    public boolean onOptionsItemSelected(MenuItem mi) {
+        if (mi.isCheckable()) {
             mi.setChecked(true);
         }
 
-        switch (mi.getItemId())
-        {
+        switch (mi.getItemId()) {
             case android.R.id.home:
                 super.onBackPressed();
                 break;

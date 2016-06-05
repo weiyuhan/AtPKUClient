@@ -57,8 +57,7 @@ import atpku.client.util.Utillity;
 /**
  * Created by wyh on 2016/5/19.
  */
-public class SendMsgWindow extends AppCompatActivity implements AdapterView.OnItemClickListener
-{
+public class SendMsgWindow extends AppCompatActivity implements AdapterView.OnItemClickListener {
     public TextInputLayout title;
     public TextInputLayout content;
     public EditText startTime;
@@ -84,13 +83,12 @@ public class SendMsgWindow extends AppCompatActivity implements AdapterView.OnIt
 
     private File cameraImageTempFile;
 
-    public void onCreate(Bundle savedInstanceState)
-    {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.sendmsg);
 
         Intent intent = this.getIntent();
-        int placeId = (Integer)intent.getSerializableExtra("placeId");
+        int placeId = (Integer) intent.getSerializableExtra("placeId");
 
         actionBar = getSupportActionBar();
         actionBar.setDisplayUseLogoEnabled(true);
@@ -98,22 +96,22 @@ public class SendMsgWindow extends AppCompatActivity implements AdapterView.OnIt
         actionBar.setDisplayHomeAsUpEnabled(true);
 
 
-        title = (TextInputLayout)findViewById(R.id.sendMsg_title);
-        content = (TextInputLayout)findViewById(R.id.sendMsg_content);
-        startTime = (EditText)findViewById(R.id.sendMsg_startTime);
+        title = (TextInputLayout) findViewById(R.id.sendMsg_title);
+        content = (TextInputLayout) findViewById(R.id.sendMsg_content);
+        startTime = (EditText) findViewById(R.id.sendMsg_startTime);
         Calendar c = Calendar.getInstance();
         int year = c.get(Calendar.YEAR);
         int month = c.get(Calendar.MONTH);
         int day = c.get(Calendar.DAY_OF_MONTH);
-        startTime.setText(String.valueOf(year)+"-"+String.valueOf(month+1)+"-"+String.valueOf(day));
-        endTime = (EditText)findViewById(R.id.sendMsg_endTime);
-        endTime.setText(String.valueOf(year)+"-"+String.valueOf(month+1)+"-"+String.valueOf(day));
-        place = (Spinner)findViewById(R.id.sendMsg_selectPlace);
-        submitButton = (Button)findViewById(R.id.sendMsg_submitButton);
-        imageList = (GridView)findViewById(R.id.sendMsg_imageList);
+        startTime.setText(String.valueOf(year) + "-" + String.valueOf(month + 1) + "-" + String.valueOf(day));
+        endTime = (EditText) findViewById(R.id.sendMsg_endTime);
+        endTime.setText(String.valueOf(year) + "-" + String.valueOf(month + 1) + "-" + String.valueOf(day));
+        place = (Spinner) findViewById(R.id.sendMsg_selectPlace);
+        submitButton = (Button) findViewById(R.id.sendMsg_submitButton);
+        imageList = (GridView) findViewById(R.id.sendMsg_imageList);
         imageList.setOnItemClickListener(this);
 
-        progressBar = (ProgressBar)findViewById(R.id.sendMsg_progressBar);
+        progressBar = (ProgressBar) findViewById(R.id.sendMsg_progressBar);
         progressBar.setVisibility(View.INVISIBLE);
 
         imageAdapter = new ImageAdapter(this, R.layout.image_row);
@@ -130,20 +128,18 @@ public class SendMsgWindow extends AppCompatActivity implements AdapterView.OnIt
 
         volleyQuque = Volley.newRequestQueue(this);
 
-        ArrayAdapter<String> adapter =  new ArrayAdapter<String>(this, R.layout.place_spiner_row);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.place_spiner_row);
         int position = -1;
         int index = 0;
-        for(String placename: MapWindow.places.keySet())
-        {
+        for (String placename : MapWindow.places.keySet()) {
             Place place = MapWindow.places.get(placename);
-            if(place.getId() == placeId)
+            if (place.getId() == placeId)
                 position = index;
             adapter.add(placename);
             index++;
         }
         place.setAdapter(adapter);
-        if(placeId != -1 && position != -1)
-        {
+        if (placeId != -1 && position != -1) {
             place.setSelection(position);
         }
 
@@ -155,49 +151,42 @@ public class SendMsgWindow extends AppCompatActivity implements AdapterView.OnIt
         super.onConfigurationChanged(config);
     }
 
-    public void sendMsgSelectTimeHanlder(View source)
-    {
-        final EditText text = (EditText)source;
+    public void sendMsgSelectTimeHanlder(View source) {
+        final EditText text = (EditText) source;
         Calendar calendar = Calendar.getInstance();
         DatePickerDialog datePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int day) {
                 // TODO Auto-generated method stub
                 //更新EditText控件日期 小于10加0
-                text.setText(year + "-" + (month+1) + "-" + day);   // month+1 because month started from 0 by default!
+                text.setText(year + "-" + (month + 1) + "-" + day);   // month+1 because month started from 0 by default!
             }
         }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH),
-                calendar.get(Calendar.DAY_OF_MONTH) );
+                calendar.get(Calendar.DAY_OF_MONTH));
         datePickerDialog.setTitle("选择时间");
         datePickerDialog.show();
 
     }
 
-    public void sendMsgSubmitHandler(View source)
-    {
-        if(!MapWindow.isLogin)
-        {
+    public void sendMsgSubmitHandler(View source) {
+        if (!MapWindow.isLogin) {
             Toast.makeText(this, "请登录", Toast.LENGTH_LONG).show();
             return;
         }
         final Map<String, String> params = new HashMap<String, String>();
 
         // 需要在本地检查title和content的合法性，比如不能为空，长度不能过长（可能需要与后端交流
-        if (title.getEditText().getText().toString().length() == 0)
-        {
+        if (title.getEditText().getText().toString().length() == 0) {
             title.setErrorEnabled(true);
             title.setError("请填写标题");
             return;
-        }
-        else
+        } else
             title.setErrorEnabled(false);
-        if (content.getEditText().toString().length() == 0)
-        {
+        if (content.getEditText().toString().length() == 0) {
             content.setErrorEnabled(true);
             content.setError("请填写内容");
             return;
-        }
-        else
+        } else
             content.setErrorEnabled(false);
         submitButton.setEnabled(false);
         submitButton.setText("发送中");
@@ -206,23 +195,21 @@ public class SendMsgWindow extends AppCompatActivity implements AdapterView.OnIt
         params.put("title", title.getEditText().getText().toString());
         params.put("content", content.getEditText().getText().toString());
 
-        String placename = (String)place.getSelectedItem();
+        String placename = (String) place.getSelectedItem();
         Place chosen = MapWindow.places.get(placename);
         params.put("atPlaceid", String.valueOf(chosen.getId()));
 
         // startTime和endTime的格式可能需要转化！需要与后端交流
-        String startTimeStr = startTime.getText().toString()+" 00:00:00";
-        String endTimeStr =  endTime.getText().toString()+" 23:59:59";
+        String startTimeStr = startTime.getText().toString() + " 00:00:00";
+        String endTimeStr = endTime.getText().toString() + " 23:59:59";
         params.put("startTime", startTimeStr);
         params.put("endTime", endTimeStr);
 
-        if(imgUris.size() == 0)
-        {
+        if (imgUris.size() == 0) {
             sendMsgRequest(params);
         }
         System.out.println(imgUris);
-        for(String imgUri:imgUris)
-        {
+        for (String imgUri : imgUris) {
             Calendar calendar = Calendar.getInstance();
             String objectKey = MapWindow.getCookie().substring(10) + calendar.get(Calendar.YEAR) +
                     calendar.get(Calendar.MONTH) + calendar.get(Calendar.DAY_OF_MONTH) +
@@ -230,7 +217,7 @@ public class SendMsgWindow extends AppCompatActivity implements AdapterView.OnIt
             String types = imgUri.substring(imgUri.lastIndexOf(".") - 1);
             PutObjectRequest put = new PutObjectRequest("public-image-source", objectKey + types, imgUri);
 
-            if(imgUris.size() == 1) {
+            if (imgUris.size() == 1) {
                 put.setProgressCallback(new OSSProgressCallback<PutObjectRequest>() {
                     @Override
                     public void onProgress(PutObjectRequest request, long currentSize, long totalSize) {
@@ -243,18 +230,16 @@ public class SendMsgWindow extends AppCompatActivity implements AdapterView.OnIt
                 });
             }
 
-            OSSAsyncTask task = ((AtPKUApplication)getApplication()).oss.asyncPutObject(put, new OSSCompletedCallback<PutObjectRequest, PutObjectResult>() {
+            OSSAsyncTask task = ((AtPKUApplication) getApplication()).oss.asyncPutObject(put, new OSSCompletedCallback<PutObjectRequest, PutObjectResult>() {
                 @Override
                 public void onSuccess(PutObjectRequest request, PutObjectResult result) {
-                    if(uploadedImgUris == null)
-                    {
+                    if (uploadedImgUris == null) {
                         uploadedImgUris = new ArrayList<String>();
                     }
                     uploadedImgs++;
-                    if(imgUris.size() > 1)
-                    {
-                        double percent = uploadedImgs/imgUris.size();
-                        int progress = (int)percent*100;
+                    if (imgUris.size() > 1) {
+                        double percent = uploadedImgs / imgUris.size();
+                        int progress = (int) percent * 100;
                         progressBar.setProgress(progress);
                     }
                     Log.d("PutObject", "UploadSuccess");
@@ -262,8 +247,7 @@ public class SendMsgWindow extends AppCompatActivity implements AdapterView.OnIt
                     Log.d("RequestId", result.getRequestId());
                     System.out.println(uploadedImgs + "    " + imgUris.size());
                     uploadedImgUris.add("http://" + request.getBucketName() + ".img-cn-shanghai.aliyuncs.com/" + request.getObjectKey());
-                    if(uploadedImgs >= imgUris.size())
-                    {
+                    if (uploadedImgs >= imgUris.size()) {
                         sendMsgRequest(params);
                     }
                 }
@@ -283,8 +267,7 @@ public class SendMsgWindow extends AppCompatActivity implements AdapterView.OnIt
                         Log.e("HostId", serviceException.getHostId());
                         Log.e("RawMessage", serviceException.getRawMessage());
                     }
-                    if(uploadedImgs >= imgUris.size())
-                    {
+                    if (uploadedImgs >= imgUris.size()) {
                         sendMsgRequest(params);
                     }
                 }
@@ -293,28 +276,22 @@ public class SendMsgWindow extends AppCompatActivity implements AdapterView.OnIt
 
     }
 
-    public void sendMsgRequest(Map<String, String> params)
-    {
+    public void sendMsgRequest(Map<String, String> params) {
         progressBar.setProgress(100);
-        if(uploadedImgUris != null && uploadedImgUris.size() != 0) {
+        if (uploadedImgUris != null && uploadedImgUris.size() != 0) {
             String urisJson = JSON.toJSONString(uploadedImgUris);
             params.put("images", urisJson);
         }
-        StringRequestWithCookie stringRequest = new StringRequestWithCookie(Request.Method.POST,"http://139.129.22.145:5000/message",
-                new Response.Listener<String>()
-                {
+        StringRequestWithCookie stringRequest = new StringRequestWithCookie(Request.Method.POST, "http://139.129.22.145:5000/message",
+                new Response.Listener<String>() {
                     @Override
-                    public void onResponse(String response)
-                    {
+                    public void onResponse(String response) {
                         submitButton.setText("发送");
                         PostResult result = JSON.parseObject(response, PostResult.class);
-                        if(result.success)
-                        {
+                        if (result.success) {
                             Toast.makeText(SendMsgWindow.this, "发送成功", Toast.LENGTH_LONG).show();
                             finish();
-                        }
-                        else
-                        {
+                        } else {
                             submitButton.setEnabled(true);
                             progressBar.setVisibility(View.INVISIBLE);
                             Toast.makeText(SendMsgWindow.this, result.message, Toast.LENGTH_LONG).show();
@@ -325,15 +302,12 @@ public class SendMsgWindow extends AppCompatActivity implements AdapterView.OnIt
         volleyQuque.add(stringRequest);
     }
 
-    public boolean onOptionsItemSelected(MenuItem mi)
-    {
-        if(mi.isCheckable())
-        {
+    public boolean onOptionsItemSelected(MenuItem mi) {
+        if (mi.isCheckable()) {
             mi.setChecked(true);
         }
 
-        switch (mi.getItemId())
-        {
+        switch (mi.getItemId()) {
             case android.R.id.home:
                 super.onBackPressed();
                 break;
@@ -344,22 +318,20 @@ public class SendMsgWindow extends AppCompatActivity implements AdapterView.OnIt
 
     }
 
-    public void addImageSubmitHandler(View view)
-    {
+    public void addImageSubmitHandler(View view) {
         Intent intent = new Intent(Intent.ACTION_PICK);
         intent.setType("image/*");
         startActivityForResult(intent, PHOTO_REQUEST_GALLERY);
     }
 
-    public void useCameraHandler(View view)
-    {
+    public void useCameraHandler(View view) {
         // 激活相机
         Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
         Calendar calendar = Calendar.getInstance();
-        File cameraDir =  new File(Environment.getExternalStorageDirectory(),"AtPKUCameraTemp");
-        if(!cameraDir.exists())
+        File cameraDir = new File(Environment.getExternalStorageDirectory(), "AtPKUCameraTemp");
+        if (!cameraDir.exists())
             cameraDir.mkdirs();
-        cameraImageTempFile = new File(cameraDir,"atpku" + calendar.get(Calendar.YEAR) +
+        cameraImageTempFile = new File(cameraDir, "atpku" + calendar.get(Calendar.YEAR) +
                 calendar.get(Calendar.MONTH) + calendar.get(Calendar.DAY_OF_MONTH) +
                 calendar.get(Calendar.HOUR_OF_DAY) + calendar.get(Calendar.MINUTE) + calendar.get(Calendar.SECOND) +
                 calendar.get(Calendar.MILLISECOND) + ".jpg");
@@ -370,13 +342,10 @@ public class SendMsgWindow extends AppCompatActivity implements AdapterView.OnIt
         startActivityForResult(intent, PHOTO_REQUEST_CAREMA);
     }
 
-    protected void onActivityResult(int requestCode, int resultCode, Intent data)
-    {
-        if (requestCode == PHOTO_REQUEST_GALLERY)
-        {
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == PHOTO_REQUEST_GALLERY) {
             // 从相册返回的数据
-            if (data != null)
-            {
+            if (data != null) {
                 // 得到图片的全路径
                 Uri uri = data.getData();
                 String uri_s = uri.toString();
@@ -384,8 +353,7 @@ public class SendMsgWindow extends AppCompatActivity implements AdapterView.OnIt
 
                 System.out.println(imgPath);
 
-                if(!imgUris.contains(imgPath))
-                {
+                if (!imgUris.contains(imgPath)) {
                     imgUris.add(imgPath);
                     imageAdapter.add(uri_s);
                     imageList.setAdapter(imageAdapter);
@@ -393,11 +361,10 @@ public class SendMsgWindow extends AppCompatActivity implements AdapterView.OnIt
                 }
             }
         }
-        if(requestCode == PHOTO_REQUEST_CAREMA)
-        {
+        if (requestCode == PHOTO_REQUEST_CAREMA) {
             String imgPath = cameraImageTempFile.getAbsolutePath();
 
-            if(cameraImageTempFile.exists() && cameraImageTempFile.canRead()) {
+            if (cameraImageTempFile.exists() && cameraImageTempFile.canRead()) {
 
                 System.out.println(imgPath);
 
