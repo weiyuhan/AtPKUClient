@@ -77,7 +77,6 @@ public class MapWindow extends AppCompatActivity implements
 
     public static boolean started = false;
 
-
     private static double pkuLng = 116.31059288978577;
     private static double pkuLat = 39.99183503192985;
     private static LatLng pkuPos = new LatLng(pkuLat, pkuLng);
@@ -160,9 +159,7 @@ public class MapWindow extends AppCompatActivity implements
             public void run() {
                 refreshPlaces();
             }
-        }, 120000, 120000); // for each 2 min, refresh all messages about places
-
-
+        }, 0, 120000); // for each 2 min, refresh all messages about places
     }
 
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -311,8 +308,8 @@ public class MapWindow extends AppCompatActivity implements
             aMap.moveCamera(CameraUpdateFactory.newLatLngZoom(pkuPos, defaultZoom));
             aMap.setOnCameraChangeListener(this);
             aMap.setOnMapClickListener(this);
-            refreshMarkers();
         }
+        refreshMarkers();
     }
 
     protected void onResume() {
@@ -320,15 +317,32 @@ public class MapWindow extends AppCompatActivity implements
         mapView.onResume();
         drawerLayout.closeDrawers();
         refreshSlideMenu();
-        if(ThemeUtil.themeChanged)
-        {
+        if(ThemeUtil.themeChanged) {
             ThemeUtil.themeChanged = false;
-            mapShow = false;
+            //mapShow = false;
             finish();
             Intent intent = new Intent(getApplicationContext(), MapWindow.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);
         }
+        aMap = mapView.getMap();
+
+        aMap.setMyLocationEnabled(true);
+        aMap.getUiSettings().setZoomControlsEnabled(false);
+        aMap.getUiSettings().setMyLocationButtonEnabled(true);
+        aMap.getUiSettings().setCompassEnabled(true);
+
+        aMap.setOnMarkerClickListener(this);// 设置Marker点击监听
+        aMap.setLocationSource(this);// 设置定位监听
+        aMap.getUiSettings().setMyLocationButtonEnabled(true);// 设置默认定位按钮是否显示
+        aMap.setMyLocationEnabled(true);// 设置为true表示显示定位层并可触发定位，false表示隐藏定位层并不可触发定位，默认是false
+        // 设置定位的类型为定位模式 ，可以由定位、跟随或地图根据面向方向旋转几种
+        aMap.setMyLocationType(AMap.LOCATION_TYPE_LOCATE);
+
+        aMap.moveCamera(CameraUpdateFactory.newLatLngZoom(pkuPos, defaultZoom));
+        aMap.setOnCameraChangeListener(this);
+        aMap.setOnMapClickListener(this);
+        refreshMarkers();
     }
 
     protected void onPause() {
@@ -486,18 +500,17 @@ public class MapWindow extends AppCompatActivity implements
         MarkerOptions markerOptions = new MarkerOptions();
         LatLng pos;
         Set<String> keys = MapWindow.places.keySet();
+        aMap.clear();
         for (String placename : keys) {
             Place place = MapWindow.places.get(placename);
             pos = new LatLng(place.getLat(), place.getLng());
             Marker marker = MapWindow.markers.get(placename);
-            if (marker == null) {
-                markerOptions.position(pos);
-                markerOptions.title(placename);
-                setMarkerIcon(markerOptions, place.type);
-                System.out.println("addMarker " + placename);
-                marker = aMap.addMarker(markerOptions);
-                markers.put(placename, marker);
-            }
+            markerOptions.position(pos);
+            markerOptions.title(placename);
+            setMarkerIcon(markerOptions, place.type);
+            System.out.println("addMarker " + placename);
+            marker = aMap.addMarker(markerOptions);
+            markers.put(placename, marker);
             marker.setSnippet(place.snippetString());
         }
     }
