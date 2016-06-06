@@ -56,7 +56,9 @@ import atpku.client.util.ThemeUtil;
 /**
  * Created by wyh on 2016/5/19.
  */
-public class MsgWindow extends AppCompatActivity implements AdapterView.OnItemClickListener {
+public class MsgWindow extends AppCompatActivity implements AdapterView.OnItemClickListener,
+        SwipeRefreshLayout.OnRefreshListener {
+    private SwipeRefreshLayout refreshLayout;
     public View msgContent;
     public View comment;
 
@@ -157,6 +159,10 @@ public class MsgWindow extends AppCompatActivity implements AdapterView.OnItemCl
                 return titleContainer.get(position);
             }
         });
+
+        refreshLayout = (SwipeRefreshLayout)comment.findViewById(R.id.msg_comment_refresh_layout);
+        refreshLayout.setColorScheme(R.color.lawngreen, R.color.yellow, R.color.blue, R.color.white);
+        refreshLayout.setOnRefreshListener(this);
 
         title = (TextView)msgContent.findViewById(R.id.msg_title);
         time = (TextView)msgContent.findViewById(R.id.msg_time);
@@ -421,6 +427,7 @@ public class MsgWindow extends AppCompatActivity implements AdapterView.OnItemCl
                             for (Comment comment : msg.comments) {
                                 adapter.add(comment);
                             }
+                            refreshLayout.setRefreshing(false);
                             if (MapWindow.user.getIsAdmin()) {
                                 reportButton.setVisibility(View.GONE);
                                 reportNum.setText(msg.getReportUsers().size() + "举报");
@@ -442,5 +449,9 @@ public class MsgWindow extends AppCompatActivity implements AdapterView.OnItemCl
         String imgUrl = smallImgUrl.substring(0, smallImgUrl.lastIndexOf("@"));
         ImageDialog imageDialog = new ImageDialog(this, imgUrl);
         imageDialog.show();
+    }
+
+    public void onRefresh() {
+        refreshMessageInfo(false);
     }
 }

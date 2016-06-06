@@ -72,34 +72,34 @@ public class SettingWindow extends AppCompatActivity
         if(grey.isChecked())
         {
             themeid = R.style.AppTheme_Grey;
-            //ThemeUtil.changeTheme(themeid);
+            ThemeUtil.changeTheme(themeid);
         }
         if(green.isChecked())
         {
             themeid = R.style.AppTheme_Green;
-            //ThemeUtil.changeTheme(themeid);
+            ThemeUtil.changeTheme(themeid);
         }
         if(red.isChecked())
         {
             themeid = R.style.AppTheme_Red;
-            //ThemeUtil.changeTheme(themeid);
+            ThemeUtil.changeTheme(themeid);
         }
         if(pink.isChecked())
         {
             themeid = R.style.AppTheme_Pink;
-            //ThemeUtil.changeTheme(themeid);
+            ThemeUtil.changeTheme(themeid);
         }
         if(purple.isChecked())
         {
             themeid = R.style.AppTheme_Purple;
-            //ThemeUtil.changeTheme(themeid);
+            ThemeUtil.changeTheme(themeid);
         }
         SharedPreferences prefs = getSharedPreferences("theme", Context.MODE_PRIVATE);
         SharedPreferences.Editor mEditor = prefs.edit();
         mEditor.putInt("Theme", themeid);
         mEditor.apply();
         mEditor.commit();
-        Snackbar.make(findViewById(R.id.setting_linear), "修改成功，重启应用后生效", Snackbar.LENGTH_INDEFINITE)
+        Snackbar.make(findViewById(R.id.setting_linear), "修改成功", Snackbar.LENGTH_INDEFINITE)
                 .setAction("确定", new View.OnClickListener() {
             @Override
             public void onClick(View v) {
