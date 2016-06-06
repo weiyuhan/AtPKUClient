@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.Snackbar;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.PagerTabStrip;
@@ -18,10 +19,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -71,8 +75,8 @@ public class MsgWindow extends AppCompatActivity implements AdapterView.OnItemCl
     public TextView likeNum;
     public TextView dislikeNum;
     public TextView reportNum;
-    public Button likeButton;
-    public Button dislikeButton;
+    public ImageButton likeButton;
+    public ImageButton dislikeButton;
     public Button reportButton;
     public Button deleteButton;
     public EditText commentText;
@@ -88,6 +92,11 @@ public class MsgWindow extends AppCompatActivity implements AdapterView.OnItemCl
     public static String CUT_TO_CYCLE = "@200-1ci";
 
     public ActionBar actionBar;
+
+    public TextView likeView;
+    public TextView dislikeView;
+    public TextView reportView;
+    public Animation animation;
 
     protected void onCreate(Bundle savedInstanceState) {
         ThemeUtil.setTheme(this);
@@ -154,9 +163,9 @@ public class MsgWindow extends AppCompatActivity implements AdapterView.OnItemCl
         author = (TextView)msgContent.findViewById(R.id.msg_author);
         content = (TextView)msgContent.findViewById(R.id.msg_content);
         likeNum = (TextView)msgContent.findViewById(R.id.msg_likeNum);
-        likeButton = (Button)msgContent.findViewById(R.id.msg_likeButton);
+        likeButton = (ImageButton)msgContent.findViewById(R.id.msg_likeButton);
         dislikeNum = (TextView)msgContent.findViewById(R.id.msg_dislikeNum);
-        dislikeButton = (Button)msgContent.findViewById(R.id.msg_dislikeButton);
+        dislikeButton = (ImageButton)msgContent.findViewById(R.id.msg_dislikeButton);
         reportNum = (TextView)msgContent.findViewById(R.id.msg_reportNum);
         reportButton = (Button)msgContent.findViewById(R.id.msg_reportButton);
         deleteButton = (Button)msgContent.findViewById(R.id.msg_deleteButton);
@@ -165,6 +174,10 @@ public class MsgWindow extends AppCompatActivity implements AdapterView.OnItemCl
         imageList = (GridView)msgContent.findViewById(R.id.msg_imgList);
         avatarView = (ImageView)msgContent.findViewById(R.id.showmsg_avatar);
         commentList = (ListView)comment.findViewById(R.id.msg_commentList);
+        likeView = (TextView)msgContent.findViewById(R.id.animation_like);;
+        dislikeView = (TextView)msgContent.findViewById(R.id.animation_dislike);;
+        reportView = (TextView)msgContent.findViewById(R.id.animation_report);;
+        animation  = AnimationUtils.loadAnimation(MsgWindow.this, R.anim.applaud_animation);
 
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         Intent intent = this.getIntent();
@@ -186,6 +199,13 @@ public class MsgWindow extends AppCompatActivity implements AdapterView.OnItemCl
                         PostResult result = JSON.parseObject(response, PostResult.class);
                         if (result.success) {
                             //likeNum.setText(msg.getLikeUsers().size()+1+"");
+                            likeView.setVisibility(View.VISIBLE);
+                            likeView.startAnimation(animation);
+                            new Handler().postDelayed(new Runnable() {
+                                public void run() {
+                                    likeView.setVisibility(View.GONE);
+                                }
+                            }, 1000);
                             refreshMessageInfo(false);
                         } else {
                             Snackbar.make(findViewById(R.id.msg_layout), result.message, Snackbar.LENGTH_LONG).show();
@@ -208,6 +228,13 @@ public class MsgWindow extends AppCompatActivity implements AdapterView.OnItemCl
                         PostResult result = JSON.parseObject(response, PostResult.class);
                         if (result.success) {
                             //dislikeNum.setText(msg.getDislikeUsers().size()+1+"");
+                            dislikeView.setVisibility(View.VISIBLE);
+                            dislikeView.startAnimation(animation);
+                            new Handler().postDelayed(new Runnable() {
+                                public void run() {
+                                    dislikeView.setVisibility(View.GONE);
+                                }
+                            }, 1000);
                             refreshMessageInfo(false);
                         } else {
                             Snackbar.make(findViewById(R.id.msg_layout), result.message, Snackbar.LENGTH_LONG).show();
@@ -229,6 +256,13 @@ public class MsgWindow extends AppCompatActivity implements AdapterView.OnItemCl
                         PostResult result = JSON.parseObject(response, PostResult.class);
                         if (result.success) {
                             //dislikeNum.setText(msg.getDislikeUsers().size()+1+"");
+                            reportView.setVisibility(View.VISIBLE);
+                            reportView.startAnimation(animation);
+                            new Handler().postDelayed(new Runnable() {
+                                public void run() {
+                                    reportView.setVisibility(View.GONE);
+                                }
+                            }, 1000);
                             refreshMessageInfo(false);
                         } else {
                             Snackbar.make(findViewById(R.id.msg_layout), result.message, Snackbar.LENGTH_LONG).show();
@@ -382,7 +416,7 @@ public class MsgWindow extends AppCompatActivity implements AdapterView.OnItemCl
                             author.setText(msg.getOwner().getNickname());
                             content.setText(msg.getContent());
                             likeNum.setText(msg.getLikeUsers().size() + "");
-                            dislikeNum.setText(msg.getDislikeUsers().size() + "");
+                            dislikeNum.setText("-" + msg.getDislikeUsers().size());
                             reportNum.setText(msg.getReportUsers().size() + "");
                             for (Comment comment : msg.comments) {
                                 adapter.add(comment);

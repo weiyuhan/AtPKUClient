@@ -136,12 +136,20 @@
                 android:text="0"
                 android:textSize="14sp" />
 
-            <Button
+            <TextView
+                android:id="@+id/animation_like"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="+1"
+                android:textSize="14sp"
+                android:visibility="gone" />
+
+            <ImageButton
                 android:id="@+id/msg_likeButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:onClick="onLikeButtonClick"
-                android:text="赞"
+                android:src="@drawable/like"
                 android:textSize="14sp" />
 
             <TextView
@@ -152,12 +160,20 @@
                 android:text="0"
                 android:textSize="14sp" />
 
-            <Button
+            <TextView
+                android:id="@+id/animation_dislike"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="-1"
+                android:textSize="14sp"
+                android:visibility="gone" />
+
+            <ImageButton
                 android:id="@+id/msg_dislikeButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:onClick="onDislikeButtonClick"
-                android:text="踩"
+                android:src="@drawable/dislike"
                 android:textSize="14sp" />
 
             <TextView
@@ -167,6 +183,14 @@
                 android:layout_marginLeft="16dp"
                 android:text="0"
                 android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/animation_report"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="+1"
+                android:textSize="14sp"
+                android:visibility="gone" />
 
             <Button
                 android:id="@+id/msg_reportButton"
