@@ -13,7 +13,6 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.text.InputType;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -34,6 +33,7 @@ import com.alibaba.fastjson.JSON;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
+import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.squareup.picasso.Picasso;
@@ -209,13 +209,19 @@ public class MsgWindow extends AppCompatActivity implements AdapterView.OnItemCl
                             likeView.startAnimation(animation);
                             new Handler().postDelayed(new Runnable() {
                                 public void run() {
-                                    likeView.setVisibility(View.GONE);
+                                    likeView.setVisibility(View.INVISIBLE);
                                 }
                             }, 1000);
                             refreshMessageInfo(false);
                         } else {
                             Snackbar.make(findViewById(R.id.msg_layout), result.message, Snackbar.LENGTH_LONG).show();
                         }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError volleyError) {
+                        Snackbar.make(findViewById(R.id.msg_layout), "赞失败，请检查网络连接", Snackbar.LENGTH_LONG).show();
                     }
                 }, null);
         volleyQuque.add(stringRequest);
@@ -238,13 +244,19 @@ public class MsgWindow extends AppCompatActivity implements AdapterView.OnItemCl
                             dislikeView.startAnimation(animation);
                             new Handler().postDelayed(new Runnable() {
                                 public void run() {
-                                    dislikeView.setVisibility(View.GONE);
+                                    dislikeView.setVisibility(View.INVISIBLE);
                                 }
                             }, 1000);
                             refreshMessageInfo(false);
                         } else {
                             Snackbar.make(findViewById(R.id.msg_layout), result.message, Snackbar.LENGTH_LONG).show();
                         }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError volleyError) {
+                        Snackbar.make(findViewById(R.id.msg_layout), "踩失败，请检查网络连接", Snackbar.LENGTH_LONG).show();
                     }
                 }, null);
         volleyQuque.add(stringRequest);
@@ -266,13 +278,19 @@ public class MsgWindow extends AppCompatActivity implements AdapterView.OnItemCl
                             reportView.startAnimation(animation);
                             new Handler().postDelayed(new Runnable() {
                                 public void run() {
-                                    reportView.setVisibility(View.GONE);
+                                    reportView.setVisibility(View.INVISIBLE);
                                 }
                             }, 1000);
                             refreshMessageInfo(false);
                         } else {
                             Snackbar.make(findViewById(R.id.msg_layout), result.message, Snackbar.LENGTH_LONG).show();
                         }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError volleyError) {
+                        Snackbar.make(findViewById(R.id.msg_layout), "举报失败，请检查网络连接", Snackbar.LENGTH_LONG).show();
                     }
                 }, null);
         volleyQuque.add(stringRequest);
@@ -302,6 +320,12 @@ public class MsgWindow extends AppCompatActivity implements AdapterView.OnItemCl
                                                     } else {
                                                         Snackbar.make(findViewById(R.id.msg_layout), result.message, Snackbar.LENGTH_LONG).show();
                                                     }
+                                                }
+                                            },
+                                            new Response.ErrorListener() {
+                                                @Override
+                                                public void onErrorResponse(VolleyError volleyError) {
+                                                    Snackbar.make(findViewById(R.id.msg_layout), "删除失败，请检查网络连接", Snackbar.LENGTH_LONG).show();
                                                 }
                                             }, null);
                                     volleyQuque.add(stringRequest);
@@ -355,6 +379,14 @@ public class MsgWindow extends AppCompatActivity implements AdapterView.OnItemCl
                         else
                             Snackbar.make(findViewById(R.id.msg_layout), result.message, Snackbar.LENGTH_LONG).show();
                     }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError volleyError) {
+                        commentButton.setEnabled(true);
+                        commentButton.setText("评论");
+                        Snackbar.make(findViewById(R.id.msg_layout), "评论失败，请检查网络连接", Snackbar.LENGTH_LONG).show();
+                    }
                 }, params);
         volleyQuque.add(stringRequest);
     }
@@ -370,6 +402,12 @@ public class MsgWindow extends AppCompatActivity implements AdapterView.OnItemCl
                         if (result.success) {
                             finish();
                         }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError volleyError) {
+                        Snackbar.make(findViewById(R.id.msg_layout), "删除信息失败，请检查网络连接", Snackbar.LENGTH_LONG).show();
                     }
                 }, null);
         volleyQuque.add(stringRequest);
@@ -438,6 +476,12 @@ public class MsgWindow extends AppCompatActivity implements AdapterView.OnItemCl
                         }
                         commentList.setAdapter(adapter);
                         adapter.notifyDataSetChanged();
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError volleyError) {
+                        Snackbar.make(findViewById(R.id.msg_layout), "请检查网络连接", Snackbar.LENGTH_LONG).show();
                     }
                 }, null);
         volleyQuque.add(stringRequest);

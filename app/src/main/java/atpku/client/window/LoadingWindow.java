@@ -12,6 +12,7 @@ import com.alibaba.fastjson.JSON;
 import com.amap.api.maps.model.Marker;
 import com.android.volley.Request;
 import com.android.volley.Response;
+import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
@@ -85,6 +86,12 @@ public class LoadingWindow extends AppCompatActivity {
                         initPlaces();
                         Log.d("TAG", response);
                     }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError volleyError) {
+                        Snackbar.make(findViewById(R.id.loading_layout), "请检查网络连接", Snackbar.LENGTH_LONG).show();
+                    }
                 }, null);
         volleyQuque.add(stringRequest);
     }
@@ -143,6 +150,12 @@ public class LoadingWindow extends AppCompatActivity {
                                                     LoadingWindow.this.finish();
                                                 }
                                             }
+                                        },
+                                        new Response.ErrorListener() {
+                                            @Override
+                                            public void onErrorResponse(VolleyError volleyError) {
+                                                Snackbar.make(findViewById(R.id.loading_layout), "请检查网络连接", Snackbar.LENGTH_LONG).show();
+                                            }
                                         }, null);
                                 volleyQuque.add(globalMsgRequest);
                             }
@@ -154,6 +167,12 @@ public class LoadingWindow extends AppCompatActivity {
                             finish();
                         }
                         Log.d("TAG", response);
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError volleyError) {
+                        Snackbar.make(findViewById(R.id.loading_layout), "请检查网络连接", Snackbar.LENGTH_LONG).show();
                     }
                 }, params);
         volleyQuque.add(stringRequest);

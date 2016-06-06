@@ -107,7 +107,6 @@ public class SearchMsgWindow extends AppCompatActivity {
                 calendar.get(Calendar.DAY_OF_MONTH));
         datePickerDialog.setTitle("选择时间");
         datePickerDialog.show();
-
     }
 
     public void searchMsgSubmitHandler(View source) {

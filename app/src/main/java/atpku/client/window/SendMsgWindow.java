@@ -36,6 +36,7 @@ import com.alibaba.sdk.android.oss.model.PutObjectRequest;
 import com.alibaba.sdk.android.oss.model.PutObjectResult;
 import com.android.volley.Request;
 import com.android.volley.Response;
+import com.android.volley.VolleyError;
 import com.android.volley.toolbox.Volley;
 
 import java.io.File;
@@ -180,7 +181,6 @@ public class SendMsgWindow extends AppCompatActivity implements AdapterView.OnIt
                 calendar.get(Calendar.DAY_OF_MONTH));
         datePickerDialog.setTitle("选择时间");
         datePickerDialog.show();
-
     }
 
     public void sendMsgSubmitHandler(View source) {
@@ -284,7 +284,6 @@ public class SendMsgWindow extends AppCompatActivity implements AdapterView.OnIt
                 }
             });
         }
-
     }
 
     public void sendMsgRequest(Map<String, String> params) {
@@ -308,6 +307,15 @@ public class SendMsgWindow extends AppCompatActivity implements AdapterView.OnIt
                         }
                         Log.d("TAG", response);
                     }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError volleyError) {
+                        submitButton.setText("发送");
+                        submitButton.setEnabled(true);
+                        progressBar.setVisibility(View.INVISIBLE);
+                        Snackbar.make(findViewById(R.id.sendMsg_layout), "发送失败，请检查网络连接", Snackbar.LENGTH_LONG).show();
+                    }
                 }, params);
         volleyQuque.add(stringRequest);
     }
@@ -325,7 +333,6 @@ public class SendMsgWindow extends AppCompatActivity implements AdapterView.OnIt
                 break;
         }
         return true;
-
     }
 
     public void addImageSubmitHandler(View view) {
@@ -375,10 +382,7 @@ public class SendMsgWindow extends AppCompatActivity implements AdapterView.OnIt
             String imgPath = cameraImageTempFile.getAbsolutePath();
 
             if (cameraImageTempFile.exists() && cameraImageTempFile.canRead()) {
-
                 System.out.println(imgPath);
-
-
                 if (!imgUris.contains(imgPath)) {
                     imgUris.add(imgPath);
                     imageAdapter.add(Uri.fromFile(cameraImageTempFile).toString());
@@ -398,7 +402,6 @@ public class SendMsgWindow extends AppCompatActivity implements AdapterView.OnIt
         if (position == 1) {
             addImageSubmitHandler(null);
         }
-
 
         if (position >= 2) {
             final String imgUrl = (String) parent.getItemAtPosition(position);

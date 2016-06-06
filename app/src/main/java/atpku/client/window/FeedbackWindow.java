@@ -12,6 +12,7 @@ import android.widget.EditText;
 
 import com.alibaba.fastjson.JSON;
 import com.android.volley.Response;
+import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
@@ -71,6 +72,12 @@ public class FeedbackWindow extends AppCompatActivity {
                             finish();
                         }
                         Log.d("TAG", response);
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError volleyError) {
+                        Snackbar.make(findViewById(R.id.feedback_layout), "发送失败，请检查网络连接", Snackbar.LENGTH_LONG).show();
                     }
                 }, params);
         volleyQuque.add(stringRequest);

@@ -7,28 +7,23 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.SearchView;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
+import com.android.volley.VolleyError;
 import com.android.volley.toolbox.Volley;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import atpku.client.R;
-import atpku.client.model.Place;
 import atpku.client.util.StringRequestWithCookie;
 import atpku.client.model.Message;
 import atpku.client.model.PostResult;
@@ -75,6 +70,12 @@ public class ReportHandlingWindow extends AppCompatActivity {
                             Snackbar.make(findViewById(R.id.reporthandle_layout), result.message, Snackbar.LENGTH_LONG).show();
                         msgList.setAdapter(adapter);
                         adapter.notifyDataSetChanged();
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError volleyError) {
+                        Snackbar.make(findViewById(R.id.reporthandle_layout), "请检查网络连接", Snackbar.LENGTH_LONG).show();
                     }
                 }, null);
         volleyQuque.add(stringRequest);

@@ -143,7 +143,7 @@
                 android:layout_height="wrap_content"
                 android:text="+1"
                 android:textSize="14sp"
-                android:visibility="gone" />
+                android:visibility="invisible" />
 
             <ImageButton
                 android:id="@+id/msg_likeButton"
@@ -167,7 +167,7 @@
                 android:layout_height="wrap_content"
                 android:text="-1"
                 android:textSize="14sp"
-                android:visibility="gone" />
+                android:visibility="invisible" />
 
             <ImageButton
                 android:id="@+id/msg_dislikeButton"
@@ -191,7 +191,7 @@
                 android:layout_height="wrap_content"
                 android:text="+1"
                 android:textSize="14sp"
-                android:visibility="gone" />
+                android:visibility="invisible" />
 
             <Button
                 android:id="@+id/msg_reportButton"

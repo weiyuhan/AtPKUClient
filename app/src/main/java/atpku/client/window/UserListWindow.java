@@ -22,22 +22,18 @@ import com.alibaba.fastjson.JSON;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
+import com.android.volley.VolleyError;
 import com.android.volley.toolbox.Volley;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import atpku.client.R;
-import atpku.client.model.Place;
 import atpku.client.model.User;
 import atpku.client.util.StringRequestWithCookie;
-import atpku.client.model.Message;
 import atpku.client.model.PostResult;
 import atpku.client.util.ThemeUtil;
 
@@ -110,6 +106,12 @@ public class UserListWindow extends AppCompatActivity implements SearchView.OnQu
                                 Snackbar.make(findViewById(R.id.userList_layout), result.message, Snackbar.LENGTH_LONG).show();
                             userList.setAdapter(adapter);
                             adapter.notifyDataSetChanged();
+                        }
+                    },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError volleyError) {
+                            Snackbar.make(findViewById(R.id.userList_layout), "请检查网络连接", Snackbar.LENGTH_LONG).show();
                         }
                     }, null);
         } catch (UnsupportedEncodingException e) {

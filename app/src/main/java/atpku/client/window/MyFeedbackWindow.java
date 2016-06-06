@@ -9,23 +9,19 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ListView;
 
 import com.alibaba.fastjson.JSON;
 import com.android.volley.Response;
+import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import atpku.client.R;
 import atpku.client.model.Feedback;
 import atpku.client.model.PostResult;
-import atpku.client.model.User;
 import atpku.client.util.StringRequestWithCookie;
 import atpku.client.util.ThemeUtil;
 
@@ -100,6 +96,12 @@ public class MyFeedbackWindow extends AppCompatActivity
                             feedbackList.setAdapter(adapter);
                         }
                         Log.d("TAG", response);
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError volleyError) {
+                        Snackbar.make(findViewById(R.id.myfeedback_layout), "请检查网络连接", Snackbar.LENGTH_LONG).show();
                     }
                 }, null);
         volleyQuque.add(stringRequest);

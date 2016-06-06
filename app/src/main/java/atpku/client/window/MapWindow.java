@@ -3,8 +3,6 @@ package atpku.client.window;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
@@ -28,6 +26,7 @@ import com.amap.api.maps.model.*;
 import com.amap.api.location.*;
 import com.android.volley.Request;
 import com.android.volley.Response;
+import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.baidu.android.pushservice.PushConstants;
@@ -35,7 +34,6 @@ import com.baidu.android.pushservice.PushManager;
 import com.baidu.android.pushservice.PushSettings;
 import com.squareup.picasso.Picasso;
 
-import java.io.SyncFailedException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -44,7 +42,6 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import atpku.client.R;
-import atpku.client.util.BitMapTarget;
 import atpku.client.util.StringRequestWithCookie;
 import atpku.client.model.Message;
 import atpku.client.model.Place;
@@ -159,7 +156,7 @@ public class MapWindow extends AppCompatActivity implements
             public void run() {
                 refreshPlaces();
             }
-        }, 0, 120000); // for each 2 min, refresh all messages about places
+        }, 120000, 120000); // for each 2 min, refresh all messages about places
     }
 
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -270,6 +267,12 @@ public class MapWindow extends AppCompatActivity implements
                                 editPrefs.apply();
                             }
                             Log.d("TAG", response);
+                        }
+                    },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError volleyError) {
+                            Snackbar.make(findViewById(R.id.map_layout), "登出失败，请检查网络连接", Snackbar.LENGTH_LONG).show();
                         }
                     }, params);
             volleyQuque.add(stringRequest);
@@ -478,6 +481,12 @@ public class MapWindow extends AppCompatActivity implements
                                                 }
                                                 Log.d("TAG", response);
                                             }
+                                        },
+                                        new Response.ErrorListener() {
+                                            @Override
+                                            public void onErrorResponse(VolleyError volleyError) {
+                                                Snackbar.make(findViewById(R.id.map_layout), "请检查网络连接", Snackbar.LENGTH_LONG).show();
+                                            }
                                         }, null);
                                 volleyQuque.add(globalMsgRequest);
                             }
@@ -485,6 +494,12 @@ public class MapWindow extends AppCompatActivity implements
                             Snackbar.make(findViewById(R.id.map_layout), result.message, Snackbar.LENGTH_LONG).show();
                         }
                         Log.d("TAG", response);
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError volleyError) {
+                        Snackbar.make(findViewById(R.id.map_layout), "请检查网络连接", Snackbar.LENGTH_LONG).show();
                     }
                 }, null);
         volleyQuque.add(stringRequest);

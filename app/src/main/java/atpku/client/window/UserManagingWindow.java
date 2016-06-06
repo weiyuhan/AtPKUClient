@@ -24,17 +24,14 @@ import com.alibaba.fastjson.JSON;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
-import com.android.volley.toolbox.StringRequest;
+import com.android.volley.VolleyError;
 import com.android.volley.toolbox.Volley;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import atpku.client.R;
-import atpku.client.model.Comment;
 import atpku.client.model.Message;
 import atpku.client.model.PostResult;
 import atpku.client.model.User;
@@ -102,16 +99,21 @@ public class UserManagingWindow extends AppCompatActivity {
                                             refreshUserInfo();
                                         }
                                     }
+                                },
+                                new Response.ErrorListener() {
+                                    @Override
+                                    public void onErrorResponse(VolleyError volleyError) {
+                                        Snackbar.make(findViewById(R.id.userInfo_layout), "请检查网络连接", Snackbar.LENGTH_LONG).show();
+                                    }
                                 }, null);
                         volleyQuque.add(stringRequest);
                     }
-                })
-                        .setNegativeButton("取消", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                return;
-                            }
-                        }).show();
+                }).setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        return;
+                    }
+                }).show();
             }
         });
     }
@@ -175,6 +177,12 @@ public class UserManagingWindow extends AppCompatActivity {
                             Snackbar.make(findViewById(R.id.userManaging_layout), result.message, Snackbar.LENGTH_LONG).show();
                         msgList.setAdapter(adapter);
                         adapter.notifyDataSetChanged();
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError volleyError) {
+                        Snackbar.make(findViewById(R.id.userManaging_layout), "请检查网络连接", Snackbar.LENGTH_LONG).show();
                     }
                 }, params);
         volleyQuque.add(stringRequest2);

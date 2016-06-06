@@ -2,7 +2,6 @@ package atpku.client.window;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.ActionBar;
@@ -11,19 +10,14 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.RadioButton;
 
 import com.alibaba.fastjson.JSON;
-import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -46,7 +40,6 @@ public class RegisterWindow extends AppCompatActivity {
 
     private RequestQueue volleyQuque;
 
-
     protected void onCreate(Bundle savedInstanceState)
     {
         ThemeUtil.setTheme(this);
@@ -67,7 +60,6 @@ public class RegisterWindow extends AppCompatActivity {
         submitButton = (Button) findViewById(R.id.regist_submitButton);
 
         volleyQuque = Volley.newRequestQueue(this);
-
     }
 
     public void registSubmitHandler(View source) {
@@ -141,12 +133,14 @@ public class RegisterWindow extends AppCompatActivity {
                         }
                         Log.d("TAG", response);
                     }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError volleyError) {
+                        Snackbar.make(findViewById(R.id.registLayout), "请检查网络连接", Snackbar.LENGTH_LONG).show();
+                    }
                 }, params);
         volleyQuque.add(stringRequest);
-    }
-
-    public void registerBackHandler(View source) {
-        super.onBackPressed();
     }
 
     public boolean onOptionsItemSelected(MenuItem mi) {

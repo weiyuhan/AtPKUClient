@@ -43,8 +43,7 @@ public class LoginWindow extends AppCompatActivity {
 
     private RequestQueue volleyQuque;
 
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         ThemeUtil.setTheme(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login);
@@ -104,9 +103,8 @@ public class LoginWindow extends AppCompatActivity {
                 },
                 new Response.ErrorListener() {
                     @Override
-                    public void onErrorResponse(VolleyError error) {
-                        //System.out.println("error : " + error.getMessage());
-                        Log.e("TAG", error.getMessage(), error);
+                    public void onErrorResponse(VolleyError volleyError) {
+                        Snackbar.make(findViewById(R.id.login_layout), "登录失败，请检查网络连接", Snackbar.LENGTH_LONG).show();
                     }
                 }) {
             @Override

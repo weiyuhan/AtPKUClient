@@ -36,6 +36,7 @@ import com.alibaba.sdk.android.oss.model.PutObjectResult;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
+import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.squareup.picasso.Picasso;
@@ -53,7 +54,6 @@ import java.util.Map;
 import atpku.client.AtPKUApplication;
 import atpku.client.R;
 import atpku.client.util.StringRequestWithCookie;
-import atpku.client.model.Feedback;
 import atpku.client.model.PostResult;
 import atpku.client.model.User;
 import atpku.client.util.ThemeUtil;
@@ -65,7 +65,7 @@ import atpku.client.util.Utillity;
  * Created by JIANG YUMENG on 2016/5/14.
  * Show user info.
  */
-public class UserInfoWindow extends AppCompatActivity implements AdapterView.OnItemClickListener{
+public class UserInfoWindow extends AppCompatActivity implements AdapterView.OnItemClickListener {
 
     private User user;
 
@@ -90,8 +90,7 @@ public class UserInfoWindow extends AppCompatActivity implements AdapterView.OnI
     public boolean modifyNickname = false;
     public String newNickname;
 
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         ThemeUtil.setTheme(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.userinfo);
@@ -101,8 +100,8 @@ public class UserInfoWindow extends AppCompatActivity implements AdapterView.OnI
         actionBar.setLogo(R.mipmap.ic_launcher);
         actionBar.setDisplayHomeAsUpEnabled(true);
 
-        imgList = (ListView)findViewById(R.id.userInfo_imgList);
-        infoList = (ListView)findViewById(R.id.userInfo_infoList);
+        imgList = (ListView) findViewById(R.id.userInfo_imgList);
+        infoList = (ListView) findViewById(R.id.userInfo_infoList);
 
         infoList.setOnItemClickListener(this);
 
@@ -123,36 +122,32 @@ public class UserInfoWindow extends AppCompatActivity implements AdapterView.OnI
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        switch (position)
-        {
+        switch (position) {
             case 0: { // 修改昵称
                 setNickname();
             }
-                break;
+            break;
             case 2: { // 修改性别
                 selectGender();
             }
-                break;
+            break;
             case 3: { // 显示加入天数
                 showJoinDays();
             }
-                break;
+            break;
             default:
                 break;
         }
     }
 
-    public void showJoinDays()
-    {
+    public void showJoinDays() {
         String diff = Utillity.dateDiff(user.date_joined.replaceAll("T", " "));
-        if(diff != null)
-        {
+        if (diff != null) {
             Snackbar.make(findViewById(R.id.userInfo_layout), "您已加入AtPKU " + diff, Snackbar.LENGTH_LONG).show();
         }
     }
 
-    public void setNickname()
-    {
+    public void setNickname() {
         final EditText text = new EditText(this);
         android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(this);
         builder.setTitle("请输入新的昵称");
@@ -168,8 +163,7 @@ public class UserInfoWindow extends AppCompatActivity implements AdapterView.OnI
                     TextView textView = (TextView) infoList.getChildAt(0).findViewById(R.id.userInfo_row_value);
                     textView.setText(newNickname);
                 }
-                if(modifyNickname)
-                {
+                if (modifyNickname) {
                     modifyNickname = false;
                     Map<String, String> params = new HashMap<String, String>();
                     params.put("nickname", newNickname);
@@ -181,37 +175,38 @@ public class UserInfoWindow extends AppCompatActivity implements AdapterView.OnI
         builder.show();
     }
 
-    public void selectGender()
-    {
-        String items[]={"男","女"};
+    public void selectGender() {
+        String items[] = {"男", "女"};
         android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(this);
         builder.setTitle("请选择您的性别");
         builder.setCancelable(true);
         builder.setItems(items, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    //dialog.dismiss();
-                    if (user.gender.equals("m") && which == 1) {
-                        modifyGender = true;
-                        newGender = "f";
-                        TextView textView = (TextView) infoList.getChildAt(2).findViewById(R.id.userInfo_row_value);
-                        textView.setText("女");
-                    }
-                    if (user.gender.equals("f") && which == 0) {
-                        modifyGender = true;
-                        newGender = "m";
-                        TextView textView = (TextView) infoList.getChildAt(2).findViewById(R.id.userInfo_row_value);
-                        textView.setText("男");
-                    }
-                    if (modifyGender) {
-                        modifyGender = false;
-                        Map<String, String> params = new HashMap<String, String>();
-                        params.put("gender", newGender);
-                        submitChange(params);
-                    }
-                    dialog.dismiss();
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                //dialog.dismiss();
+                if (user.gender.equals("m") && which == 1) {
+                    modifyGender = true;
+                    newGender = "f";
+                    TextView textView = (TextView) infoList.getChildAt(2).findViewById(R.id.userInfo_row_value);
+                    textView.setText("女");
+                    user.gender = newGender;
                 }
-            });
+                if (user.gender.equals("f") && which == 0) {
+                    modifyGender = true;
+                    newGender = "m";
+                    TextView textView = (TextView) infoList.getChildAt(2).findViewById(R.id.userInfo_row_value);
+                    textView.setText("男");
+                    user.gender = newGender;
+                }
+                if (modifyGender) {
+                    modifyGender = false;
+                    Map<String, String> params = new HashMap<String, String>();
+                    params.put("gender", newGender);
+                    submitChange(params);
+                }
+                dialog.dismiss();
+            }
+        });
         builder.create().show();
     }
 
@@ -228,26 +223,24 @@ public class UserInfoWindow extends AppCompatActivity implements AdapterView.OnI
             UserInfoAdapter infoAdapter = new UserInfoAdapter(this, R.layout.userinfo_row);
             infoAdapter.add(new UserInfoLine("昵称", user.nickname, null, String.valueOf(R.drawable.right_entry)));
             infoAdapter.add(new UserInfoLine("邮箱", user.email, null, String.valueOf(R.drawable.right_entry)));
-            if(user.gender.equals("m"))
+            if (user.gender.equals("m"))
                 infoAdapter.add(new UserInfoLine("性别", "男", null, String.valueOf(R.drawable.right_entry)));
             else
                 infoAdapter.add(new UserInfoLine("性别", "女", null, String.valueOf(R.drawable.right_entry)));
             infoAdapter.add(new UserInfoLine("加入时间", Utillity.parseTimeString(user.date_joined), null, String.valueOf(R.drawable.right_entry)));
-            if(user.isAdmin)
+            if (user.isAdmin)
                 infoAdapter.add(new UserInfoLine("状态", "管理员", null, String.valueOf(R.drawable.right_entry)));
-            else if(user.isBanned)
+            else if (user.isBanned)
                 infoAdapter.add(new UserInfoLine("状态", "禁言", null, String.valueOf(R.drawable.right_entry)));
             else
                 infoAdapter.add(new UserInfoLine("状态", "正常", null, String.valueOf(R.drawable.right_entry)));
             infoAdapter.add(new UserInfoLine("被赞总数", String.valueOf(user.likeReceived), null, String.valueOf(R.drawable.right_entry)));
             infoAdapter.add(new UserInfoLine("被评论总数", String.valueOf(user.commentReceived), null, String.valueOf(R.drawable.right_entry)));
             infoList.setAdapter(infoAdapter);
-
         }
     }
 
-    public void refreshUser(boolean refreshUI)
-    {
+    public void refreshUser(boolean refreshUI) {
         final boolean refreshui = refreshUI;
         StringRequestWithCookie stringRequest = new StringRequestWithCookie(StringRequest.Method.GET, "http://139.129.22.145:5000/profile",
                 new Response.Listener<String>() {
@@ -262,12 +255,18 @@ public class UserInfoWindow extends AppCompatActivity implements AdapterView.OnI
                             mEditor.putString("userInfoJson", result.data);
                             mEditor.apply();
                             mEditor.commit();
-                            if(refreshui)
+                            if (refreshui)
                                 refreshUserInfo();
                         } else {
                             Snackbar.make(findViewById(R.id.userInfo_layout), result.message, Snackbar.LENGTH_LONG).show();
                         }
                         Log.d("TAG", response);
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError volleyError) {
+                        Snackbar.make(findViewById(R.id.userInfo_layout), "请检查网络连接", Snackbar.LENGTH_LONG).show();
                     }
                 }, null);
         volleyQuque.add(stringRequest);
@@ -289,11 +288,15 @@ public class UserInfoWindow extends AppCompatActivity implements AdapterView.OnI
                 super.onBackPressed();
                 break;
             case R.id.action_feedback: {
+                if(user == null)
+                    return true;
                 Intent intent = new Intent(UserInfoWindow.this, MyFeedbackWindow.class);
                 startActivity(intent);
             }
             break;
             case R.id.action_mymsg: {
+                if(user == null)
+                    return true;
                 HashMap<String, String> params = new HashMap<String, String>();
                 params.put("nickname", user.getNickname());
                 Intent intent = new Intent(UserInfoWindow.this, SearchResultWindow.class);
@@ -357,7 +360,7 @@ public class UserInfoWindow extends AppCompatActivity implements AdapterView.OnI
                 Log.d("RequestId", result.getRequestId());
                 uploaded = true;
                 avatarUrl = "http://" + request.getBucketName() + ".img-cn-shanghai.aliyuncs.com/" + request.getObjectKey();
-                Map<String,String> params = new HashMap<String, String>();
+                Map<String, String> params = new HashMap<String, String>();
                 params.put("avatar", avatarUrl);
                 submitChange(params);
             }
@@ -381,8 +384,7 @@ public class UserInfoWindow extends AppCompatActivity implements AdapterView.OnI
     }
 
 
-    public void submitChange(Map<String,String> params)
-    {
+    public void submitChange(Map<String, String> params) {
         System.out.println(params);
         StringRequestWithCookie stringRequest = new StringRequestWithCookie(Request.Method.POST,
                 "http://139.129.22.145:5000/profile",
@@ -392,15 +394,20 @@ public class UserInfoWindow extends AppCompatActivity implements AdapterView.OnI
                         PostResult result = JSON.parseObject(response, PostResult.class);
                         Snackbar.make(findViewById(R.id.userInfo_layout), result.message, Snackbar.LENGTH_LONG).show();
                         if (result.success) {
-                            if(modifyAvatar && uploaded)
-                            {
+                            if (modifyAvatar && uploaded) {
                                 modifyAvatar = uploaded = false;
-                                ImageView imageView = (ImageView)imgList.getChildAt(0).findViewById(R.id.userInfo_row_img);
-                                Picasso.with(UserInfoWindow.this).load(Uri.fromFile(avatarFile)).resize(200,200).into(imageView);
+                                ImageView imageView = (ImageView) imgList.getChildAt(0).findViewById(R.id.userInfo_row_img);
+                                Picasso.with(UserInfoWindow.this).load(Uri.fromFile(avatarFile)).resize(200, 200).into(imageView);
                             }
                         }
                         refreshUser(false);
                         Log.d("TAG", response);
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError volleyError) {
+                        Snackbar.make(findViewById(R.id.userInfo_layout), "提交失败，请检查网络连接", Snackbar.LENGTH_LONG).show();
                     }
                 }, params);
         volleyQuque.add(stringRequest);
@@ -427,9 +434,7 @@ public class UserInfoWindow extends AppCompatActivity implements AdapterView.OnI
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-
     }
-
 
 
     private void crop(Uri uri) {
