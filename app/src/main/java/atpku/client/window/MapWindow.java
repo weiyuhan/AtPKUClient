@@ -498,13 +498,27 @@ public class MapWindow extends AppCompatActivity implements
             if (marker == null) {
                 markerOptions.position(pos);
                 markerOptions.title(placename);
-                markerOptions.icon(BitmapDescriptorFactory.fromResource(R.mipmap.building_school));
+                setMarkerIcon(markerOptions, place.type);
                 System.out.println("addMarker " + placename);
                 marker = aMap.addMarker(markerOptions);
                 markers.put(placename, marker);
             }
             marker.setSnippet(place.snippetString());
         }
+    }
+
+    public static void setMarkerIcon(MarkerOptions markerOptions, String type)
+    {
+        if(type.equals("building"))
+            markerOptions.icon(BitmapDescriptorFactory.fromResource(R.mipmap.building_school));
+        else if(type.equals("canteen"))
+            markerOptions.icon(BitmapDescriptorFactory.fromResource(R.mipmap.building_canteen));
+        else if(type.equals("tower"))
+            markerOptions.icon(BitmapDescriptorFactory.fromResource(R.mipmap.building_tower));
+        else if(type.equals("gate"))
+            markerOptions.icon(BitmapDescriptorFactory.fromResource(R.mipmap.building_gate));
+        else
+            markerOptions.icon(BitmapDescriptorFactory.fromResource(R.mipmap.building_school));
     }
 
     public void onLocationChanged(AMapLocation amapLocation) {

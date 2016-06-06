@@ -12,6 +12,7 @@ public class Place implements Serializable
     public double lng;
     public double lat;
     public String name;
+    public String type;
     public List<Message> globalMessages;
 
     public List<Message> getGlobalMessages() {
@@ -20,6 +21,14 @@ public class Place implements Serializable
 
     public void setGlobalMessages(List<Message> globalMessages) {
         this.globalMessages = globalMessages;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 
     public int getId() {
@@ -61,6 +70,7 @@ public class Place implements Serializable
                 ", lng=" + lng +
                 ", lat=" + lat +
                 ", name='" + name + '\'' +
+                ", type='" + type + '\'' +
                 ", globalMessages=" + globalMessages +
                 '}';
     }
