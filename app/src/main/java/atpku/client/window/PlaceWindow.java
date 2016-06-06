@@ -90,6 +90,16 @@ public class PlaceWindow extends AppCompatActivity implements SearchView.OnQuery
                                 System.out.println("Get message: " + message.getTitle().toString());
                                 adapter.add(message);
                             }
+                            if(messages.size() == 0)
+                            {
+                                Snackbar.make(findViewById(R.id.place_layout), "这里什么也没有，去其他地方看看吧", Snackbar.LENGTH_INDEFINITE)
+                                        .setAction("确定", new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View v) {
+                                                finish();
+                                            }
+                                        }).setActionTextColor(getResources().getColor(R.color.white)).show();
+                            }
                         } else
                             Snackbar.make(findViewById(R.id.place_layout), result.message, Snackbar.LENGTH_LONG).show();
                         msgList.setAdapter(adapter);

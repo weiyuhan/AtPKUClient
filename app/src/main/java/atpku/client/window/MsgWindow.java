@@ -5,11 +5,17 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
+import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.PagerTabStrip;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.text.InputType;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -27,6 +33,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -45,6 +52,18 @@ import atpku.client.util.ThemeUtil;
  * Created by wyh on 2016/5/19.
  */
 public class MsgWindow extends AppCompatActivity implements AdapterView.OnItemClickListener {
+
+    public View msgContent;
+    public View comment;
+
+    private RequestQueue volleyQuque;
+    private Message msg;
+
+    ViewPager pager = null;
+    PagerTabStrip tabStrip = null;
+    ArrayList<View> viewContainter = new ArrayList<View>();
+    ArrayList<String> titleContainer = new ArrayList<String>();
+
     public TextView title;
     public TextView time;
     public TextView author;
@@ -58,12 +77,10 @@ public class MsgWindow extends AppCompatActivity implements AdapterView.OnItemCl
     public Button deleteButton;
     public EditText commentText;
     public Button commentButton;
-    public ListView commentList;
-    private RequestQueue volleyQuque;
-    private Message msg;
-    private ImageView avatarView;
-
+    public ImageView avatarView;
     public GridView imageList;
+    public ListView commentList;
+
 
     private int messageID;
     public static String CUT_FILL_BLACK = "@200w_200h_4e_0-0-0bgc";
@@ -75,189 +92,231 @@ public class MsgWindow extends AppCompatActivity implements AdapterView.OnItemCl
     protected void onCreate(Bundle savedInstanceState) {
         ThemeUtil.setTheme(this);
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.showmsg);
+        setContentView(R.layout.msg);
 
         actionBar = getSupportActionBar();
         actionBar.setDisplayUseLogoEnabled(true);
         actionBar.setLogo(R.mipmap.ic_launcher);
         actionBar.setDisplayHomeAsUpEnabled(true);
 
-        title = (TextView) findViewById(R.id.msg_title);
-        time = (TextView) findViewById(R.id.msg_time);
-        author = (TextView) findViewById(R.id.msg_author);
-        content = (TextView) findViewById(R.id.msg_content);
-        likeNum = (TextView) findViewById(R.id.msg_likeNum);
-        likeButton = (Button) findViewById(R.id.msg_likeButton);
-        dislikeNum = (TextView) findViewById(R.id.msg_dislikeNum);
-        dislikeButton = (Button) findViewById(R.id.msg_dislikeButton);
-        reportNum = (TextView) findViewById(R.id.msg_reportNum);
-        reportButton = (Button) findViewById(R.id.msg_reportButton);
-        deleteButton = (Button) findViewById(R.id.msg_deleteButton);
-        commentText = (EditText) findViewById(R.id.msg_addComment);
-        commentButton = (Button) findViewById(R.id.msg_commentButton);
-        commentList = (ListView) findViewById(R.id.msg_commentList);
-        imageList = (GridView) findViewById(R.id.msg_imgList);
-        avatarView = (ImageView) findViewById(R.id.showmsg_avatar);
+        pager = (ViewPager) this.findViewById(R.id.viewpager);
+        tabStrip = (PagerTabStrip) this.findViewById(R.id.tabstrip);
+
+        msgContent = LayoutInflater.from(this).inflate(R.layout.msg_content, null);
+        comment = LayoutInflater.from(this).inflate(R.layout.msg_comment, null);
+        //viewpager开始添加view
+        viewContainter.add(msgContent);
+        viewContainter.add(comment);
+        //页签项
+        titleContainer.add("信息内容");
+        titleContainer.add("评论");
+
+        pager.setAdapter(new PagerAdapter() {
+
+            //viewpager中的组件数量
+            @Override
+            public int getCount() {
+                return viewContainter.size();
+            }
+
+            //滑动切换的时候销毁当前的组件
+            @Override
+            public void destroyItem(ViewGroup container, int position,
+                                    Object object) {
+                ((ViewPager) container).removeView(viewContainter.get(position));
+            }
+
+            //每次滑动的时候生成的组件
+            @Override
+            public Object instantiateItem(ViewGroup container, int position) {
+                ((ViewPager) container).addView(viewContainter.get(position));
+                return viewContainter.get(position);
+            }
+
+            @Override
+            public boolean isViewFromObject(View arg0, Object arg1) {
+                return arg0 == arg1;
+            }
+
+            @Override
+            public int getItemPosition(Object object) {
+                return super.getItemPosition(object);
+            }
+
+            @Override
+            public CharSequence getPageTitle(int position) {
+                return titleContainer.get(position);
+            }
+        });
+
+        title = (TextView)msgContent.findViewById(R.id.msg_title);
+        time = (TextView)msgContent.findViewById(R.id.msg_time);
+        author = (TextView)msgContent.findViewById(R.id.msg_author);
+        content = (TextView)msgContent.findViewById(R.id.msg_content);
+        likeNum = (TextView)msgContent.findViewById(R.id.msg_likeNum);
+        likeButton = (Button)msgContent.findViewById(R.id.msg_likeButton);
+        dislikeNum = (TextView)msgContent.findViewById(R.id.msg_dislikeNum);
+        dislikeButton = (Button)msgContent.findViewById(R.id.msg_dislikeButton);
+        reportNum = (TextView)msgContent.findViewById(R.id.msg_reportNum);
+        reportButton = (Button)msgContent.findViewById(R.id.msg_reportButton);
+        deleteButton = (Button)msgContent.findViewById(R.id.msg_deleteButton);
+        commentText = (EditText)msgContent.findViewById(R.id.msg_addComment);
+        commentButton = (Button)msgContent.findViewById(R.id.msg_commentButton);
+        imageList = (GridView)msgContent.findViewById(R.id.msg_imgList);
+        avatarView = (ImageView)msgContent.findViewById(R.id.showmsg_avatar);
+        commentList = (ListView)comment.findViewById(R.id.msg_commentList);
 
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         Intent intent = this.getIntent();
         messageID = (int) intent.getSerializableExtra("messageID");
         volleyQuque = Volley.newRequestQueue(this);
         refreshMessageInfo(true);
-        likeButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!MapWindow.isLogin) {
-                    Snackbar.make(findViewById(R.id.msg_layout), "请登录", Snackbar.LENGTH_LONG).show();
-                    return;
-                }
-                StringRequestWithCookie stringRequest = new StringRequestWithCookie(Request.Method.POST,
-                        "http://139.129.22.145:5000/message/" + messageID + "/like",
-                        new Response.Listener<String>() {
-                            @Override
-                            public void onResponse(String response) {
-                                PostResult result = JSON.parseObject(response, PostResult.class);
-                                if (result.success) {
-                                    //likeNum.setText(msg.getLikeUsers().size()+1+"");
-                                    refreshMessageInfo(false);
-                                } else {
-                                    Snackbar.make(findViewById(R.id.msg_layout), result.message, Snackbar.LENGTH_LONG).show();
-                                }
-                            }
-                        }, null);
-                volleyQuque.add(stringRequest);
-            }
-        });
-        dislikeButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!MapWindow.isLogin) {
-                    Snackbar.make(findViewById(R.id.msg_layout), "请登录", Snackbar.LENGTH_LONG).show();
-                    return;
-                }
-                StringRequestWithCookie stringRequest = new StringRequestWithCookie(Request.Method.POST,
-                        "http://139.129.22.145:5000/message/" + messageID + "/dislike",
-                        new Response.Listener<String>() {
-                            @Override
-                            public void onResponse(String response) {
-                                PostResult result = JSON.parseObject(response, PostResult.class);
-                                if (result.success) {
-                                    //dislikeNum.setText(msg.getDislikeUsers().size()+1+"");
-                                    refreshMessageInfo(false);
-                                } else {
-                                    Snackbar.make(findViewById(R.id.msg_layout), result.message, Snackbar.LENGTH_LONG).show();
-                                }
-                            }
-                        }, null);
-                volleyQuque.add(stringRequest);
-            }
-        });
-        reportButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!MapWindow.isLogin) {
-                    Snackbar.make(findViewById(R.id.msg_layout), "请登录", Snackbar.LENGTH_LONG).show();
-                    return;
-                }
-                StringRequestWithCookie stringRequest = new StringRequestWithCookie(Request.Method.POST,
-                        "http://139.129.22.145:5000/message/" + messageID + "/report",
-                        new Response.Listener<String>() {
-                            @Override
-                            public void onResponse(String response) {
-                                PostResult result = JSON.parseObject(response, PostResult.class);
-                                if (result.success) {
-                                    //dislikeNum.setText(msg.getDislikeUsers().size()+1+"");
-                                    refreshMessageInfo(false);
-                                } else {
-                                    Snackbar.make(findViewById(R.id.msg_layout), result.message, Snackbar.LENGTH_LONG).show();
-                                }
-                            }
-                        }, null);
-                volleyQuque.add(stringRequest);
-            }
-        });
-        deleteButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (MapWindow.user.getIsAdmin() && MapWindow.user.getId() != msg.getId()) {
-                    new AlertDialog.Builder(MsgWindow.this).setTitle("是否同时禁言该用户？")
-                            .setPositiveButton("是", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    final EditText daysText = new EditText(MsgWindow.this);
-                                    daysText.setInputType(InputType.TYPE_CLASS_NUMBER);
-                                    new AlertDialog.Builder(MsgWindow.this).setTitle("请输入禁言天数").setView(
-                                            daysText).setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialog, int which) {
-                                            StringRequestWithCookie stringRequest = new StringRequestWithCookie(Request.Method.POST,
-                                                    "http://139.129.22.145:5000/banUser/" + msg.getOwner().getId()
-                                                            + "/" + daysText.getText().toString(),
-                                                    new Response.Listener<String>() {
-                                                        @Override
-                                                        public void onResponse(String response) {
-                                                            PostResult result = JSON.parseObject(response, PostResult.class);
-                                                            if (result.success) {
-                                                                return;
-                                                            } else {
-                                                                Snackbar.make(findViewById(R.id.msg_layout), result.message, Snackbar.LENGTH_LONG).show();
-                                                            }
-                                                        }
-                                                    }, null);
-                                            volleyQuque.add(stringRequest);
-                                            deleteMsg();
-                                        }
-                                    })
-                                            .setNegativeButton("取消", new DialogInterface.OnClickListener() {
-                                                @Override
-                                                public void onClick(DialogInterface dialog, int which) {
-                                                    deleteMsg();
-                                                }
-                                            }).show();
-                                }
-                            }).setNegativeButton("否", new DialogInterface.OnClickListener() {
+    }
+
+    public void onLikeButtonClick(View v) {
+        if (!MapWindow.isLogin) {
+            Snackbar.make(findViewById(R.id.msg_layout), "请登录", Snackbar.LENGTH_LONG).show();
+            return;
+        }
+        StringRequestWithCookie stringRequest = new StringRequestWithCookie(Request.Method.POST,
+                "http://139.129.22.145:5000/message/" + messageID + "/like",
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        PostResult result = JSON.parseObject(response, PostResult.class);
+                        if (result.success) {
+                            //likeNum.setText(msg.getLikeUsers().size()+1+"");
+                            refreshMessageInfo(false);
+                        } else {
+                            Snackbar.make(findViewById(R.id.msg_layout), result.message, Snackbar.LENGTH_LONG).show();
+                        }
+                    }
+                }, null);
+        volleyQuque.add(stringRequest);
+    }
+
+    public void onDlslikeButtonClick(View v) {
+        if (!MapWindow.isLogin) {
+            Snackbar.make(findViewById(R.id.msg_layout), "请登录", Snackbar.LENGTH_LONG).show();
+            return;
+        }
+        StringRequestWithCookie stringRequest = new StringRequestWithCookie(Request.Method.POST,
+                "http://139.129.22.145:5000/message/" + messageID + "/dislike",
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        PostResult result = JSON.parseObject(response, PostResult.class);
+                        if (result.success) {
+                            //dislikeNum.setText(msg.getDislikeUsers().size()+1+"");
+                            refreshMessageInfo(false);
+                        } else {
+                            Snackbar.make(findViewById(R.id.msg_layout), result.message, Snackbar.LENGTH_LONG).show();
+                        }
+                    }
+                }, null);
+        volleyQuque.add(stringRequest);
+    }
+    public void onReportButtonClick(View v) {
+        if (!MapWindow.isLogin) {
+            Snackbar.make(findViewById(R.id.msg_layout), "请登录", Snackbar.LENGTH_LONG).show();
+            return;
+        }
+        StringRequestWithCookie stringRequest = new StringRequestWithCookie(Request.Method.POST,
+                "http://139.129.22.145:5000/message/" + messageID + "/report",
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        PostResult result = JSON.parseObject(response, PostResult.class);
+                        if (result.success) {
+                            //dislikeNum.setText(msg.getDislikeUsers().size()+1+"");
+                            refreshMessageInfo(false);
+                        } else {
+                            Snackbar.make(findViewById(R.id.msg_layout), result.message, Snackbar.LENGTH_LONG).show();
+                        }
+                    }
+                }, null);
+        volleyQuque.add(stringRequest);
+    }
+
+    public void onDeleteButtonClick(View v) {
+        if (MapWindow.user.getIsAdmin() && MapWindow.user.getId() != msg.getId()) {
+            new AlertDialog.Builder(MsgWindow.this).setTitle("是否同时禁言该用户？")
+                    .setPositiveButton("是", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            deleteMsg();
-                        }
-                    }).show();
-                }
-            }
-        });
-        commentButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!MapWindow.isLogin) {
-                    Snackbar.make(findViewById(R.id.msg_layout), "请登录", Snackbar.LENGTH_LONG).show();
-                    return;
-                }
-                if (commentText.getText().toString().equals("")) {
-                    Snackbar.make(findViewById(R.id.msg_layout), "评论不能为空", Snackbar.LENGTH_LONG).show();
-                    return;
-                }
-                commentButton.setEnabled(false);
-                commentButton.setText("发送中");
-                Map<String, String> params = new HashMap<String, String>();
-                params.put("content", commentText.getText().toString());
-                StringRequestWithCookie stringRequest = new StringRequestWithCookie(Request.Method.POST,
-                        "http://139.129.22.145:5000/message/" + messageID + "/comment",
-                        new Response.Listener<String>() {
-                            @Override
-                            public void onResponse(String response) {
-                                commentButton.setEnabled(true);
-                                commentButton.setText("评论");
-                                PostResult result = JSON.parseObject(response, PostResult.class);
-                                Snackbar.make(findViewById(R.id.msg_layout), result.message, Snackbar.LENGTH_LONG).show();
-                                if (result.success) {
-                                    commentText.setText("");
-                                    commentText.clearFocus();
-                                    refreshMessageInfo(false);
+                            final EditText daysText = new EditText(MsgWindow.this);
+                            daysText.setInputType(InputType.TYPE_CLASS_NUMBER);
+                            new AlertDialog.Builder(MsgWindow.this).setTitle("请输入禁言天数").setView(
+                                    daysText).setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    StringRequestWithCookie stringRequest = new StringRequestWithCookie(Request.Method.POST,
+                                            "http://139.129.22.145:5000/banUser/" + msg.getOwner().getId()
+                                                    + "/" + daysText.getText().toString(),
+                                            new Response.Listener<String>() {
+                                                @Override
+                                                public void onResponse(String response) {
+                                                    PostResult result = JSON.parseObject(response, PostResult.class);
+                                                    if (result.success) {
+                                                        return;
+                                                    } else {
+                                                        Snackbar.make(findViewById(R.id.msg_layout), result.message, Snackbar.LENGTH_LONG).show();
+                                                    }
+                                                }
+                                            }, null);
+                                    volleyQuque.add(stringRequest);
+                                    deleteMsg();
                                 }
-                            }
-                        }, params);
-                volleyQuque.add(stringRequest);
-            }
-        });
+                            })
+                                    .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            deleteMsg();
+                                        }
+                                    }).show();
+                        }
+                    }).setNegativeButton("否", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    deleteMsg();
+                }
+            }).show();
+        }
+    }
+
+    public void onCommentButtonClick(View v) {
+        if (!MapWindow.isLogin) {
+            Snackbar.make(findViewById(R.id.msg_layout), "请登录", Snackbar.LENGTH_LONG).show();
+            return;
+        }
+        if (commentText.getText().toString().equals("")) {
+            Snackbar.make(findViewById(R.id.msg_layout), "评论不能为空", Snackbar.LENGTH_LONG).show();
+            return;
+        }
+        commentButton.setEnabled(false);
+        commentButton.setText("发送中");
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("content", commentText.getText().toString());
+        StringRequestWithCookie stringRequest = new StringRequestWithCookie(Request.Method.POST,
+                "http://139.129.22.145:5000/message/" + messageID + "/comment",
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        commentButton.setEnabled(true);
+                        commentButton.setText("评论");
+                        PostResult result = JSON.parseObject(response, PostResult.class);
+                        if (result.success) {
+                            commentText.setText("");
+                            commentText.clearFocus();
+                            Snackbar.make(findViewById(R.id.msg_layout), "评论成功", Snackbar.LENGTH_LONG).show();
+                            pager.setCurrentItem(1, true);
+                            refreshMessageInfo(false);
+                        }
+                        else
+                            Snackbar.make(findViewById(R.id.msg_layout), result.message, Snackbar.LENGTH_LONG).show();
+                    }
+                }, params);
+        volleyQuque.add(stringRequest);
     }
 
     private void deleteMsg() {

@@ -75,6 +75,16 @@ public class SearchResultWindow extends AppCompatActivity {
                             }
                             resultList.setAdapter(adapter);
                             adapter.notifyDataSetChanged();
+                            if(messages.size() == 0)
+                            {
+                                Snackbar.make(findViewById(R.id.searchResult_layout), "这里什么也没有，去其他地方看看吧", Snackbar.LENGTH_INDEFINITE)
+                                        .setAction("确定", new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View v) {
+                                                finish();
+                                            }
+                                        }).setActionTextColor(getResources().getColor(R.color.white)).show();
+                            }
                         } else {
                             Snackbar.make(findViewById(R.id.searchResult_layout), result.message, Snackbar.LENGTH_LONG).show();
                         }
