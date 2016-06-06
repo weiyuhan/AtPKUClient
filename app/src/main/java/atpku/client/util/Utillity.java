@@ -5,11 +5,37 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.provider.MediaStore;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
 /**
  * Created by wyh on 2016/5/29.
  */
 public class Utillity
 {
+    public static String dateDiff(String date1)
+    {
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Calendar calendar = Calendar.getInstance();
+        Date d2 = calendar.getTime();
+        try
+        {
+            Date d1 = df.parse(date1);
+            long diff = d2.getTime() - d1.getTime();//这样得到的差值是微秒级别
+
+            long days = diff / (1000 * 60 * 60 * 24);
+            long hours = (diff-days*(1000 * 60 * 60 * 24))/(1000* 60 * 60);
+
+            return days+"天"+hours+"小时";
+        }
+        catch (Exception e)
+        {
+        }
+        return null;
+    }
+
     public static String parseTimeString(String str)
     {
         String date = str.substring(0, str.indexOf("T"));

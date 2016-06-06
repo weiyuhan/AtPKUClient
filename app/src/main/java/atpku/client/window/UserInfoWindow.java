@@ -45,6 +45,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -143,7 +144,11 @@ public class UserInfoWindow extends AppCompatActivity implements AdapterView.OnI
 
     public void showJoinDays()
     {
-
+        String diff = Utillity.dateDiff(user.date_joined.replaceAll("T", " "));
+        if(diff != null)
+        {
+            Snackbar.make(findViewById(R.id.userInfo_layout), "您已加入AtPKU " + diff, Snackbar.LENGTH_LONG).show();
+        }
     }
 
     public void setNickname()
