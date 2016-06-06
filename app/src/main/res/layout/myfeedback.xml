@@ -6,11 +6,10 @@
     android:layout_height="match_parent">
 
     <ListView
-        android:layout_marginTop="32dp"
+        android:id="@+id/myfeedback_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/myfeedback_list">
-    </ListView>
+        android:layout_marginTop="32dp"></ListView>
 
     <android.support.design.widget.FloatingActionButton
         android:layout_width="wrap_content"
@@ -20,7 +19,6 @@
         android:layout_marginRight="16dp"
         android:onClick="addFeedbackHandler"
         android:src="@drawable/plus"
-        app:backgroundTint="?attr/colorPrimaryDark">
-    </android.support.design.widget.FloatingActionButton>
+        app:backgroundTint="?attr/colorPrimaryDark"></android.support.design.widget.FloatingActionButton>
 
 </android.support.design.widget.CoordinatorLayout>

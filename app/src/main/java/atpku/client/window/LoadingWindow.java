@@ -12,6 +12,7 @@ import com.alibaba.fastjson.JSON;
 import com.amap.api.maps.model.Marker;
 import com.android.volley.Request;
 import com.android.volley.Response;
+import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
 import java.util.HashMap;
@@ -19,6 +20,7 @@ import java.util.List;
 import java.util.Map;
 
 import atpku.client.R;
+import atpku.client.model.User;
 import atpku.client.util.StringRequestWithCookie;
 import atpku.client.model.Message;
 import atpku.client.model.Place;
@@ -53,24 +55,38 @@ public class LoadingWindow extends AppCompatActivity {
         ThemeUtil.themeChanged = false;
 
         volleyQuque = Volley.newRequestQueue(this);
-        initPlaces();
-        /*
-        new Handler().postDelayed(new Runnable()
-        {
-            public void run()
-            {
 
-                Intent mainIntent = new Intent(LoadingWindow.this, MapWindow.class);
-                startActivity(mainIntent);
-                String cookie = MapWindow.getCookie();
-                if(!cookie.equals(""))
-                {
-                    MapWindow.isLogin = true;
-                }
-                finish();
-            }
-        }, 3000); //3000 for release
-        */
+        if(MapWindow.isLogin)
+        {
+            refreshUser();
+        }
+
+    }
+
+    public void refreshUser()
+    {
+        StringRequestWithCookie stringRequest = new StringRequestWithCookie(StringRequest.Method.GET, "http://139.129.22.145:5000/profile",
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        PostResult result = JSON.parseObject(response, PostResult.class);
+                        if (result.success) {
+                            MapWindow.user = JSON.parseObject(result.data, User.class);
+                            System.out.println(MapWindow.user);
+                            SharedPreferences prefs = getSharedPreferences("userInfo", 1);
+                            SharedPreferences.Editor mEditor = prefs.edit();
+                            mEditor.putString("userInfoJson", result.data);
+                            mEditor.apply();
+                            mEditor.commit();
+                        } else {
+                            SharedPreferences prefs = getSharedPreferences("userInfo", 1);
+                            MapWindow.user = JSON.parseObject(prefs.getString("userInfoJson", "{}"), User.class);
+                        }
+                        initPlaces();
+                        Log.d("TAG", response);
+                    }
+                }, null);
+        volleyQuque.add(stringRequest);
     }
 
     public void initPlaces() {

@@ -115,15 +115,7 @@ public class PlaceWindow extends AppCompatActivity implements SearchView.OnQuery
                 super.onBackPressed();
                 break;
             case R.id.action_sendmsg: {
-                if (!MapWindow.isLogin) {
-                    Snackbar.make(findViewById(R.id.place_layout), "请登录", Snackbar.LENGTH_LONG).show();
-                    return true;
-                }
-                Intent intent = new Intent(this, SendMsgWindow.class);
-                Bundle bundle = new Bundle();
-                bundle.putSerializable("placeId", placeID);
-                intent.putExtras(bundle);
-                startActivity(intent);
+                sendMsgHandler(null);
             }
             break;
             case R.id.action_place_search: {
@@ -137,6 +129,19 @@ public class PlaceWindow extends AppCompatActivity implements SearchView.OnQuery
         }
         return true;
 
+    }
+
+    public void sendMsgHandler(View view)
+    {
+        if (!MapWindow.isLogin) {
+            Snackbar.make(findViewById(R.id.place_layout), "请登录", Snackbar.LENGTH_LONG).show();
+            return;
+        }
+        Intent intent = new Intent(this, SendMsgWindow.class);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("placeId", placeID);
+        intent.putExtras(bundle);
+        startActivity(intent);
     }
 
 

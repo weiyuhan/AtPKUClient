@@ -152,11 +152,6 @@ public class MapWindow extends AppCompatActivity implements
         volleyQuque = Volley.newRequestQueue(this);
         init(); // 初始化地图
 
-        SharedPreferences prefs = getSharedPreferences("userInfo", 1);
-        user = JSON.parseObject(prefs.getString("userInfoJson", "{}"), User.class);
-        if (user.avatar == null)
-            user.avatar = "http://public-image-source.img-cn-shanghai.aliyuncs.com/avatar33201652203559.jpg";
-
         refreshSlideMenu();
 
         Timer timer = new Timer();
@@ -517,6 +512,8 @@ public class MapWindow extends AppCompatActivity implements
             markerOptions.icon(BitmapDescriptorFactory.fromResource(R.mipmap.building_tower));
         else if(type.equals("gate"))
             markerOptions.icon(BitmapDescriptorFactory.fromResource(R.mipmap.building_gate));
+        else if(type.equals("hospital"))
+            markerOptions.icon(BitmapDescriptorFactory.fromResource(R.mipmap.building_hospital));
         else
             markerOptions.icon(BitmapDescriptorFactory.fromResource(R.mipmap.building_school));
     }

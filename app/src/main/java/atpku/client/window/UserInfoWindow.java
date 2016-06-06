@@ -172,7 +172,7 @@ public class UserInfoWindow extends AppCompatActivity implements AdapterView.OnI
                 {
                     modifyNickname = false;
                     Map<String, String> params = new HashMap<String, String>();
-                    params.put("nick", newNickname);
+                    params.put("nickname", newNickname);
                     submitChange(params);
                 }
                 dialog.dismiss();
