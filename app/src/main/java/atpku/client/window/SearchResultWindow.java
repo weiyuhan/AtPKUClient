@@ -77,7 +77,7 @@ public class SearchResultWindow extends AppCompatActivity {
                             adapter.notifyDataSetChanged();
                             if(messages.size() == 0)
                             {
-                                Snackbar.make(findViewById(R.id.searchResult_layout), "这里什么也没有，去其他地方看看吧", Snackbar.LENGTH_INDEFINITE)
+                                Snackbar.make(findViewById(R.id.searchResult_layout), "什么也没找到，去其他地方看看吧", Snackbar.LENGTH_INDEFINITE)
                                         .setAction("确定", new View.OnClickListener() {
                                             @Override
                                             public void onClick(View v) {
