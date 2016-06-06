@@ -40,7 +40,8 @@ import atpku.client.util.ThemeUtil;
 /**
  * Created by wyh on 2016/5/19.
  */
-public class PlaceWindow extends AppCompatActivity implements SearchView.OnQueryTextListener, SwipeRefreshLayout.OnRefreshListener {
+public class PlaceWindow extends AppCompatActivity implements SearchView.OnQueryTextListener,
+        SwipeRefreshLayout.OnRefreshListener {
     private SwipeRefreshLayout refreshLayout;
     public ListView msgList;
     private int placeID;
@@ -58,7 +59,7 @@ public class PlaceWindow extends AppCompatActivity implements SearchView.OnQuery
         actionBar.setLogo(R.mipmap.ic_launcher);
         actionBar.setDisplayHomeAsUpEnabled(true);
 
-        refreshLayout = (SwipeRefreshLayout) this.findViewById(R.id.refresh_layout);
+        refreshLayout = (SwipeRefreshLayout)findViewById(R.id.place_refresh_layout);
         refreshLayout.setColorScheme(R.color.lawngreen, R.color.yellow, R.color.blue, R.color.white);
         refreshLayout.setOnRefreshListener(this);
         msgList = (ListView) this.findViewById(R.id.place_msgList);

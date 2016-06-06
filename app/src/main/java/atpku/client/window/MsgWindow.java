@@ -8,6 +8,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.PagerTabStrip;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.text.InputType;
@@ -52,7 +53,6 @@ import atpku.client.util.ThemeUtil;
  * Created by wyh on 2016/5/19.
  */
 public class MsgWindow extends AppCompatActivity implements AdapterView.OnItemClickListener {
-
     public View msgContent;
     public View comment;
 
@@ -195,7 +195,7 @@ public class MsgWindow extends AppCompatActivity implements AdapterView.OnItemCl
         volleyQuque.add(stringRequest);
     }
 
-    public void onDlslikeButtonClick(View v) {
+    public void onDislikeButtonClick(View v) {
         if (!MapWindow.isLogin) {
             Snackbar.make(findViewById(R.id.msg_layout), "请登录", Snackbar.LENGTH_LONG).show();
             return;
@@ -378,7 +378,7 @@ public class MsgWindow extends AppCompatActivity implements AdapterView.OnItemCl
                             msg = JSON.parseObject(result.data, Message.class);
                             setTitle(msg.atPlace.getName());
                             title.setText(msg.getTitle());
-                            time.setText(msg.getPostTime());
+                            time.setText(msg.getPostTime() + "\n至 " + msg.getEndTime());
                             author.setText(msg.getOwner().getNickname());
                             content.setText(msg.getContent());
                             likeNum.setText(msg.getLikeUsers().size() + "");
@@ -409,5 +409,4 @@ public class MsgWindow extends AppCompatActivity implements AdapterView.OnItemCl
         ImageDialog imageDialog = new ImageDialog(this, imgUrl);
         imageDialog.show();
     }
-
 }
