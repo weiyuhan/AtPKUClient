@@ -362,6 +362,7 @@ public class MapWindow extends AppCompatActivity implements
             finish();
             Intent intent = new Intent(getApplicationContext(), MapWindow.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            markers.clear();
             startActivity(intent);
         }
     }
