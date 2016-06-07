@@ -45,10 +45,11 @@ public class LoadingWindow extends AppCompatActivity {
         String cookie = prefs.getString("Cookie", "");
         System.out.println("mycookie : " + cookie);
         MapWindow.setCookie(cookie);
-        if (!cookie.equals("")) // 设置用户是否登录
-        {
+
+        if(cookie.length() == 0)
+            MapWindow.isLogin = false;
+        else
             MapWindow.isLogin = true;
-        }
 
         prefs = getSharedPreferences("theme", Context.MODE_PRIVATE);
         int themeid = prefs.getInt("Theme", R.style.AppTheme_Grey);
@@ -59,42 +60,12 @@ public class LoadingWindow extends AppCompatActivity {
 
         if(MapWindow.isLogin)
         {
-            refreshUser();
+            prefs = getSharedPreferences("userInfo", 1);
+            MapWindow.user = JSON.parseObject(prefs.getString("userInfoJson", "{}"), User.class);
         }
-
+        initPlaces();
     }
 
-    public void refreshUser()
-    {
-        StringRequestWithCookie stringRequest = new StringRequestWithCookie(StringRequest.Method.GET, "http://139.129.22.145:5000/profile",
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        PostResult result = JSON.parseObject(response, PostResult.class);
-                        if (result.success) {
-                            MapWindow.user = JSON.parseObject(result.data, User.class);
-                            System.out.println(MapWindow.user);
-                            SharedPreferences prefs = getSharedPreferences("userInfo", 1);
-                            SharedPreferences.Editor mEditor = prefs.edit();
-                            mEditor.putString("userInfoJson", result.data);
-                            mEditor.apply();
-                            mEditor.commit();
-                        } else {
-                            SharedPreferences prefs = getSharedPreferences("userInfo", 1);
-                            MapWindow.user = JSON.parseObject(prefs.getString("userInfoJson", "{}"), User.class);
-                        }
-                        initPlaces();
-                        Log.d("TAG", response);
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError volleyError) {
-                        Snackbar.make(findViewById(R.id.loading_layout), "请检查网络连接", Snackbar.LENGTH_LONG).show();
-                    }
-                }, null);
-        volleyQuque.add(stringRequest);
-    }
 
     public void initPlaces() {
         Map<String, String> params = new HashMap<String, String>();

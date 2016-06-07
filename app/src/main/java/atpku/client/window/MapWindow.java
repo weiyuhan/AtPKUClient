@@ -60,7 +60,7 @@ public class MapWindow extends AppCompatActivity implements
     public static boolean mapShow;
 
     private MapView mapView;
-    public static AMap aMap;
+    public AMap aMap;
 
     public ActionBar actionBar;
 
@@ -113,13 +113,12 @@ public class MapWindow extends AppCompatActivity implements
         MapWindow.cookie = cookie;
     }
 
-    public void onCreate(Bundle savedInstanceState)
-    {
+    public void onCreate(Bundle savedInstanceState) {
         ThemeUtil.setTheme(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.map);
 
-        if(!started) {
+        if (!started) {
             started = true;
             PushSettings.enableDebugMode(getApplicationContext(), true);
             PushManager.startWork(getApplicationContext(), PushConstants.LOGIN_TYPE_API_KEY, "ZEug10Z4X0y5ek5ll0wplTIV");
@@ -141,12 +140,13 @@ public class MapWindow extends AppCompatActivity implements
         mapView = (MapView) findViewById(R.id.map);
         mapView.onCreate(savedInstanceState);
 
+        init();
+
         drawerAvatar = (ImageView) findViewById(R.id.drawer_avatar);
         drawerUsername = (TextView) findViewById(R.id.drawer_username);
         drawerEmail = (TextView) findViewById(R.id.drawer_email);
 
         volleyQuque = Volley.newRequestQueue(this);
-        init(); // 初始化地图
 
         refreshSlideMenu();
 
@@ -157,6 +157,40 @@ public class MapWindow extends AppCompatActivity implements
                 refreshPlaces();
             }
         }, 120000, 120000); // for each 2 min, refresh all messages about places
+
+        if (MapWindow.isLogin) {
+            refreshUser();
+        }
+
+
+    }
+
+    public void refreshUser() {
+        StringRequestWithCookie stringRequest = new StringRequestWithCookie(StringRequest.Method.GET, "http://139.129.22.145:5000/profile",
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        PostResult result = JSON.parseObject(response, PostResult.class);
+                        if (result.success) {
+                            MapWindow.user = JSON.parseObject(result.data, User.class);
+                            System.out.println(MapWindow.user);
+                            SharedPreferences prefs = getSharedPreferences("userInfo", 1);
+                            SharedPreferences.Editor mEditor = prefs.edit();
+                            mEditor.putString("userInfoJson", result.data);
+                            mEditor.apply();
+                            mEditor.commit();
+                            refreshSlideMenu();
+                        }
+                        Log.d("TAG", response);
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError volleyError) {
+                        Snackbar.make(findViewById(R.id.map_layout), "请检查网络连接", Snackbar.LENGTH_LONG).show();
+                    }
+                }, null);
+        volleyQuque.add(stringRequest);
     }
 
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -293,7 +327,7 @@ public class MapWindow extends AppCompatActivity implements
 
     private void init()   //初始化高德地图
     {
-        if (aMap == null) {
+        if(aMap == null) {
             aMap = mapView.getMap();
 
             aMap.setMyLocationEnabled(true);
@@ -311,7 +345,9 @@ public class MapWindow extends AppCompatActivity implements
             aMap.moveCamera(CameraUpdateFactory.newLatLngZoom(pkuPos, defaultZoom));
             aMap.setOnCameraChangeListener(this);
             aMap.setOnMapClickListener(this);
+
         }
+
         refreshMarkers();
     }
 
@@ -320,7 +356,7 @@ public class MapWindow extends AppCompatActivity implements
         mapView.onResume();
         drawerLayout.closeDrawers();
         refreshSlideMenu();
-        if(ThemeUtil.themeChanged) {
+        if (ThemeUtil.themeChanged) {
             ThemeUtil.themeChanged = false;
             //mapShow = false;
             finish();
@@ -328,24 +364,6 @@ public class MapWindow extends AppCompatActivity implements
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);
         }
-        aMap = mapView.getMap();
-
-        aMap.setMyLocationEnabled(true);
-        aMap.getUiSettings().setZoomControlsEnabled(false);
-        aMap.getUiSettings().setMyLocationButtonEnabled(true);
-        aMap.getUiSettings().setCompassEnabled(true);
-
-        aMap.setOnMarkerClickListener(this);// 设置Marker点击监听
-        aMap.setLocationSource(this);// 设置定位监听
-        aMap.getUiSettings().setMyLocationButtonEnabled(true);// 设置默认定位按钮是否显示
-        aMap.setMyLocationEnabled(true);// 设置为true表示显示定位层并可触发定位，false表示隐藏定位层并不可触发定位，默认是false
-        // 设置定位的类型为定位模式 ，可以由定位、跟随或地图根据面向方向旋转几种
-        aMap.setMyLocationType(AMap.LOCATION_TYPE_LOCATE);
-
-        aMap.moveCamera(CameraUpdateFactory.newLatLngZoom(pkuPos, defaultZoom));
-        aMap.setOnCameraChangeListener(this);
-        aMap.setOnMapClickListener(this);
-        refreshMarkers();
     }
 
     protected void onPause() {
@@ -505,7 +523,7 @@ public class MapWindow extends AppCompatActivity implements
         volleyQuque.add(stringRequest);
     }
 
-    public static void refreshMarkers() {
+    public void refreshMarkers() {
         if (MapWindow.markers == null) {
             MapWindow.markers = new HashMap<String, Marker>();
         }
@@ -530,17 +548,16 @@ public class MapWindow extends AppCompatActivity implements
         }
     }
 
-    public static void setMarkerIcon(MarkerOptions markerOptions, String type)
-    {
-        if(type.equals("building"))
+    public static void setMarkerIcon(MarkerOptions markerOptions, String type) {
+        if (type.equals("building"))
             markerOptions.icon(BitmapDescriptorFactory.fromResource(R.mipmap.building_school));
-        else if(type.equals("canteen"))
+        else if (type.equals("canteen"))
             markerOptions.icon(BitmapDescriptorFactory.fromResource(R.mipmap.building_canteen));
-        else if(type.equals("tower"))
+        else if (type.equals("tower"))
             markerOptions.icon(BitmapDescriptorFactory.fromResource(R.mipmap.building_tower));
-        else if(type.equals("gate"))
+        else if (type.equals("gate"))
             markerOptions.icon(BitmapDescriptorFactory.fromResource(R.mipmap.building_gate));
-        else if(type.equals("hospital"))
+        else if (type.equals("hospital"))
             markerOptions.icon(BitmapDescriptorFactory.fromResource(R.mipmap.building_hospital));
         else
             markerOptions.icon(BitmapDescriptorFactory.fromResource(R.mipmap.building_school));

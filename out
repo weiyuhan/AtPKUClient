@@ -1,0 +1,344 @@
+diff --git a/.idea/gradle.xml b/.idea/gradle.xml
+index 4763701..3379345 100644
+--- a/.idea/gradle.xml
++++ b/.idea/gradle.xml
+@@ -6,7 +6,7 @@
+         <option name="distributionType" value="LOCAL" />
+         <option name="externalProjectPath" value="$PROJECT_DIR$" />
+         <option name="gradleHome" value="E:\android-studio\gradle\gradle-2.4" />
+-        <option name="gradleJvm" value="1.7" />
++        <option name="gradleJvm" value="1.8" />
+         <option name="modules">
+           <set>
+             <option value="$PROJECT_DIR$" />
+diff --git a/.idea/misc.xml b/.idea/misc.xml
+index 1a3eaff..5d19981 100644
+--- a/.idea/misc.xml
++++ b/.idea/misc.xml
+@@ -37,7 +37,7 @@
+     <ConfirmationsSetting value="0" id="Add" />
+     <ConfirmationsSetting value="0" id="Remove" />
+   </component>
+-  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_7" default="true" assert-keyword="true" jdk-15="true" project-jdk-name="1.7" project-jdk-type="JavaSDK">
++  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_7" default="true" assert-keyword="true" jdk-15="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+     <output url="file://$PROJECT_DIR$/build/classes" />
+   </component>
+   <component name="ProjectType">
+diff --git a/app/app.iml b/app/app.iml
+index fd44039..3665765 100644
+--- a/app/app.iml
++++ b/app/app.iml
+@@ -12,12 +12,10 @@
+         <option name="SELECTED_TEST_ARTIFACT" value="_android_test_" />
+         <option name="ASSEMBLE_TASK_NAME" value="assembleDebug" />
+         <option name="COMPILE_JAVA_TASK_NAME" value="compileDebugSources" />
++        <option name="SOURCE_GEN_TASK_NAME" value="generateDebugSources" />
+         <option name="ASSEMBLE_TEST_TASK_NAME" value="assembleDebugAndroidTest" />
+         <option name="COMPILE_JAVA_TEST_TASK_NAME" value="compileDebugAndroidTestSources" />
+-        <afterSyncTasks>
+-          <task>generateDebugAndroidTestSources</task>
+-          <task>generateDebugSources</task>
+-        </afterSyncTasks>
++        <option name="TEST_SOURCE_GEN_TASK_NAME" value="generateDebugAndroidTestSources" />
+         <option name="ALLOW_USER_CONFIGURATION" value="false" />
+         <option name="MANIFEST_FILE_RELATIVE_PATH" value="/src/main/AndroidManifest.xml" />
+         <option name="RES_FOLDER_RELATIVE_PATH" value="/src/main/res" />
+@@ -91,23 +89,23 @@
+     </content>
+     <orderEntry type="jdk" jdkName="Android API 22 Platform" jdkType="Android SDK" />
+     <orderEntry type="sourceFolder" forTests="false" />
+-    <orderEntry type="library" exported="" name="AMap_Location_V2.4.1_20160414" level="project" />
+-    <orderEntry type="library" exported="" name="AMap_Search_v2.6.0_20150914" level="project" />
++    <orderEntry type="library" exported="" name="junit-4.9" level="project" />
++    <orderEntry type="library" exported="" name="aliyun-oss-sdk-android-2.2.0" level="project" />
+     <orderEntry type="library" exported="" name="AMap_3DMap_v2.6.0_20150914" level="project" />
++    <orderEntry type="library" exported="" name="Volley" level="project" />
+     <orderEntry type="library" exported="" name="okio-1.6.0" level="project" />
+-    <orderEntry type="library" exported="" name="pushservice-5.0.0.66" level="project" />
+-    <orderEntry type="library" exported="" name="okhttp-3.2.0" level="project" />
+-    <orderEntry type="library" exported="" name="aliyun-oss-sdk-android-2.2.0" level="project" />
+-    <orderEntry type="library" exported="" name="junit-4.9" level="project" />
+     <orderEntry type="library" exported="" name="picasso-2.5.2" level="project" />
+-    <orderEntry type="library" exported="" name="fastjson-1.2.7" level="project" />
+-    <orderEntry type="library" exported="" name="Volley" level="project" />
++    <orderEntry type="library" exported="" name="okhttp-3.2.0" level="project" />
+     <orderEntry type="library" exported="" name="support-annotations-22.1.0" level="project" />
++    <orderEntry type="library" exported="" name="AMap_Location_V2.4.1_20160414" level="project" />
++    <orderEntry type="library" exported="" name="pushservice-5.0.0.66" level="project" />
++    <orderEntry type="library" exported="" name="AMap_Search_v2.6.0_20150914" level="project" />
++    <orderEntry type="library" exported="" name="fastjson-1.2.7" level="project" />
++    <orderEntry type="module" module-name="support-v4-22.2.1" exported="" />
+     <orderEntry type="module" module-name="design-22.2.1" exported="" />
+     <orderEntry type="module" module-name="appcompat-v7-22.2.1" exported="" />
+-    <orderEntry type="module" module-name="support-v4-22.2.1" exported="" />
++    <orderEntry type="library" exported="" name="support-v4-22.2.1-unspecified" level="project" />
+     <orderEntry type="library" exported="" name="design-22.2.1-unspecified" level="project" />
+     <orderEntry type="library" exported="" name="appcompat-v7-22.2.1-unspecified" level="project" />
+-    <orderEntry type="library" exported="" name="support-v4-22.2.1-unspecified" level="project" />
+   </component>
+ </module>
+\ No newline at end of file
+diff --git a/app/src/main/building_hospital-web.png b/app/src/main/building_hospital-web.png
+new file mode 100644
+index 0000000..ef1f6a8
+Binary files /dev/null and b/app/src/main/building_hospital-web.png differ
+diff --git a/app/src/main/java/atpku/client/window/LoadingWindow.java b/app/src/main/java/atpku/client/window/LoadingWindow.java
+index 4d55bcc..5d16e5e 100644
+--- a/app/src/main/java/atpku/client/window/LoadingWindow.java
++++ b/app/src/main/java/atpku/client/window/LoadingWindow.java
+@@ -12,6 +12,7 @@ import com.alibaba.fastjson.JSON;
+ import com.amap.api.maps.model.Marker;
+ import com.android.volley.Request;
+ import com.android.volley.Response;
++import com.android.volley.toolbox.StringRequest;
+ import com.android.volley.toolbox.Volley;
+ 
+ import java.util.HashMap;
+@@ -19,6 +20,7 @@ import java.util.List;
+ import java.util.Map;
+ 
+ import atpku.client.R;
++import atpku.client.model.User;
+ import atpku.client.util.StringRequestWithCookie;
+ import atpku.client.model.Message;
+ import atpku.client.model.Place;
+@@ -53,24 +55,38 @@ public class LoadingWindow extends AppCompatActivity {
+         ThemeUtil.themeChanged = false;
+ 
+         volleyQuque = Volley.newRequestQueue(this);
+-        initPlaces();
+-        /*
+-        new Handler().postDelayed(new Runnable()
++
++        if(MapWindow.isLogin)
+         {
+-            public void run()
+-            {
++            refreshUser();
++        }
++
++    }
+ 
+-                Intent mainIntent = new Intent(LoadingWindow.this, MapWindow.class);
+-                startActivity(mainIntent);
+-                String cookie = MapWindow.getCookie();
+-                if(!cookie.equals(""))
+-                {
+-                    MapWindow.isLogin = true;
+-                }
+-                finish();
+-            }
+-        }, 3000); //3000 for release
+-        */
++    public void refreshUser()
++    {
++        StringRequestWithCookie stringRequest = new StringRequestWithCookie(StringRequest.Method.GET, "http://139.129.22.145:5000/profile",
++                new Response.Listener<String>() {
++                    @Override
++                    public void onResponse(String response) {
++                        PostResult result = JSON.parseObject(response, PostResult.class);
++                        if (result.success) {
++                            MapWindow.user = JSON.parseObject(result.data, User.class);
++                            System.out.println(MapWindow.user);
++                            SharedPreferences prefs = getSharedPreferences("userInfo", 1);
++                            SharedPreferences.Editor mEditor = prefs.edit();
++                            mEditor.putString("userInfoJson", result.data);
++                            mEditor.apply();
++                            mEditor.commit();
++                        } else {
++                            SharedPreferences prefs = getSharedPreferences("userInfo", 1);
++                            MapWindow.user = JSON.parseObject(prefs.getString("userInfoJson", "{}"), User.class);
++                        }
++                        initPlaces();
++                        Log.d("TAG", response);
++                    }
++                }, null);
++        volleyQuque.add(stringRequest);
+     }
+ 
+     public void initPlaces() {
+diff --git a/app/src/main/java/atpku/client/window/MapWindow.java b/app/src/main/java/atpku/client/window/MapWindow.java
+index 347fc1a..841eee3 100644
+--- a/app/src/main/java/atpku/client/window/MapWindow.java
++++ b/app/src/main/java/atpku/client/window/MapWindow.java
+@@ -152,11 +152,6 @@ public class MapWindow extends AppCompatActivity implements
+         volleyQuque = Volley.newRequestQueue(this);
+         init(); // 初始化地图
+ 
+-        SharedPreferences prefs = getSharedPreferences("userInfo", 1);
+-        user = JSON.parseObject(prefs.getString("userInfoJson", "{}"), User.class);
+-        if (user.avatar == null)
+-            user.avatar = "http://public-image-source.img-cn-shanghai.aliyuncs.com/avatar33201652203559.jpg";
+-
+         refreshSlideMenu();
+ 
+         Timer timer = new Timer();
+@@ -517,6 +512,8 @@ public class MapWindow extends AppCompatActivity implements
+             markerOptions.icon(BitmapDescriptorFactory.fromResource(R.mipmap.building_tower));
+         else if(type.equals("gate"))
+             markerOptions.icon(BitmapDescriptorFactory.fromResource(R.mipmap.building_gate));
++        else if(type.equals("hospital"))
++            markerOptions.icon(BitmapDescriptorFactory.fromResource(R.mipmap.building_hospital));
+         else
+             markerOptions.icon(BitmapDescriptorFactory.fromResource(R.mipmap.building_school));
+     }
+diff --git a/app/src/main/java/atpku/client/window/PlaceWindow.java b/app/src/main/java/atpku/client/window/PlaceWindow.java
+index e0c5a25..fa89933 100644
+--- a/app/src/main/java/atpku/client/window/PlaceWindow.java
++++ b/app/src/main/java/atpku/client/window/PlaceWindow.java
+@@ -115,15 +115,7 @@ public class PlaceWindow extends AppCompatActivity implements SearchView.OnQuery
+                 super.onBackPressed();
+                 break;
+             case R.id.action_sendmsg: {
+-                if (!MapWindow.isLogin) {
+-                    Snackbar.make(findViewById(R.id.place_layout), "请登录", Snackbar.LENGTH_LONG).show();
+-                    return true;
+-                }
+-                Intent intent = new Intent(this, SendMsgWindow.class);
+-                Bundle bundle = new Bundle();
+-                bundle.putSerializable("placeId", placeID);
+-                intent.putExtras(bundle);
+-                startActivity(intent);
++                sendMsgHandler(null);
+             }
+             break;
+             case R.id.action_place_search: {
+@@ -139,6 +131,19 @@ public class PlaceWindow extends AppCompatActivity implements SearchView.OnQuery
+ 
+     }
+ 
++    public void sendMsgHandler(View view)
++    {
++        if (!MapWindow.isLogin) {
++            Snackbar.make(findViewById(R.id.place_layout), "请登录", Snackbar.LENGTH_LONG).show();
++            return;
++        }
++        Intent intent = new Intent(this, SendMsgWindow.class);
++        Bundle bundle = new Bundle();
++        bundle.putSerializable("placeId", placeID);
++        intent.putExtras(bundle);
++        startActivity(intent);
++    }
++
+ 
+     public boolean onQueryTextChange(String newText) {
+         return true;
+diff --git a/app/src/main/java/atpku/client/window/UserInfoWindow.java b/app/src/main/java/atpku/client/window/UserInfoWindow.java
+index 2723688..26f7a3e 100644
+--- a/app/src/main/java/atpku/client/window/UserInfoWindow.java
++++ b/app/src/main/java/atpku/client/window/UserInfoWindow.java
+@@ -172,7 +172,7 @@ public class UserInfoWindow extends AppCompatActivity implements AdapterView.OnI
+                 {
+                     modifyNickname = false;
+                     Map<String, String> params = new HashMap<String, String>();
+-                    params.put("nick", newNickname);
++                    params.put("nickname", newNickname);
+                     submitChange(params);
+                 }
+                 dialog.dismiss();
+diff --git a/app/src/main/res/layout/myfeedback.xml b/app/src/main/res/layout/myfeedback.xml
+index d6c3e3e..0832357 100644
+--- a/app/src/main/res/layout/myfeedback.xml
++++ b/app/src/main/res/layout/myfeedback.xml
+@@ -6,11 +6,10 @@
+     android:layout_height="match_parent">
+ 
+     <ListView
+-        android:layout_marginTop="32dp"
++        android:id="@+id/myfeedback_list"
+         android:layout_width="match_parent"
+         android:layout_height="match_parent"
+-        android:id="@+id/myfeedback_list">
+-    </ListView>
++        android:layout_marginTop="32dp"></ListView>
+ 
+     <android.support.design.widget.FloatingActionButton
+         android:layout_width="wrap_content"
+@@ -20,7 +19,6 @@
+         android:layout_marginRight="16dp"
+         android:onClick="addFeedbackHandler"
+         android:src="@drawable/plus"
+-        app:backgroundTint="?attr/colorPrimaryDark">
+-    </android.support.design.widget.FloatingActionButton>
++        app:backgroundTint="?attr/colorPrimaryDark"></android.support.design.widget.FloatingActionButton>
+ 
+ </android.support.design.widget.CoordinatorLayout>
+\ No newline at end of file
+diff --git a/app/src/main/res/layout/place.xml b/app/src/main/res/layout/place.xml
+index 98f3ed2..96b9ebb 100644
+--- a/app/src/main/res/layout/place.xml
++++ b/app/src/main/res/layout/place.xml
+@@ -1,21 +1,37 @@
+ <?xml version="1.0" encoding="utf-8"?>
+-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
++<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
++    xmlns:app="http://schemas.android.com/apk/res-auto"
+     android:id="@+id/place_layout"
+     android:layout_width="match_parent"
+-    android:layout_height="match_parent"
+-    android:orientation="vertical"
+-    android:weightSum="1">
++    android:layout_height="match_parent">
+ 
+-    <android.support.v4.widget.SwipeRefreshLayout
+-        android:id="@+id/place_refresh_layout"
++    <LinearLayout
+         android:layout_width="match_parent"
+-        android:layout_height="match_parent">
++        android:layout_height="match_parent"
++        android:orientation="vertical"
++        android:weightSum="1">
+ 
+-        <ListView
+-            android:id="@+id/place_msgList"
++        <android.support.v4.widget.SwipeRefreshLayout
++            android:id="@+id/place_refresh_layout"
+             android:layout_width="match_parent"
+-            android:layout_height="wrap_content"
+-            android:paddingLeft="16dp"
+-            android:paddingRight="16dp"/>
+-    </android.support.v4.widget.SwipeRefreshLayout>
+-</LinearLayout>
+\ No newline at end of file
++            android:layout_height="match_parent">
++
++            <ListView
++                android:id="@+id/place_msgList"
++                android:layout_width="match_parent"
++                android:layout_height="wrap_content"
++                android:paddingLeft="16dp"
++                android:paddingRight="16dp" />
++        </android.support.v4.widget.SwipeRefreshLayout>
++    </LinearLayout>
++
++    <android.support.design.widget.FloatingActionButton
++        android:layout_width="wrap_content"
++        android:layout_height="wrap_content"
++        android:layout_gravity="right|bottom"
++        android:layout_marginBottom="16dp"
++        android:layout_marginRight="16dp"
++        android:onClick="sendMsgHandler"
++        android:src="@mipmap/send_mail_big"
++        app:backgroundTint="?attr/colorPrimaryDark"></android.support.design.widget.FloatingActionButton>
++</android.support.design.widget.CoordinatorLayout>
+\ No newline at end of file
+diff --git a/app/src/main/res/mipmap-hdpi/building_hospital.png b/app/src/main/res/mipmap-hdpi/building_hospital.png
+new file mode 100644
+index 0000000..94e1b0d
+Binary files /dev/null and b/app/src/main/res/mipmap-hdpi/building_hospital.png differ
+diff --git a/app/src/main/res/mipmap-mdpi/building_hospital.png b/app/src/main/res/mipmap-mdpi/building_hospital.png
+new file mode 100644
+index 0000000..e8d1d1a
+Binary files /dev/null and b/app/src/main/res/mipmap-mdpi/building_hospital.png differ
+diff --git a/app/src/main/res/mipmap-xhdpi/building_hospital.png b/app/src/main/res/mipmap-xhdpi/building_hospital.png
+new file mode 100644
+index 0000000..469bd50
+Binary files /dev/null and b/app/src/main/res/mipmap-xhdpi/building_hospital.png differ
+diff --git a/app/src/main/res/mipmap-xxhdpi/building_hospital.png b/app/src/main/res/mipmap-xxhdpi/building_hospital.png
+new file mode 100644
+index 0000000..555c9fe
+Binary files /dev/null and b/app/src/main/res/mipmap-xxhdpi/building_hospital.png differ
+diff --git a/app/src/main/res/mipmap-xxxhdpi/building_hospital.png b/app/src/main/res/mipmap-xxxhdpi/building_hospital.png
+new file mode 100644
+index 0000000..ce1dba8
+Binary files /dev/null and b/app/src/main/res/mipmap-xxxhdpi/building_hospital.png differ
