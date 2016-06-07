@@ -39,6 +39,8 @@ import com.android.volley.toolbox.Volley;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -459,6 +461,12 @@ public class MsgWindow extends AppCompatActivity implements AdapterView.OnItemCl
                             content.setText(msg.getContent());
                             likeNum.setText(msg.getLikeUsers().size() + "");
                             dislikeNum.setText("-" + msg.getDislikeUsers().size());
+                            Collections.sort(msg.comments, new Comparator<Comment>() {
+                                @Override
+                                public int compare(Comment lhs, Comment rhs) {
+                                    return rhs.getCommentTime().compareTo(lhs.getCommentTime());
+                                }
+                            });
                             for (Comment comment : msg.comments) {
                                 adapter.add(comment);
                             }
