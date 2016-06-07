@@ -161,7 +161,7 @@ public class MsgWindow extends AppCompatActivity implements AdapterView.OnItemCl
         });
 
         refreshLayout = (SwipeRefreshLayout)comment.findViewById(R.id.msg_comment_refresh_layout);
-        refreshLayout.setColorScheme(R.color.lawngreen, R.color.yellow, R.color.blue, R.color.white);
+        refreshLayout.setColorScheme(R.color.lawngreen, R.color.yellow, R.color.blue, R.color.crimson);
         refreshLayout.setOnRefreshListener(this);
 
         title = (TextView)msgContent.findViewById(R.id.msg_title);
@@ -197,11 +197,13 @@ public class MsgWindow extends AppCompatActivity implements AdapterView.OnItemCl
             Snackbar.make(findViewById(R.id.msg_layout), "请登录", Snackbar.LENGTH_LONG).show();
             return;
         }
+        likeButton.setEnabled(false);
         StringRequestWithCookie stringRequest = new StringRequestWithCookie(Request.Method.POST,
                 "http://139.129.22.145:5000/message/" + messageID + "/like",
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
+                        likeButton.setEnabled(true);
                         PostResult result = JSON.parseObject(response, PostResult.class);
                         if (result.success) {
                             //likeNum.setText(msg.getLikeUsers().size()+1+"");
@@ -221,6 +223,7 @@ public class MsgWindow extends AppCompatActivity implements AdapterView.OnItemCl
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError volleyError) {
+                        likeButton.setEnabled(true);
                         Snackbar.make(findViewById(R.id.msg_layout), "赞失败，请检查网络连接", Snackbar.LENGTH_LONG).show();
                     }
                 }, null);
@@ -232,11 +235,13 @@ public class MsgWindow extends AppCompatActivity implements AdapterView.OnItemCl
             Snackbar.make(findViewById(R.id.msg_layout), "请登录", Snackbar.LENGTH_LONG).show();
             return;
         }
+        dislikeButton.setEnabled(false);
         StringRequestWithCookie stringRequest = new StringRequestWithCookie(Request.Method.POST,
                 "http://139.129.22.145:5000/message/" + messageID + "/dislike",
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
+                        dislikeButton.setEnabled(true);
                         PostResult result = JSON.parseObject(response, PostResult.class);
                         if (result.success) {
                             //dislikeNum.setText(msg.getDislikeUsers().size()+1+"");
@@ -256,6 +261,7 @@ public class MsgWindow extends AppCompatActivity implements AdapterView.OnItemCl
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError volleyError) {
+                        dislikeButton.setEnabled(true);
                         Snackbar.make(findViewById(R.id.msg_layout), "踩失败，请检查网络连接", Snackbar.LENGTH_LONG).show();
                     }
                 }, null);
@@ -266,11 +272,13 @@ public class MsgWindow extends AppCompatActivity implements AdapterView.OnItemCl
             Snackbar.make(findViewById(R.id.msg_layout), "请登录", Snackbar.LENGTH_LONG).show();
             return;
         }
+        reportButton.setEnabled(false);
         StringRequestWithCookie stringRequest = new StringRequestWithCookie(Request.Method.POST,
                 "http://139.129.22.145:5000/message/" + messageID + "/report",
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
+                        reportButton.setEnabled(true);
                         PostResult result = JSON.parseObject(response, PostResult.class);
                         if (result.success) {
                             //dislikeNum.setText(msg.getDislikeUsers().size()+1+"");
@@ -290,6 +298,7 @@ public class MsgWindow extends AppCompatActivity implements AdapterView.OnItemCl
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError volleyError) {
+                        reportButton.setEnabled(true);
                         Snackbar.make(findViewById(R.id.msg_layout), "举报失败，请检查网络连接", Snackbar.LENGTH_LONG).show();
                     }
                 }, null);
@@ -481,6 +490,7 @@ public class MsgWindow extends AppCompatActivity implements AdapterView.OnItemCl
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError volleyError) {
+                        refreshLayout.setRefreshing(false);
                         Snackbar.make(findViewById(R.id.msg_layout), "请检查网络连接", Snackbar.LENGTH_LONG).show();
                     }
                 }, null);

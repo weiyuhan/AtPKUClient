@@ -54,7 +54,7 @@ public class PlaceWindow extends AppCompatActivity implements SearchView.OnQuery
         actionBar.setDisplayHomeAsUpEnabled(true);
 
         refreshLayout = (SwipeRefreshLayout)findViewById(R.id.place_refresh_layout);
-        refreshLayout.setColorScheme(R.color.lawngreen, R.color.yellow, R.color.blue, R.color.white);
+        refreshLayout.setColorScheme(R.color.lawngreen, R.color.yellow, R.color.blue, R.color.crimson);
         refreshLayout.setOnRefreshListener(this);
         msgList = (ListView) this.findViewById(R.id.place_msgList);
 
@@ -99,6 +99,7 @@ public class PlaceWindow extends AppCompatActivity implements SearchView.OnQuery
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError volleyError) {
+                        refreshLayout.setRefreshing(false);
                         Snackbar.make(findViewById(R.id.place_layout), "请检查网络连接", Snackbar.LENGTH_LONG).show();
                     }
                 }, null);
