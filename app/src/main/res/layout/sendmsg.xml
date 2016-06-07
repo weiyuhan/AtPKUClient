@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:paddingTop="16dp"
     android:paddingLeft="16dp"
     android:paddingRight="16dp">
 
@@ -47,7 +48,7 @@
                 android:id="@+id/sendMsg_startDate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="3dp"
+                android:layout_marginTop="10dp"
                 android:text="起始日期"
                 android:textSize="15sp" />
 

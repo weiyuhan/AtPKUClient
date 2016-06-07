@@ -120,19 +120,48 @@
             android:layout_height="1dp"
             android:background="?attr/colorPrimaryDark" />
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
             android:layout_marginBottom="6dp"
             android:layout_marginTop="6dp"
             android:orientation="horizontal"
             android:paddingLeft="12dp"
             android:background="?android:attr/windowBackground">
 
+
+            <Button
+                android:id="@+id/msg_reportButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerHorizontal="true"
+                android:background="@null"
+                android:onClick="onReportButtonClick"
+                android:textColor="@color/blue"
+                android:textStyle="bold"
+                android:text="举报"
+                android:textSize="14sp" />
+
+            <Button
+                android:id="@+id/msg_deleteButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_toRightOf="@+id/msg_reportButton"
+                android:background="@drawable/flatbutton"
+                android:onClick="onDeleteButtonClick"
+                android:text="删除信息"
+                android:textColor="@color/white"
+                android:textSize="14sp"
+                android:visibility="gone" />
+
             <TextView
                 android:id="@+id/msg_likeNum"
                 android:layout_width="wrap_content"
+                android:layout_toLeftOf="@+id/msg_likeButton"
+                android:layout_marginRight="6dp"
+                android:layout_marginTop="11dp"
                 android:layout_height="wrap_content"
                 android:text="0"
                 android:textSize="14sp" />
@@ -141,6 +170,7 @@
                 android:id="@+id/animation_like"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignLeft="@id/msg_likeNum"
                 android:text="+1"
                 android:textSize="14sp"
                 android:visibility="invisible" />
@@ -150,6 +180,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:onClick="onLikeButtonClick"
+                android:layout_marginRight="12dp"
+                android:layout_marginTop="5dp"
+                android:layout_centerHorizontal="true"
+                android:background="?android:attr/windowBackground"
+                android:layout_toLeftOf="@+id/msg_dislikeNum"
                 android:src="@drawable/like"
                 android:textSize="14sp" />
 
@@ -157,7 +192,9 @@
                 android:id="@+id/msg_dislikeNum"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="16dp"
+                android:layout_marginRight="6dp"
+                android:layout_marginTop="11dp"
+                android:layout_toLeftOf="@+id/msg_dislikeButton"
                 android:text="0"
                 android:textSize="14sp" />
 
@@ -167,54 +204,23 @@
                 android:layout_height="wrap_content"
                 android:text="-1"
                 android:textSize="14sp"
+                android:layout_alignLeft="@+id/msg_dislikeNum"
                 android:visibility="invisible" />
 
             <ImageButton
                 android:id="@+id/msg_dislikeButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="5dp"
+                android:background="?android:attr/windowBackground"
+                android:paddingRight="16dp"
                 android:onClick="onDislikeButtonClick"
                 android:src="@drawable/dislike"
                 android:textSize="14sp" />
 
-            <TextView
-                android:id="@+id/msg_reportNum"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="16dp"
-                android:text="0"
-                android:textSize="14sp" />
-
-            <TextView
-                android:id="@+id/animation_report"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="+1"
-                android:textSize="14sp"
-                android:visibility="invisible" />
-
-            <Button
-                android:id="@+id/msg_reportButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/textbutton"
-                android:onClick="onReportButtonClick"
-                android:text="举报"
-                android:textSize="14sp" />
-
-            <Button
-                android:id="@+id/msg_deleteButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="16dp"
-                android:background="@drawable/flatbutton"
-                android:onClick="onDeleteButtonClick"
-                android:text="删除信息"
-                android:textColor="@color/white"
-                android:textSize="14sp"
-                android:visibility="gone" />
-
-        </LinearLayout>
+        </RelativeLayout>
 
 
         <LinearLayout

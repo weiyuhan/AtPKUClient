@@ -76,7 +76,6 @@ public class MsgWindow extends AppCompatActivity implements AdapterView.OnItemCl
     public TextView content;
     public TextView likeNum;
     public TextView dislikeNum;
-    public TextView reportNum;
     public ImageButton likeButton;
     public ImageButton dislikeButton;
     public Button reportButton;
@@ -97,7 +96,6 @@ public class MsgWindow extends AppCompatActivity implements AdapterView.OnItemCl
 
     public TextView likeView;
     public TextView dislikeView;
-    public TextView reportView;
     public Animation animation;
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -172,7 +170,6 @@ public class MsgWindow extends AppCompatActivity implements AdapterView.OnItemCl
         likeButton = (ImageButton)msgContent.findViewById(R.id.msg_likeButton);
         dislikeNum = (TextView)msgContent.findViewById(R.id.msg_dislikeNum);
         dislikeButton = (ImageButton)msgContent.findViewById(R.id.msg_dislikeButton);
-        reportNum = (TextView)msgContent.findViewById(R.id.msg_reportNum);
         reportButton = (Button)msgContent.findViewById(R.id.msg_reportButton);
         deleteButton = (Button)msgContent.findViewById(R.id.msg_deleteButton);
         commentText = (EditText)msgContent.findViewById(R.id.msg_addComment);
@@ -182,7 +179,6 @@ public class MsgWindow extends AppCompatActivity implements AdapterView.OnItemCl
         commentList = (ListView)comment.findViewById(R.id.msg_commentList);
         likeView = (TextView)msgContent.findViewById(R.id.animation_like);;
         dislikeView = (TextView)msgContent.findViewById(R.id.animation_dislike);;
-        reportView = (TextView)msgContent.findViewById(R.id.animation_report);;
         animation  = AnimationUtils.loadAnimation(MsgWindow.this, R.anim.applaud_animation);
 
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
@@ -211,7 +207,7 @@ public class MsgWindow extends AppCompatActivity implements AdapterView.OnItemCl
                             likeView.startAnimation(animation);
                             new Handler().postDelayed(new Runnable() {
                                 public void run() {
-                                    likeView.setVisibility(View.INVISIBLE);
+                                    likeView.setVisibility(View.GONE);
                                 }
                             }, 1000);
                             refreshMessageInfo(false);
@@ -249,7 +245,7 @@ public class MsgWindow extends AppCompatActivity implements AdapterView.OnItemCl
                             dislikeView.startAnimation(animation);
                             new Handler().postDelayed(new Runnable() {
                                 public void run() {
-                                    dislikeView.setVisibility(View.INVISIBLE);
+                                    dislikeView.setVisibility(View.GONE);
                                 }
                             }, 1000);
                             refreshMessageInfo(false);
@@ -282,13 +278,6 @@ public class MsgWindow extends AppCompatActivity implements AdapterView.OnItemCl
                         PostResult result = JSON.parseObject(response, PostResult.class);
                         if (result.success) {
                             //dislikeNum.setText(msg.getDislikeUsers().size()+1+"");
-                            reportView.setVisibility(View.VISIBLE);
-                            reportView.startAnimation(animation);
-                            new Handler().postDelayed(new Runnable() {
-                                public void run() {
-                                    reportView.setVisibility(View.INVISIBLE);
-                                }
-                            }, 1000);
                             refreshMessageInfo(false);
                         } else {
                             Snackbar.make(findViewById(R.id.msg_layout), result.message, Snackbar.LENGTH_LONG).show();
@@ -470,15 +459,18 @@ public class MsgWindow extends AppCompatActivity implements AdapterView.OnItemCl
                             content.setText(msg.getContent());
                             likeNum.setText(msg.getLikeUsers().size() + "");
                             dislikeNum.setText("-" + msg.getDislikeUsers().size());
-                            reportNum.setText(msg.getReportUsers().size() + "");
                             for (Comment comment : msg.comments) {
                                 adapter.add(comment);
                             }
                             refreshLayout.setRefreshing(false);
                             if (MapWindow.user.getIsAdmin()) {
                                 reportButton.setVisibility(View.GONE);
-                                reportNum.setText(msg.getReportUsers().size() + "举报");
                                 deleteButton.setVisibility(View.VISIBLE);
+                            }
+                            if(msg.reportTimes > 2)
+                            {
+                                Snackbar.make(findViewById(R.id.msg_layout), "该信息已被多人举报，可能是虚假诈骗或涉黄信息，请及时离开!",
+                                        Snackbar.LENGTH_INDEFINITE).show();
                             }
                             if (refreshImage)
                                 refreshMessageList();
