@@ -21,10 +21,13 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.Volley;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 
 import atpku.client.R;
+import atpku.client.model.User;
 import atpku.client.util.MessageAdapter;
 import atpku.client.util.StringRequestWithCookie;
 import atpku.client.model.Message;
@@ -79,20 +82,56 @@ public class PlaceWindow extends AppCompatActivity implements SearchView.OnQuery
                     public void onResponse(String response) {
                         PostResult result = JSON.parseObject(response, PostResult.class);
                         if (result.success) {
-                            List<Message> messages = JSON.parseArray(result.data, Message.class);
-                            for (Message message : messages) {
-                                System.out.println("Get message: " + message.getTitle().toString());
-                                adapter.add(message);
-                            }
+                            final List<Message> messages = JSON.parseArray(result.data, Message.class);
+                            Collections.sort(messages, new Comparator<Message>() {
+                                @Override
+                                public int compare(Message lhs, Message rhs) {
+                                    return rhs.getPostTime().compareTo(lhs.getPostTime());
+                                }
+                            });
+                            StringRequestWithCookie stringRequest2 = new StringRequestWithCookie(Request.Method.GET,
+                                    "http://139.129.22.145:5000/hotmessages/" + placeID,
+                                    new Response.Listener<String>() {
+                                        @Override
+                                        public void onResponse(String response) {
+                                            PostResult result = JSON.parseObject(response, PostResult.class);
+                                            if (result.success) {
+                                                List<Message> hotMessages = JSON.parseArray(result.data, Message.class);
+                                                Collections.sort(hotMessages, new Comparator<Message>() {
+                                                    @Override
+                                                    public int compare(Message lhs, Message rhs) {
+                                                        return rhs.getHeat() - lhs.getHeat();
+                                                    }
+                                                });
+                                                for (Message message : hotMessages) {
+                                                    System.out.println("Get hot message: " + message.getTitle().toString());
+                                                    message.title = "//!?hot!?//"+message.title;
+                                                    adapter.add(message);
+                                                }
+                                                for (Message message : messages) {
+                                                    System.out.println("Get message: " + message.getTitle().toString());
+                                                    adapter.add(message);
+                                                }
+                                                msgList.setAdapter(adapter);
+                                                adapter.notifyDataSetChanged();
+                                                refreshLayout.setRefreshing(false);
+                                            };
+                                        }
+                                    },
+                                    new Response.ErrorListener() {
+                                        @Override
+                                        public void onErrorResponse(VolleyError volleyError) {
+                                            refreshLayout.setRefreshing(false);
+                                            Snackbar.make(findViewById(R.id.place_layout), "请检查网络连接", Snackbar.LENGTH_LONG).show();
+                                        }
+                                    }, null);
+                            volleyQuque.add(stringRequest2);
                             if(messages.size() == 0)
                             {
                                 Snackbar.make(findViewById(R.id.place_layout), "这里什么也没有，发表新的信息或去其他地方看看吧", Snackbar.LENGTH_INDEFINITE).show();
                             }
                         } else
                             Snackbar.make(findViewById(R.id.place_layout), result.message, Snackbar.LENGTH_LONG).show();
-                        msgList.setAdapter(adapter);
-                        adapter.notifyDataSetChanged();
-                        refreshLayout.setRefreshing(false);
                     }
                 },
                 new Response.ErrorListener() {
