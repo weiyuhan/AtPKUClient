@@ -63,7 +63,6 @@ public class UserListWindow extends AppCompatActivity implements SearchView.OnQu
         userList = (ListView) findViewById(R.id.userList);
 
         volleyQuque = Volley.newRequestQueue(this);
-        refreshUserList();
     }
 
     public boolean onCreateOptionsMenu(Menu menu) {

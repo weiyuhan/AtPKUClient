@@ -50,7 +50,6 @@ public class ReportHandlingWindow extends AppCompatActivity {
         msgList = (ListView) findViewById(R.id.reportList);
 
         volleyQuque = Volley.newRequestQueue(this);
-        refreshMessageList();
     }
 
     public void refreshMessageList() {

@@ -48,8 +48,6 @@ public class MyFeedbackWindow extends AppCompatActivity
         feedbackList = (ListView)findViewById(R.id.myfeedback_list);
 
         volleyQuque = Volley.newRequestQueue(this);
-
-        getFeedback();
     }
 
     protected void onResume() {
