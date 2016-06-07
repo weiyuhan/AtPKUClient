@@ -63,7 +63,6 @@ public class PlaceWindow extends AppCompatActivity implements SearchView.OnQuery
         CharSequence label = (CharSequence) intent.getSerializableExtra("name");
         setTitle(label);
         volleyQuque = Volley.newRequestQueue(this);
-        refreshMessageList();
     }
 
     public boolean onCreateOptionsMenu(Menu menu) {
