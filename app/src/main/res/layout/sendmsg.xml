@@ -122,9 +122,11 @@
 
         <ProgressBar
             android:id="@+id/sendMsg_progressBar"
-            style="@android:style/Widget.ProgressBar.Horizontal"
+            style="@style/StyleProgressBarMini"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/shape_progressbar_bg"
             android:max="100" />
 
     </LinearLayout>
