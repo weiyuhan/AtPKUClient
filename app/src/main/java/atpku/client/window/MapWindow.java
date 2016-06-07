@@ -530,20 +530,22 @@ public class MapWindow extends AppCompatActivity implements
         if (MapWindow.places == null) {
             MapWindow.places = new HashMap<String, Place>();
         }
-        MarkerOptions markerOptions = new MarkerOptions();
-        LatLng pos;
         Set<String> keys = MapWindow.places.keySet();
-        aMap.clear();
         for (String placename : keys) {
             Place place = MapWindow.places.get(placename);
-            pos = new LatLng(place.getLat(), place.getLng());
             Marker marker = MapWindow.markers.get(placename);
-            markerOptions.position(pos);
-            markerOptions.title(placename);
-            setMarkerIcon(markerOptions, place.type);
-            System.out.println("addMarker " + placename);
-            marker = aMap.addMarker(markerOptions);
-            markers.put(placename, marker);
+            if(marker == null)
+            {
+                MarkerOptions markerOptions = new MarkerOptions();
+                LatLng pos;
+                pos = new LatLng(place.getLat(), place.getLng());
+                markerOptions.position(pos);
+                markerOptions.title(placename);
+                setMarkerIcon(markerOptions, place.type);
+                System.out.println("addMarker " + placename);
+                marker = aMap.addMarker(markerOptions);
+                markers.put(placename, marker);
+            }
             marker.setSnippet(place.snippetString());
         }
     }
