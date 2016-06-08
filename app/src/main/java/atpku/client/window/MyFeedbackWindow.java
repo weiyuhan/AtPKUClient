@@ -42,7 +42,7 @@ public class MyFeedbackWindow extends AppCompatActivity
 
         actionBar = getSupportActionBar();
         actionBar.setDisplayUseLogoEnabled(true);
-        actionBar.setLogo(R.mipmap.ic_launcher);
+        actionBar.setLogo(R.mipmap.logo);
         actionBar.setDisplayHomeAsUpEnabled(true);
 
         feedbackList = (ListView)findViewById(R.id.myfeedback_list);
@@ -99,7 +99,7 @@ public class MyFeedbackWindow extends AppCompatActivity
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError volleyError) {
-                        Snackbar.make(findViewById(R.id.myfeedback_layout), "请检查网络连接", Snackbar.LENGTH_LONG).show();
+                        Snackbar.make(findViewById(R.id.myfeedback_layout), "请检查网络连接", Snackbar.LENGTH_INDEFINITE).show();
                     }
                 }, null);
         volleyQuque.add(stringRequest);

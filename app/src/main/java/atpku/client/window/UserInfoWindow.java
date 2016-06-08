@@ -90,6 +90,8 @@ public class UserInfoWindow extends AppCompatActivity implements AdapterView.OnI
     public boolean modifyNickname = false;
     public String newNickname;
 
+    public boolean submitting = false;
+
     protected void onCreate(Bundle savedInstanceState) {
         ThemeUtil.setTheme(this);
         super.onCreate(savedInstanceState);
@@ -97,7 +99,7 @@ public class UserInfoWindow extends AppCompatActivity implements AdapterView.OnI
 
         actionBar = getSupportActionBar();
         actionBar.setDisplayUseLogoEnabled(true);
-        actionBar.setLogo(R.mipmap.ic_launcher);
+        actionBar.setLogo(R.mipmap.logo);
         actionBar.setDisplayHomeAsUpEnabled(true);
 
         imgList = (ListView) findViewById(R.id.userInfo_imgList);
@@ -160,8 +162,8 @@ public class UserInfoWindow extends AppCompatActivity implements AdapterView.OnI
                 if (!nickname.equals(user.nickname)) {
                     modifyNickname = true;
                     newNickname = nickname;
-                    TextView textView = (TextView) infoList.getChildAt(0).findViewById(R.id.userInfo_row_value);
-                    textView.setText(newNickname);
+                    user.nickname = newNickname;
+                    System.out.println(newNickname);
                 }
                 if (modifyNickname) {
                     modifyNickname = false;
@@ -187,15 +189,11 @@ public class UserInfoWindow extends AppCompatActivity implements AdapterView.OnI
                 if (user.gender.equals("m") && which == 1) {
                     modifyGender = true;
                     newGender = "f";
-                    TextView textView = (TextView) infoList.getChildAt(2).findViewById(R.id.userInfo_row_value);
-                    textView.setText("女");
                     user.gender = newGender;
                 }
                 if (user.gender.equals("f") && which == 0) {
                     modifyGender = true;
                     newGender = "m";
-                    TextView textView = (TextView) infoList.getChildAt(2).findViewById(R.id.userInfo_row_value);
-                    textView.setText("男");
                     user.gender = newGender;
                 }
                 if (modifyGender) {
@@ -210,15 +208,18 @@ public class UserInfoWindow extends AppCompatActivity implements AdapterView.OnI
         builder.create().show();
     }
 
-    public void refreshUserInfo() {
+    public void refreshUserInfo(boolean refreshAvatar) {
+        System.out.println("refreshing UI");
         user = MapWindow.user;
         if (user.avatar == null)
             user.avatar = "http://public-image-source.img-cn-shanghai.aliyuncs.com/avatar33201652203559.jpg";
         System.out.println(user);
         if (user != null) {
-            imgAdapter = new UserInfoAdapter(this, R.layout.userinfo_row);
-            imgAdapter.add(new UserInfoLine("用户头像", null, user.avatar, null));
-            imgList.setAdapter(imgAdapter);
+            if(refreshAvatar) {
+                imgAdapter = new UserInfoAdapter(this, R.layout.userinfo_row);
+                imgAdapter.add(new UserInfoLine("用户头像", null, user.avatar, null));
+                imgList.setAdapter(imgAdapter);
+            }
 
             UserInfoAdapter infoAdapter = new UserInfoAdapter(this, R.layout.userinfo_row);
             infoAdapter.add(new UserInfoLine("昵称", user.nickname, null, String.valueOf(R.drawable.right_entry)));
@@ -240,7 +241,7 @@ public class UserInfoWindow extends AppCompatActivity implements AdapterView.OnI
         }
     }
 
-    public void refreshUser(boolean refreshUI) {
+    public void refreshUser(final boolean refreshUI) {
         final boolean refreshui = refreshUI;
         StringRequestWithCookie stringRequest = new StringRequestWithCookie(StringRequest.Method.GET, "http://139.129.22.145:5000/profile",
                 new Response.Listener<String>() {
@@ -255,8 +256,7 @@ public class UserInfoWindow extends AppCompatActivity implements AdapterView.OnI
                             mEditor.putString("userInfoJson", result.data);
                             mEditor.apply();
                             mEditor.commit();
-                            if (refreshui)
-                                refreshUserInfo();
+                            refreshUserInfo(refreshUI);
                         } else {
                             Snackbar.make(findViewById(R.id.userInfo_layout), result.message, Snackbar.LENGTH_LONG).show();
                         }
@@ -266,10 +266,12 @@ public class UserInfoWindow extends AppCompatActivity implements AdapterView.OnI
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError volleyError) {
-                        Snackbar.make(findViewById(R.id.userInfo_layout), "请检查网络连接", Snackbar.LENGTH_LONG).show();
+                        Snackbar.make(findViewById(R.id.userInfo_layout), "请检查网络连接", Snackbar.LENGTH_INDEFINITE).show();
                     }
                 }, null);
         volleyQuque.add(stringRequest);
+        if(submitting)
+            submitting = false;
     }
 
 
@@ -385,6 +387,7 @@ public class UserInfoWindow extends AppCompatActivity implements AdapterView.OnI
 
 
     public void submitChange(Map<String, String> params) {
+        submitting = true;
         System.out.println(params);
         StringRequestWithCookie stringRequest = new StringRequestWithCookie(Request.Method.POST,
                 "http://139.129.22.145:5000/profile",
@@ -399,15 +402,15 @@ public class UserInfoWindow extends AppCompatActivity implements AdapterView.OnI
                                 ImageView imageView = (ImageView) imgList.getChildAt(0).findViewById(R.id.userInfo_row_img);
                                 Picasso.with(UserInfoWindow.this).load(Uri.fromFile(avatarFile)).resize(200, 200).into(imageView);
                             }
+                            refreshUser(false);
                         }
-                        refreshUser(false);
                         Log.d("TAG", response);
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError volleyError) {
-                        Snackbar.make(findViewById(R.id.userInfo_layout), "提交失败，请检查网络连接", Snackbar.LENGTH_LONG).show();
+                        Snackbar.make(findViewById(R.id.userInfo_layout), "提交失败，请检查网络连接", Snackbar.LENGTH_INDEFINITE).show();
                     }
                 }, params);
         volleyQuque.add(stringRequest);

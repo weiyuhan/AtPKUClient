@@ -29,7 +29,7 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/logo"
         android:label="@string/app_name"
         android:name=".AtPKUApplication"
         android:theme="@style/AppTheme.Grey" >
@@ -130,7 +130,7 @@
         </activity>
         <activity
             android:name=".window.MapWindow"
-            android:label="AtPKU"
+            android:label="  AtPKU"
             android:launchMode="singleTask">
         </activity>
         <activity

@@ -34,7 +34,7 @@ public class SettingWindow extends AppCompatActivity
 
         actionBar = getSupportActionBar();
         actionBar.setDisplayUseLogoEnabled(true);
-        actionBar.setLogo(R.mipmap.ic_launcher);
+        actionBar.setLogo(R.mipmap.logo);
         actionBar.setDisplayHomeAsUpEnabled(true);
 
         grey = (RadioButton)findViewById(R.id.setting_theme_grey);

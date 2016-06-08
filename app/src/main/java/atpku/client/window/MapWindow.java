@@ -134,8 +134,8 @@ public class MapWindow extends AppCompatActivity implements
 
         actionBar = getSupportActionBar();
         actionBar.setDisplayShowHomeEnabled(true);
+        actionBar.setLogo(R.mipmap.logo);
         actionBar.setDisplayUseLogoEnabled(true);
-        actionBar.setLogo(R.mipmap.ic_launcher);
 
         mapView = (MapView) findViewById(R.id.map);
         mapView.onCreate(savedInstanceState);
@@ -158,9 +158,6 @@ public class MapWindow extends AppCompatActivity implements
             }
         }, 120000, 120000); // for each 2 min, refresh all messages about places
 
-        if (MapWindow.isLogin) {
-            refreshUser();
-        }
 
 
     }
@@ -179,15 +176,15 @@ public class MapWindow extends AppCompatActivity implements
                             mEditor.putString("userInfoJson", result.data);
                             mEditor.apply();
                             mEditor.commit();
-                            refreshSlideMenu();
                         }
+                        refreshSlideMenu();
                         Log.d("TAG", response);
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError volleyError) {
-                        Snackbar.make(findViewById(R.id.map_layout), "请检查网络连接", Snackbar.LENGTH_LONG).show();
+                        Snackbar.make(findViewById(R.id.map_layout), "请检查网络连接", Snackbar.LENGTH_INDEFINITE).show();
                     }
                 }, null);
         volleyQuque.add(stringRequest);
@@ -291,7 +288,6 @@ public class MapWindow extends AppCompatActivity implements
                         @Override
                         public void onResponse(String response) {
                             PostResult result = JSON.parseObject(response, PostResult.class);
-                            Snackbar.make(findViewById(R.id.map_layout), result.message, Snackbar.LENGTH_LONG).show();
                             if (result.success) {
                                 MapWindow.isLogin = false;
                                 refreshSlideMenu();
@@ -299,6 +295,13 @@ public class MapWindow extends AppCompatActivity implements
                                 SharedPreferences.Editor editPrefs = prefs.edit();
                                 editPrefs.remove("Cookie");
                                 editPrefs.apply();
+                                Snackbar.make(findViewById(R.id.map_layout), result.message, Snackbar.LENGTH_LONG).show();
+                            }
+                            else
+                            {
+                                MapWindow.isLogin = false;
+                                refreshSlideMenu();
+                                Snackbar.make(findViewById(R.id.map_layout), "未正常登出", Snackbar.LENGTH_LONG).show();
                             }
                             Log.d("TAG", response);
                         }
@@ -306,7 +309,7 @@ public class MapWindow extends AppCompatActivity implements
                     new Response.ErrorListener() {
                         @Override
                         public void onErrorResponse(VolleyError volleyError) {
-                            Snackbar.make(findViewById(R.id.map_layout), "登出失败，请检查网络连接", Snackbar.LENGTH_LONG).show();
+                            Snackbar.make(findViewById(R.id.map_layout), "登出失败，请检查网络连接", Snackbar.LENGTH_INDEFINITE).show();
                         }
                     }, params);
             volleyQuque.add(stringRequest);
@@ -355,7 +358,11 @@ public class MapWindow extends AppCompatActivity implements
         super.onResume();
         mapView.onResume();
         drawerLayout.closeDrawers();
-        refreshSlideMenu();
+        if (MapWindow.isLogin) {
+            refreshUser();
+        }
+        else
+            refreshSlideMenu();
         if (ThemeUtil.themeChanged) {
             ThemeUtil.themeChanged = false;
             //mapShow = false;
@@ -504,7 +511,7 @@ public class MapWindow extends AppCompatActivity implements
                                         new Response.ErrorListener() {
                                             @Override
                                             public void onErrorResponse(VolleyError volleyError) {
-                                                Snackbar.make(findViewById(R.id.map_layout), "请检查网络连接", Snackbar.LENGTH_LONG).show();
+                                                Snackbar.make(findViewById(R.id.map_layout), "请检查网络连接", Snackbar.LENGTH_INDEFINITE).show();
                                             }
                                         }, null);
                                 volleyQuque.add(globalMsgRequest);
@@ -518,7 +525,7 @@ public class MapWindow extends AppCompatActivity implements
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError volleyError) {
-                        Snackbar.make(findViewById(R.id.map_layout), "请检查网络连接", Snackbar.LENGTH_LONG).show();
+                        Snackbar.make(findViewById(R.id.map_layout), "请检查网络连接", Snackbar.LENGTH_INDEFINITE).show();
                     }
                 }, null);
         volleyQuque.add(stringRequest);

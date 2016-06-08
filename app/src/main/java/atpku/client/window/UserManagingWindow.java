@@ -62,7 +62,7 @@ public class UserManagingWindow extends AppCompatActivity {
 
         actionBar = getSupportActionBar();
         actionBar.setDisplayUseLogoEnabled(true);
-        actionBar.setLogo(R.mipmap.ic_launcher);
+        actionBar.setLogo(R.mipmap.logo);
         actionBar.setDisplayHomeAsUpEnabled(true);
 
         nicknameText = (TextView) findViewById(R.id.nickname);
@@ -103,7 +103,7 @@ public class UserManagingWindow extends AppCompatActivity {
                                 new Response.ErrorListener() {
                                     @Override
                                     public void onErrorResponse(VolleyError volleyError) {
-                                        Snackbar.make(findViewById(R.id.userInfo_layout), "请检查网络连接", Snackbar.LENGTH_LONG).show();
+                                        Snackbar.make(findViewById(R.id.userInfo_layout), "请检查网络连接", Snackbar.LENGTH_INDEFINITE).show();
                                     }
                                 }, null);
                         volleyQuque.add(stringRequest);
@@ -182,7 +182,7 @@ public class UserManagingWindow extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError volleyError) {
-                        Snackbar.make(findViewById(R.id.userManaging_layout), "请检查网络连接", Snackbar.LENGTH_LONG).show();
+                        Snackbar.make(findViewById(R.id.userManaging_layout), "请检查网络连接", Snackbar.LENGTH_INDEFINITE).show();
                     }
                 }, params);
         volleyQuque.add(stringRequest2);

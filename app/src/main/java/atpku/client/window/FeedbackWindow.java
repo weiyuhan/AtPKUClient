@@ -41,7 +41,7 @@ public class FeedbackWindow extends AppCompatActivity {
 
         actionBar = getSupportActionBar();
         actionBar.setDisplayUseLogoEnabled(true);
-        actionBar.setLogo(R.mipmap.ic_launcher);
+        actionBar.setLogo(R.mipmap.logo);
         actionBar.setDisplayHomeAsUpEnabled(true);
 
         bt = (Button) findViewById(R.id.feedback_submit);
@@ -77,7 +77,7 @@ public class FeedbackWindow extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError volleyError) {
-                        Snackbar.make(findViewById(R.id.feedback_layout), "发送失败，请检查网络连接", Snackbar.LENGTH_LONG).show();
+                        Snackbar.make(findViewById(R.id.feedback_layout), "发送失败，请检查网络连接", Snackbar.LENGTH_INDEFINITE).show();
                     }
                 }, params);
         volleyQuque.add(stringRequest);

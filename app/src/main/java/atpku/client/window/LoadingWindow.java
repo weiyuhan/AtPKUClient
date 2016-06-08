@@ -125,7 +125,7 @@ public class LoadingWindow extends AppCompatActivity {
                                         new Response.ErrorListener() {
                                             @Override
                                             public void onErrorResponse(VolleyError volleyError) {
-                                                Snackbar.make(findViewById(R.id.loading_layout), "请检查网络连接", Snackbar.LENGTH_LONG).show();
+                                                Snackbar.make(findViewById(R.id.loading_layout), "请检查网络连接", Snackbar.LENGTH_INDEFINITE).show();
                                             }
                                         }, null);
                                 volleyQuque.add(globalMsgRequest);
@@ -143,7 +143,7 @@ public class LoadingWindow extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError volleyError) {
-                        Snackbar.make(findViewById(R.id.loading_layout), "请检查网络连接", Snackbar.LENGTH_LONG).show();
+                        Snackbar.make(findViewById(R.id.loading_layout), "请检查网络连接", Snackbar.LENGTH_INDEFINITE).show();
                     }
                 }, params);
         volleyQuque.add(stringRequest);

@@ -8,12 +8,22 @@
     android:padding="12dip">
 
     <TextView
+        android:id="@+id/hot"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/red"
+        android:textStyle="bold"
+        android:text=""
+        android:textSize="13dip"
+        ></TextView>
+    <TextView
         android:id="@+id/title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginRight="4dp"
         android:text="Title"
         android:textSize="16dip"
+        android:layout_toRightOf="@+id/hot"
         android:textStyle="bold" />
 
     <TextView

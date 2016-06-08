@@ -48,10 +48,18 @@ public class MessageAdapter extends ArrayAdapter<Message> {
         TextView titleText = (TextView) view.findViewById(R.id.title);
         TextView timeText = (TextView) view.findViewById(R.id.time);
         TextView nicknameText = (TextView) view.findViewById(R.id.nickname);
+        TextView hotText = (TextView) view.findViewById(R.id.hot);
 
-        titleText.setText(msg.getTitle());
+        if (msg.getTitle().startsWith("//!?hot!?//"))
+        {
+            hotText.setText("热");
+            titleText.setText(msg.getTitle().substring(11));
+        }
+        else
+            titleText.setText(msg.getTitle());
         timeText.setText(msg.getPostTime());
         nicknameText.setText(msg.owner.getNickname());
+
         return view;
     }
 }
