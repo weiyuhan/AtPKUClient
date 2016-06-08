@@ -103,6 +103,7 @@ public class MsgWindow extends AppCompatActivity implements AdapterView.OnItemCl
     protected void onCreate(Bundle savedInstanceState) {
         ThemeUtil.setTheme(this);
         super.onCreate(savedInstanceState);
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         setContentView(R.layout.msg);
 
         actionBar = getSupportActionBar();
@@ -184,7 +185,6 @@ public class MsgWindow extends AppCompatActivity implements AdapterView.OnItemCl
         dislikeView = (TextView)msgContent.findViewById(R.id.animation_dislike);;
         animation  = AnimationUtils.loadAnimation(MsgWindow.this, R.anim.applaud_animation);
 
-        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         Intent intent = this.getIntent();
         messageID = (int) intent.getSerializableExtra("messageID");
         volleyQuque = Volley.newRequestQueue(this);

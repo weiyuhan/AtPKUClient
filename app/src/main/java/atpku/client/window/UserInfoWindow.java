@@ -223,20 +223,20 @@ public class UserInfoWindow extends AppCompatActivity implements AdapterView.OnI
 
             UserInfoAdapter infoAdapter = new UserInfoAdapter(this, R.layout.userinfo_row);
             infoAdapter.add(new UserInfoLine("昵称", user.nickname, null, String.valueOf(R.drawable.right_entry)));
-            infoAdapter.add(new UserInfoLine("邮箱", user.email, null, String.valueOf(R.drawable.right_entry)));
+            infoAdapter.add(new UserInfoLine("邮箱", user.email, null, null));
             if (user.gender.equals("m"))
                 infoAdapter.add(new UserInfoLine("性别", "男", null, String.valueOf(R.drawable.right_entry)));
             else
                 infoAdapter.add(new UserInfoLine("性别", "女", null, String.valueOf(R.drawable.right_entry)));
             infoAdapter.add(new UserInfoLine("加入时间", Utillity.parseTimeString(user.date_joined), null, String.valueOf(R.drawable.right_entry)));
             if (user.isAdmin)
-                infoAdapter.add(new UserInfoLine("状态", "管理员", null, String.valueOf(R.drawable.right_entry)));
+                infoAdapter.add(new UserInfoLine("状态", "管理员", null, null));
             else if (user.isBanned)
-                infoAdapter.add(new UserInfoLine("状态", "禁言", null, String.valueOf(R.drawable.right_entry)));
+                infoAdapter.add(new UserInfoLine("状态", "禁言", null, null));
             else
-                infoAdapter.add(new UserInfoLine("状态", "正常", null, String.valueOf(R.drawable.right_entry)));
-            infoAdapter.add(new UserInfoLine("被赞总数", String.valueOf(user.likeReceived), null, String.valueOf(R.drawable.right_entry)));
-            infoAdapter.add(new UserInfoLine("被评论总数", String.valueOf(user.commentReceived), null, String.valueOf(R.drawable.right_entry)));
+                infoAdapter.add(new UserInfoLine("状态", "正常", null, null));
+            infoAdapter.add(new UserInfoLine("被赞总数", String.valueOf(user.likeReceived), null, null));
+            infoAdapter.add(new UserInfoLine("被评论总数", String.valueOf(user.commentReceived), null, null));
             infoList.setAdapter(infoAdapter);
         }
     }
