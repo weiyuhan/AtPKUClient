@@ -107,7 +107,7 @@ public class MsgWindow extends AppCompatActivity implements AdapterView.OnItemCl
 
         actionBar = getSupportActionBar();
         actionBar.setDisplayUseLogoEnabled(true);
-        actionBar.setLogo(R.mipmap.ic_launcher);
+        actionBar.setLogo(R.mipmap.logo);
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setTitle("信息详情");
 
@@ -223,7 +223,7 @@ public class MsgWindow extends AppCompatActivity implements AdapterView.OnItemCl
                     @Override
                     public void onErrorResponse(VolleyError volleyError) {
                         likeButton.setEnabled(true);
-                        Snackbar.make(findViewById(R.id.msg_layout), "赞失败，请检查网络连接", Snackbar.LENGTH_LONG).show();
+                        Snackbar.make(findViewById(R.id.msg_layout), "赞失败，请检查网络连接", Snackbar.LENGTH_INDEFINITE).show();
                     }
                 }, null);
         volleyQuque.add(stringRequest);
@@ -261,7 +261,7 @@ public class MsgWindow extends AppCompatActivity implements AdapterView.OnItemCl
                     @Override
                     public void onErrorResponse(VolleyError volleyError) {
                         dislikeButton.setEnabled(true);
-                        Snackbar.make(findViewById(R.id.msg_layout), "踩失败，请检查网络连接", Snackbar.LENGTH_LONG).show();
+                        Snackbar.make(findViewById(R.id.msg_layout), "踩失败，请检查网络连接", Snackbar.LENGTH_INDEFINITE).show();
                     }
                 }, null);
         volleyQuque.add(stringRequest);
@@ -291,7 +291,7 @@ public class MsgWindow extends AppCompatActivity implements AdapterView.OnItemCl
                     @Override
                     public void onErrorResponse(VolleyError volleyError) {
                         reportButton.setEnabled(true);
-                        Snackbar.make(findViewById(R.id.msg_layout), "举报失败，请检查网络连接", Snackbar.LENGTH_LONG).show();
+                        Snackbar.make(findViewById(R.id.msg_layout), "举报失败，请检查网络连接", Snackbar.LENGTH_INDEFINITE).show();
                     }
                 }, null);
         volleyQuque.add(stringRequest);
@@ -326,7 +326,7 @@ public class MsgWindow extends AppCompatActivity implements AdapterView.OnItemCl
                                             new Response.ErrorListener() {
                                                 @Override
                                                 public void onErrorResponse(VolleyError volleyError) {
-                                                    Snackbar.make(findViewById(R.id.msg_layout), "删除失败，请检查网络连接", Snackbar.LENGTH_LONG).show();
+                                                    Snackbar.make(findViewById(R.id.msg_layout), "删除失败，请检查网络连接", Snackbar.LENGTH_INDEFINITE).show();
                                                 }
                                             }, null);
                                     volleyQuque.add(stringRequest);
@@ -386,7 +386,7 @@ public class MsgWindow extends AppCompatActivity implements AdapterView.OnItemCl
                     public void onErrorResponse(VolleyError volleyError) {
                         commentButton.setEnabled(true);
                         commentButton.setText("评论");
-                        Snackbar.make(findViewById(R.id.msg_layout), "评论失败，请检查网络连接", Snackbar.LENGTH_LONG).show();
+                        Snackbar.make(findViewById(R.id.msg_layout), "评论失败，请检查网络连接", Snackbar.LENGTH_INDEFINITE).show();
                     }
                 }, params);
         volleyQuque.add(stringRequest);
@@ -408,7 +408,7 @@ public class MsgWindow extends AppCompatActivity implements AdapterView.OnItemCl
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError volleyError) {
-                        Snackbar.make(findViewById(R.id.msg_layout), "删除信息失败，请检查网络连接", Snackbar.LENGTH_LONG).show();
+                        Snackbar.make(findViewById(R.id.msg_layout), "删除信息失败，请检查网络连接", Snackbar.LENGTH_INDEFINITE).show();
                     }
                 }, null);
         volleyQuque.add(stringRequest);
@@ -492,7 +492,7 @@ public class MsgWindow extends AppCompatActivity implements AdapterView.OnItemCl
                     @Override
                     public void onErrorResponse(VolleyError volleyError) {
                         refreshLayout.setRefreshing(false);
-                        Snackbar.make(findViewById(R.id.msg_layout), "请检查网络连接", Snackbar.LENGTH_LONG).show();
+                        Snackbar.make(findViewById(R.id.msg_layout), "请检查网络连接", Snackbar.LENGTH_INDEFINITE).show();
                     }
                 }, null);
         volleyQuque.add(stringRequest);

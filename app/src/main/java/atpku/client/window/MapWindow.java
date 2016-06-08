@@ -134,8 +134,8 @@ public class MapWindow extends AppCompatActivity implements
 
         actionBar = getSupportActionBar();
         actionBar.setDisplayShowHomeEnabled(true);
+        actionBar.setLogo(R.mipmap.logo);
         actionBar.setDisplayUseLogoEnabled(true);
-        actionBar.setLogo(R.mipmap.ic_launcher);
 
         mapView = (MapView) findViewById(R.id.map);
         mapView.onCreate(savedInstanceState);
@@ -184,7 +184,7 @@ public class MapWindow extends AppCompatActivity implements
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError volleyError) {
-                        Snackbar.make(findViewById(R.id.map_layout), "请检查网络连接", Snackbar.LENGTH_LONG).show();
+                        Snackbar.make(findViewById(R.id.map_layout), "请检查网络连接", Snackbar.LENGTH_INDEFINITE).show();
                     }
                 }, null);
         volleyQuque.add(stringRequest);
@@ -309,7 +309,7 @@ public class MapWindow extends AppCompatActivity implements
                     new Response.ErrorListener() {
                         @Override
                         public void onErrorResponse(VolleyError volleyError) {
-                            Snackbar.make(findViewById(R.id.map_layout), "登出失败，请检查网络连接", Snackbar.LENGTH_LONG).show();
+                            Snackbar.make(findViewById(R.id.map_layout), "登出失败，请检查网络连接", Snackbar.LENGTH_INDEFINITE).show();
                         }
                     }, params);
             volleyQuque.add(stringRequest);
@@ -511,7 +511,7 @@ public class MapWindow extends AppCompatActivity implements
                                         new Response.ErrorListener() {
                                             @Override
                                             public void onErrorResponse(VolleyError volleyError) {
-                                                Snackbar.make(findViewById(R.id.map_layout), "请检查网络连接", Snackbar.LENGTH_LONG).show();
+                                                Snackbar.make(findViewById(R.id.map_layout), "请检查网络连接", Snackbar.LENGTH_INDEFINITE).show();
                                             }
                                         }, null);
                                 volleyQuque.add(globalMsgRequest);
@@ -525,7 +525,7 @@ public class MapWindow extends AppCompatActivity implements
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError volleyError) {
-                        Snackbar.make(findViewById(R.id.map_layout), "请检查网络连接", Snackbar.LENGTH_LONG).show();
+                        Snackbar.make(findViewById(R.id.map_layout), "请检查网络连接", Snackbar.LENGTH_INDEFINITE).show();
                     }
                 }, null);
         volleyQuque.add(stringRequest);

@@ -44,7 +44,7 @@ public class SearchMsgWindow extends AppCompatActivity {
 
         actionBar = getSupportActionBar();
         actionBar.setDisplayUseLogoEnabled(true);
-        actionBar.setLogo(R.mipmap.ic_launcher);
+        actionBar.setLogo(R.mipmap.logo);
         actionBar.setDisplayHomeAsUpEnabled(true);
 
         title = (TextInputLayout) findViewById(R.id.advanceSearch_title);

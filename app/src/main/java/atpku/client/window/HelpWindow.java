@@ -25,17 +25,16 @@ public class HelpWindow extends AppCompatActivity {
 
         actionBar = getSupportActionBar();
         actionBar.setDisplayUseLogoEnabled(true);
-        actionBar.setLogo(R.mipmap.ic_launcher);
+        actionBar.setLogo(R.mipmap.logo);
         actionBar.setDisplayHomeAsUpEnabled(true);
 
         helpcontent = (TextView) findViewById(R.id.helpcontent);
-        helpcontent.setText("欢迎使用AtPKU。\n"
+        helpcontent.setText("欢迎使用AtPKU。\n\n"
                         + "本app的主要功能是提供基于地理位置的信息。\n"
                         + "作为游客，您可以查看各主要地点及其信息摘要。\n"
                         + "登录之后就可以发送信息，对信息进行评论、点赞等操作。\n"
                         + "注册时请填写PKU邮箱，我们会发送确认邮件，确认之后即注册成功。\n"
-                        + "\n一些额外的信息：\n"
-                        + "注册时性别只要没有选中男，就视为女。\n"
+                        + "\n"
                         + "你可以对自己发送的信息进行赞、踩或举报。\n"
                         + "主地图的信息每2分钟会自动刷新一次。暂时不支持用户自定义该间隔时间。\n"
                         + "\nAtPKU开发者 软工第6小组\n"

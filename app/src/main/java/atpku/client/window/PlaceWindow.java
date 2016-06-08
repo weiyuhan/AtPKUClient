@@ -53,7 +53,7 @@ public class PlaceWindow extends AppCompatActivity implements SearchView.OnQuery
 
         actionBar = getSupportActionBar();
         actionBar.setDisplayUseLogoEnabled(true);
-        actionBar.setLogo(R.mipmap.ic_launcher);
+        actionBar.setLogo(R.mipmap.logo);
         actionBar.setDisplayHomeAsUpEnabled(true);
 
         refreshLayout = (SwipeRefreshLayout)findViewById(R.id.place_refresh_layout);
@@ -122,7 +122,7 @@ public class PlaceWindow extends AppCompatActivity implements SearchView.OnQuery
                                         @Override
                                         public void onErrorResponse(VolleyError volleyError) {
                                             refreshLayout.setRefreshing(false);
-                                            Snackbar.make(findViewById(R.id.place_layout), "请检查网络连接", Snackbar.LENGTH_LONG).show();
+                                            Snackbar.make(findViewById(R.id.place_layout), "请检查网络连接", Snackbar.LENGTH_INDEFINITE).show();
                                         }
                                     }, null);
                             volleyQuque.add(stringRequest2);
@@ -138,7 +138,7 @@ public class PlaceWindow extends AppCompatActivity implements SearchView.OnQuery
                     @Override
                     public void onErrorResponse(VolleyError volleyError) {
                         refreshLayout.setRefreshing(false);
-                        Snackbar.make(findViewById(R.id.place_layout), "请检查网络连接", Snackbar.LENGTH_LONG).show();
+                        Snackbar.make(findViewById(R.id.place_layout), "请检查网络连接", Snackbar.LENGTH_INDEFINITE).show();
                     }
                 }, null);
         volleyQuque.add(stringRequest);

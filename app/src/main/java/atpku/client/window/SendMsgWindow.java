@@ -96,7 +96,7 @@ public class SendMsgWindow extends AppCompatActivity implements AdapterView.OnIt
 
         actionBar = getSupportActionBar();
         actionBar.setDisplayUseLogoEnabled(true);
-        actionBar.setLogo(R.mipmap.ic_launcher);
+        actionBar.setLogo(R.mipmap.logo);
         actionBar.setDisplayHomeAsUpEnabled(true);
 
 
@@ -314,7 +314,7 @@ public class SendMsgWindow extends AppCompatActivity implements AdapterView.OnIt
                         submitButton.setText("发送");
                         submitButton.setEnabled(true);
                         progressBar.setVisibility(View.INVISIBLE);
-                        Snackbar.make(findViewById(R.id.sendMsg_layout), "发送失败，请检查网络连接", Snackbar.LENGTH_LONG).show();
+                        Snackbar.make(findViewById(R.id.sendMsg_layout), "发送失败，请检查网络连接", Snackbar.LENGTH_INDEFINITE).show();
                     }
                 }, params);
         volleyQuque.add(stringRequest);
