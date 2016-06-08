@@ -109,6 +109,7 @@ public class MsgWindow extends AppCompatActivity implements AdapterView.OnItemCl
         actionBar.setDisplayUseLogoEnabled(true);
         actionBar.setLogo(R.mipmap.ic_launcher);
         actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setTitle("信息详情");
 
         pager = (ViewPager) this.findViewById(R.id.viewpager);
         tabStrip = (PagerTabStrip) this.findViewById(R.id.tabstrip);
@@ -454,7 +455,7 @@ public class MsgWindow extends AppCompatActivity implements AdapterView.OnItemCl
                         PostResult result = JSON.parseObject(response, PostResult.class);
                         if (result.success) {
                             msg = JSON.parseObject(result.data, Message.class);
-                            setTitle(msg.atPlace.getName());
+                            actionBar.setSubtitle(msg.atPlace.getName());
                             title.setText(msg.getTitle());
                             time.setText(msg.getPostTime() + "\n至 " + msg.getEndTime());
                             author.setText(msg.getOwner().getNickname());
