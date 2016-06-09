@@ -477,7 +477,7 @@ public class MsgWindow extends AppCompatActivity implements AdapterView.OnItemCl
                                 reportButton.setVisibility(View.GONE);
                                 deleteButton.setVisibility(View.VISIBLE);
                             }
-                            if(msg.comments.size() == 0) {
+                            if(msg.comments.size() == 0 && !refreshImage) {
                                 Snackbar.make(findViewById(R.id.msg_layout), "还没有任何评论",
                                         Snackbar.LENGTH_LONG).show();
                             }
