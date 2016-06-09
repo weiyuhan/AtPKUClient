@@ -132,12 +132,12 @@
 
             <Button
                 android:id="@+id/msg_reportButton"
-                android:layout_width="wrap_content"
+                android:layout_width="40dp"
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
                 android:background="@null"
                 android:onClick="onReportButtonClick"
-                android:textColor="@color/crimson"
+                android:textColor="?attr/colorPrimary"
                 android:textStyle="bold"
                 android:text="举报"
                 android:textSize="14sp" />

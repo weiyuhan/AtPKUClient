@@ -138,6 +138,8 @@ public class MapWindow extends AppCompatActivity implements
         actionBar.setDisplayShowHomeEnabled(true);
         actionBar.setLogo(R.mipmap.logo);
         actionBar.setDisplayUseLogoEnabled(true);
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setHomeAsUpIndicator(R.drawable.action_menu);
 
         mapView = (MapView) findViewById(R.id.map);
         mapView.onCreate(savedInstanceState);
@@ -450,10 +452,13 @@ public class MapWindow extends AppCompatActivity implements
         }
 
         switch (mi.getItemId()) {
-            case R.id.home:
-            case R.id.homeAsUp:
-            case R.id.useLogo:
-                drawerLayout.openDrawer(GravityCompat.START);
+            case android.R.id.home:
+                if(drawerLayout.isDrawerOpen(GravityCompat.START)) {
+                    drawerLayout.closeDrawers();
+                }
+                else {
+                    drawerLayout.openDrawer(GravityCompat.START);
+                }
                 break;
             case R.id.action_switch:
                 switchMapType();
