@@ -42,11 +42,11 @@ public class ImageAdapter extends ArrayAdapter<String>
         try
         {
             int resID = Integer.parseInt(imgUri);
-            Picasso.with(activity).load(resID).placeholder(R.mipmap.image_loading).error(R.mipmap.image_error).resize(200, 200).into(imageView);
+            Picasso.with(activity).load(resID).placeholder(R.mipmap.image_loading).error(R.mipmap.image_error).resize(80, 80).into(imageView);
 
         }catch (NumberFormatException e)
         {
-            Picasso.with(activity).load(imgUri).placeholder(R.mipmap.image_loading).error(R.mipmap.image_error).resize(200,200).into(imageView);
+            Picasso.with(activity).load(imgUri).placeholder(R.mipmap.image_loading).error(R.mipmap.image_error).resize(80, 80).into(imageView);
         }
 
 

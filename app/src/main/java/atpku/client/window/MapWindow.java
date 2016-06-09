@@ -136,7 +136,8 @@ public class MapWindow extends AppCompatActivity implements
 
         actionBar = getSupportActionBar();
         actionBar.setDisplayShowHomeEnabled(true);
-        actionBar.setLogo(R.mipmap.logo);
+     //   actionBar.setLogo(R.mipmap.logo);
+        actionBar.setTitle("atPKU");
         actionBar.setDisplayUseLogoEnabled(true);
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setHomeAsUpIndicator(R.drawable.action_menu);
@@ -559,7 +560,7 @@ public class MapWindow extends AppCompatActivity implements
                 pos = new LatLng(place.getLat(), place.getLng());
                 markerOptions.position(pos);
                 markerOptions.title(placename);
-                setMarkerIcon(markerOptions, place.type);
+                setMarkerIcon(markerOptions, place.name);
                 System.out.println("addMarker " + placename);
                 marker = aMap.addMarker(markerOptions);
                 markers.put(placename, marker);
@@ -569,18 +570,21 @@ public class MapWindow extends AppCompatActivity implements
     }
 
     public static void setMarkerIcon(MarkerOptions markerOptions, String type) {
-        if (type.equals("building"))
-            markerOptions.icon(BitmapDescriptorFactory.fromResource(R.mipmap.building_school));
-        else if (type.equals("canteen"))
-            markerOptions.icon(BitmapDescriptorFactory.fromResource(R.mipmap.building_canteen));
-        else if (type.equals("tower"))
-            markerOptions.icon(BitmapDescriptorFactory.fromResource(R.mipmap.building_tower));
-        else if (type.equals("gate"))
-            markerOptions.icon(BitmapDescriptorFactory.fromResource(R.mipmap.building_gate));
-        else if (type.equals("hospital"))
-            markerOptions.icon(BitmapDescriptorFactory.fromResource(R.mipmap.building_hospital));
+        if (type.equals("第二教学楼"))
+            markerOptions.icon(BitmapDescriptorFactory.fromResource(R.mipmap.wchool));
+        else if (type.equals("艺园食堂"))
+            markerOptions.icon(BitmapDescriptorFactory.fromResource(R.mipmap.yiyuan_restaurant));
+        else if (type.equals("松林快餐"))
+            markerOptions.icon(BitmapDescriptorFactory.fromResource(R.mipmap.songlin_restaurant));
+        else if (type.equals("博雅塔"))
+            markerOptions.icon(BitmapDescriptorFactory.fromResource(R.mipmap.tower));
+        else if (type.equals("西门"))
+            markerOptions.icon(BitmapDescriptorFactory.fromResource(R.mipmap.west_gate));
+        else if (type.equals("校医院"))
+            markerOptions.icon(BitmapDescriptorFactory.fromResource(R.mipmap.hospital));
         else
-            markerOptions.icon(BitmapDescriptorFactory.fromResource(R.mipmap.building_school));
+            markerOptions.icon(BitmapDescriptorFactory.fromResource(R.mipmap.teaching_building));
+
     }
 
     public void onLocationChanged(AMapLocation amapLocation) {

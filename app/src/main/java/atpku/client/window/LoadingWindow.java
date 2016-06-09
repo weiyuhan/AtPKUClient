@@ -49,7 +49,7 @@ public class LoadingWindow extends AppCompatActivity {
         MapWindow.mapShow = true;
 
         ImageView imageView = (ImageView)findViewById(R.id.LoadingImage);
-        Picasso.with(this).load(R.mipmap.logo).resize(500,500).into(imageView);
+        Picasso.with(this).load(R.mipmap.welcome).resize(800,800).into(imageView);
 
         prefs = getSharedPreferences("login", Context.MODE_PRIVATE);
         String cookie = prefs.getString("Cookie", "");

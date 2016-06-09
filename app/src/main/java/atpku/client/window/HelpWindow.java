@@ -29,14 +29,14 @@ public class HelpWindow extends AppCompatActivity {
         actionBar.setDisplayHomeAsUpEnabled(true);
 
         helpcontent = (TextView) findViewById(R.id.helpcontent);
-        helpcontent.setText("欢迎使用AtPKU。\n\n"
+        helpcontent.setText("欢迎使用atPKU。\n\n"
                         + "本app的主要功能是提供基于地理位置的信息。\n"
                         + "作为游客，您可以查看各主要地点及其信息摘要。\n"
                         + "登录之后就可以发送信息，对信息进行评论、点赞等操作。\n"
                         + "注册时请填写PKU邮箱，我们会发送确认邮件，确认之后即注册成功。\n"
                         + "\n"
-                        + "\nAtPKU开发者 软工第6小组\n"
-                        + "前端：樊世雄 姜雨萌 韦宇晗\n后端：刘自然 朱瑜坚\n"
+                        + "\natPKU开发者 软工第6小组\n"
+                        + "前端：樊世雄 姜雨萌 韦宇晗 吴宜庭\n后端：刘自然 朱瑜坚\n"
         );
     }
 
