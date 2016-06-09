@@ -6,10 +6,12 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Gravity;
 import android.widget.ImageView;
 import android.widget.SearchView;
 import android.util.Log;
@@ -157,9 +159,6 @@ public class MapWindow extends AppCompatActivity implements
                 refreshPlaces();
             }
         }, 120000, 120000); // for each 2 min, refresh all messages about places
-
-
-
     }
 
     public void refreshUser() {
@@ -361,8 +360,10 @@ public class MapWindow extends AppCompatActivity implements
         if (MapWindow.isLogin) {
             refreshUser();
         }
-        else
+        else {
             refreshSlideMenu();
+            drawerLayout.openDrawer(GravityCompat.START);
+        }
         if (ThemeUtil.themeChanged) {
             ThemeUtil.themeChanged = false;
             //mapShow = false;
@@ -449,20 +450,24 @@ public class MapWindow extends AppCompatActivity implements
         }
 
         switch (mi.getItemId()) {
+            case R.id.home:
+            case R.id.homeAsUp:
+            case R.id.useLogo:
+                drawerLayout.openDrawer(GravityCompat.START);
+                break;
             case R.id.action_switch:
                 switchMapType();
                 break;
-            case R.id.action_refresh: {
+            case R.id.action_refresh:
                 refreshPlaces();
-            }
-            break;
+                break;
             case R.id.action_search: {
                 //mi.expandActionView();
                 searchView = (SearchView) MenuItemCompat.getActionView(mi);
                 if (searchView != null)
                     searchView.setOnQueryTextListener(this);
-            }
-            break;
+                }
+                break;
             default:
                 break;
         }
