@@ -103,6 +103,7 @@ public class MsgWindow extends AppCompatActivity implements AdapterView.OnItemCl
     protected void onCreate(Bundle savedInstanceState) {
         ThemeUtil.setTheme(this);
         super.onCreate(savedInstanceState);
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         setContentView(R.layout.msg);
 
         actionBar = getSupportActionBar();
@@ -162,7 +163,7 @@ public class MsgWindow extends AppCompatActivity implements AdapterView.OnItemCl
         });
 
         refreshLayout = (SwipeRefreshLayout)comment.findViewById(R.id.msg_comment_refresh_layout);
-        refreshLayout.setColorScheme(R.color.lawngreen, R.color.yellow, R.color.blue, R.color.crimson);
+        refreshLayout.setColorScheme(R.color.lawngreen, R.color.greenyellow, R.color.blue, R.color.crimson);
         refreshLayout.setOnRefreshListener(this);
 
         title = (TextView)msgContent.findViewById(R.id.msg_title);
@@ -184,7 +185,6 @@ public class MsgWindow extends AppCompatActivity implements AdapterView.OnItemCl
         dislikeView = (TextView)msgContent.findViewById(R.id.animation_dislike);;
         animation  = AnimationUtils.loadAnimation(MsgWindow.this, R.anim.applaud_animation);
 
-        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         Intent intent = this.getIntent();
         messageID = (int) intent.getSerializableExtra("messageID");
         volleyQuque = Volley.newRequestQueue(this);
@@ -281,6 +281,7 @@ public class MsgWindow extends AppCompatActivity implements AdapterView.OnItemCl
                         PostResult result = JSON.parseObject(response, PostResult.class);
                         if (result.success) {
                             //dislikeNum.setText(msg.getDislikeUsers().size()+1+"");
+                            Snackbar.make(findViewById(R.id.msg_layout), result.message, Snackbar.LENGTH_LONG).show();
                             refreshMessageInfo(false);
                         } else {
                             Snackbar.make(findViewById(R.id.msg_layout), result.message, Snackbar.LENGTH_LONG).show();
@@ -475,6 +476,10 @@ public class MsgWindow extends AppCompatActivity implements AdapterView.OnItemCl
                             if (MapWindow.user.getIsAdmin()) {
                                 reportButton.setVisibility(View.GONE);
                                 deleteButton.setVisibility(View.VISIBLE);
+                            }
+                            if(msg.comments.size() == 0 && !refreshImage) {
+                                Snackbar.make(findViewById(R.id.msg_layout), "还没有任何评论",
+                                        Snackbar.LENGTH_LONG).show();
                             }
                             if(msg.reportTimes > 2)
                             {

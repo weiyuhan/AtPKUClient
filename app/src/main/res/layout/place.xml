@@ -25,13 +25,4 @@
         </android.support.v4.widget.SwipeRefreshLayout>
     </LinearLayout>
 
-    <android.support.design.widget.FloatingActionButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="right|bottom"
-        android:layout_marginBottom="16dp"
-        android:layout_marginRight="16dp"
-        android:onClick="sendMsgHandler"
-        android:src="@mipmap/send_mail_big"
-        app:backgroundTint="?attr/colorPrimaryDark"></android.support.design.widget.FloatingActionButton>
 </android.support.design.widget.CoordinatorLayout>

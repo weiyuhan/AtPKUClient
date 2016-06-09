@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.widget.ImageView;
 
 import com.alibaba.fastjson.JSON;
 import com.amap.api.maps.model.Marker;
@@ -15,6 +16,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.squareup.picasso.Picasso;
 
 import java.util.HashMap;
 import java.util.List;
@@ -37,11 +39,19 @@ public class LoadingWindow extends AppCompatActivity {
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        SharedPreferences prefs = getSharedPreferences("theme", Context.MODE_PRIVATE);
+        int themeid = prefs.getInt("Theme", R.style.AppTheme_Grey);
+        ThemeUtil.themeid = themeid;
+        ThemeUtil.themeChanged = false;
+        ThemeUtil.setTheme(this);
         setContentView(R.layout.loading);
 
         MapWindow.mapShow = true;
 
-        SharedPreferences prefs = getSharedPreferences("login", Context.MODE_PRIVATE);
+        ImageView imageView = (ImageView)findViewById(R.id.LoadingImage);
+        Picasso.with(this).load(R.mipmap.logo).resize(500,500).into(imageView);
+
+        prefs = getSharedPreferences("login", Context.MODE_PRIVATE);
         String cookie = prefs.getString("Cookie", "");
         System.out.println("mycookie : " + cookie);
         MapWindow.setCookie(cookie);
@@ -50,11 +60,6 @@ public class LoadingWindow extends AppCompatActivity {
             MapWindow.isLogin = false;
         else
             MapWindow.isLogin = true;
-
-        prefs = getSharedPreferences("theme", Context.MODE_PRIVATE);
-        int themeid = prefs.getInt("Theme", R.style.AppTheme_Grey);
-        ThemeUtil.themeid = themeid;
-        ThemeUtil.themeChanged = false;
 
         volleyQuque = Volley.newRequestQueue(this);
 

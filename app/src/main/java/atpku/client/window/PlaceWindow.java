@@ -57,7 +57,7 @@ public class PlaceWindow extends AppCompatActivity implements SearchView.OnQuery
         actionBar.setDisplayHomeAsUpEnabled(true);
 
         refreshLayout = (SwipeRefreshLayout)findViewById(R.id.place_refresh_layout);
-        refreshLayout.setColorScheme(R.color.lawngreen, R.color.yellow, R.color.blue, R.color.crimson);
+        refreshLayout.setColorScheme(R.color.lawngreen, R.color.greenyellow, R.color.blue, R.color.crimson);
         refreshLayout.setOnRefreshListener(this);
         msgList = (ListView) this.findViewById(R.id.place_msgList);
 
