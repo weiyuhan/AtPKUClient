@@ -580,6 +580,10 @@ public class MapWindow extends AppCompatActivity implements
             markerOptions.icon(BitmapDescriptorFactory.fromResource(R.mipmap.tower));
         else if (type.equals("西门"))
             markerOptions.icon(BitmapDescriptorFactory.fromResource(R.mipmap.west_gate));
+        else if (type.equals("图书馆"))
+            markerOptions.icon(BitmapDescriptorFactory.fromResource(R.mipmap.library));
+        else if (type.equals("东门"))
+            markerOptions.icon(BitmapDescriptorFactory.fromResource(R.mipmap.west_gate));
         else if (type.equals("校医院"))
             markerOptions.icon(BitmapDescriptorFactory.fromResource(R.mipmap.hospital));
         else
